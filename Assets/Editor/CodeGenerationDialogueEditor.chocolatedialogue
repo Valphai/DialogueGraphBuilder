@@ -2,13 +2,48 @@
     "graphSaveData": {
         "situationSaveData": [
             {
-                "situationGuid": "",
-                "nodeData": []
-            },
-            {
                 "situationGuid": "1",
                 "nodeData": [
-                    {}
+                    {
+                        "inputIDs": [],
+                        "nodeID": "ae7542f3-3f76-4fa8-8c64-8702e7882dd6",
+                        "nodeType": "Chocolate4.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 192.0,
+                            "y": 65.0
+                        },
+                        "groupID": ""
+                    },
+                    {
+                        "inputIDs": [
+                            "ae7542f3-3f76-4fa8-8c64-8702e7882dd6"
+                        ],
+                        "nodeID": "572da9cd-799a-43ae-800f-c31ed0f6e4eb",
+                        "nodeType": "Chocolate4.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 450.0,
+                            "y": 272.0
+                        },
+                        "groupID": ""
+                    }
+                ]
+            },
+            {
+                "situationGuid": "5d396da1-fe1b-4487-b832-d437f2ab869a",
+                "nodeData": [
+                    {
+                        "inputIDs": [],
+                        "nodeID": "fe85911e-0138-4d49-95aa-aa109417c7bb",
+                        "nodeType": "Chocolate4.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 240.0,
+                            "y": 179.0
+                        },
+                        "groupID": ""
+                    }
                 ]
             }
         ]
@@ -42,7 +77,7 @@
             {
                 "rootItem": {
                     "displayName": "New Situation",
-                    "guid": "4",
+                    "guid": "5d396da1-fe1b-4487-b832-d437f2ab869a",
                     "prefix": "S"
                 },
                 "children": []

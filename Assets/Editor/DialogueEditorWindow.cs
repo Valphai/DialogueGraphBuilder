@@ -118,6 +118,9 @@ namespace Chocolate4
         private void OnDisable()
         {
             dialogueTreeView.OnSituationSelected -= graphView.DialogueTreeView_OnSituationSelected;
+            dialogueTreeView.OnTreeItemRemoved -= graphView.DialogueTreeView_OnTreeItemRemoved;
+            graphView.OnSituationCached -= dialogueTreeView.GraphView_OnSituationCached;
+
             StoreData();
         }
 
@@ -141,9 +144,6 @@ namespace Chocolate4
         private void PostInitialize()
         {
             Initialize();
-            //dialogueTreeView = new DialogueTreeView(dialogueAssetManager.ImportedAsset.treeSaveData);
-            //dialogueTreeView.OnSituationSelected += graphView.DialogueTreeView_OnSituationSelected;
-
             hasInitialized = true;
         }
 
@@ -157,6 +157,9 @@ namespace Chocolate4
             dialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
 
             dialogueTreeView.OnSituationSelected += graphView.DialogueTreeView_OnSituationSelected;
+            dialogueTreeView.OnTreeItemRemoved += graphView.DialogueTreeView_OnTreeItemRemoved;
+
+            graphView.OnSituationCached += dialogueTreeView.GraphView_OnSituationCached;
         }
 
         private void Rebuild()
@@ -205,8 +208,8 @@ namespace Chocolate4
 
         private void SaveButton_clicked()
         {
-            TreeSaveData treeData = dialogueTreeView.Save();
             GraphSaveData graphData = graphView.Save();
+            TreeSaveData treeData = dialogueTreeView.Save();
             dialogueAssetManager.Save(graphData, treeData);
         }
 

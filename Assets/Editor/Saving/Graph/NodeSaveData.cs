@@ -1,25 +1,27 @@
-﻿using Chocolate4.Editor.Graph.Nodes;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Chocolate4.Saving
 {
-    [System.Serializable]
+    [Serializable]
     public class NodeSaveData
     {
-        public BaseNode parentNode;
-        public List<BaseNode> parentInputs;
-
+        public List<string> inputIDs;
         public string nodeID;
-        public NodeTypes nodeType;
+        public string nodeType;
         public string text;
-        public Vector3 position;
+        public Vector2 position;
         public string groupID;
 
-        public NodeSaveData(BaseNode parentNode, List<BaseNode> parentInputs)
+        public NodeSaveData(BaseNode node)
         {
-            this.parentNode = parentNode;
-            this.parentInputs = parentInputs;
+            inputIDs = node.InputIDs;
+            nodeID = node.ID;
+            nodeType = node.NodeType.ToString();
+            text = node.Text;
+            position = node.GetPosition().position;
+            groupID = node.GroupID;
         }
     }
 }

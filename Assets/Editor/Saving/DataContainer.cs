@@ -1,5 +1,4 @@
 ﻿using Chocolate4.Saving;
-using System;
 using UnityEngine;
 
 namespace Chocolate4.Editor.Saving
@@ -14,6 +13,7 @@ namespace Chocolate4.Editor.Saving
 
         internal void Store(GraphSaveData graphData, TreeSaveData treeData)
         {
+            //UpdateGraphData(graphData);
             GraphData = graphData;
             TreeData = treeData;
         }

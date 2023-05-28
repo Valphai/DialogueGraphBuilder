@@ -19,6 +19,7 @@ namespace Chocolate4.Tree
         public TreeView TreeView { get; private set; }
 
         public event Action<string> OnSituationSelected;
+        public event Action<string> OnTreeItemRemoved;
 
         public void Initialize(TreeSaveData treeSaveData)
         {
@@ -71,11 +72,25 @@ namespace Chocolate4.Tree
             return children;
         }
 
-        public void AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int groupID = -1)
+        public void RemoveTreeItem(DialogueTreeItem item, int id)
         {
-            AddItemToGroup(
-                new DialogueTreeItem(defaultName, treeGroup.GetString(elementType), _ => new VisualElement()),
-                groupID);
+            if (!TreeView.TryRemoveItem(id))
+            {
+                return;
+            }
+
+            OnTreeItemRemoved?.Invoke(item.guid);
+        }
+
+        public void AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int groupID = -1, string guidOverride = "")
+        {
+            DialogueTreeItem treeItem = new DialogueTreeItem(defaultName, treeGroup.GetString(elementType), _ => new VisualElement());
+            AddItemToGroup(treeItem, groupID);
+
+            if (!guidOverride.Equals(string.Empty))
+            {
+                treeItem.guid = guidOverride;
+            }
         }
 
         private void AddItemToGroup(DialogueTreeItem treeItem, int groupID)
@@ -85,6 +100,7 @@ namespace Chocolate4.Tree
             TreeView.AddItem(
                 new TreeViewItemData<DialogueTreeItem>(parentId, treeItem), groupID
             );
+
             TreeView.Rebuild();
         }
 
@@ -105,6 +121,8 @@ namespace Chocolate4.Tree
                     item.displayName = finishedText;
                 })
             );
+            
+            element.AddContextualMenu("Remove", _ => RemoveTreeItem(item, groupID));
 
 
             switch (item.prefix)
@@ -113,6 +131,7 @@ namespace Chocolate4.Tree
                     element.AddContextualMenu("Add Situation", _ => AddTreeItem(
                         TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Item, groupID)
                     );
+                    
                     break;
 
                 case TreeGroupsExtensions.VariableGroupString:
@@ -193,6 +212,25 @@ namespace Chocolate4.Tree
                 treeView.SetSelection(0);
 
             }).StartingIn(TreeViewInitialSelectionDelay);
+        }
+
+        public void GraphView_OnSituationCached(string situationGuid)
+        {
+            int count = TreeView.GetTreeCount();
+            for (int i = 0; i < count; i++)
+            {
+                DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(i);
+
+                if (item.guid.Equals(situationGuid))
+                {
+                    return;
+                }
+            }
+
+            AddTreeItem(
+                TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, 
+                TreeItemType.Item, guidOverride:situationGuid
+            );
         }
     }
 }

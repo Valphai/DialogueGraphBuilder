@@ -1,6 +1,7 @@
-using Chocolate4.Editor.Graph.Nodes;
+using Chocolate4.Saving;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,11 +15,13 @@ namespace Chocolate4
         private const string FilenameTextFieldUSS = "base-node__filename-textfield";
         private const string TextFieldHiddenUSS = "base-node__textfield__hidden";
 
+        public List<string> InputIDs { get; set; } = new List<string>();
+        public string GroupID { get; set; }
         public string ID { get; set; }
         public string Name { get; set; }
         public List<string> Choices { get; set; }
         public string Text { get; set; }
-        public NodeTypes NodeType { get; set; }
+        public Type NodeType { get; set; }
 
         public virtual void Initialize(Vector3 startingPosition)
         {
@@ -26,11 +29,20 @@ namespace Chocolate4
             Name = "Dialogue name";
             Choices = new List<string>();
             Text = string.Empty;
+            NodeType = GetType();
 
             SetPosition(new Rect(startingPosition, Vector2.zero));
 
             mainContainer.AddToClassList(ContentContainerUSS);
             extensionContainer.AddToClassList(ExtensionContainerUSS);
+        }
+
+        public virtual void Load(NodeSaveData saveData)
+        {
+            InputIDs = saveData.inputIDs;
+            ID = saveData.nodeID;
+            Text = saveData.text;
+            GroupID = saveData.groupID;
         }
 
         public virtual void Draw()

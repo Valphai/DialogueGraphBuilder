@@ -44,8 +44,8 @@ namespace Chocolate4
 
             Store(graphData, treeData);
 
-            ImportedAsset.graphSaveData = graphData;
-            ImportedAsset.treeSaveData = treeData;
+            ImportedAsset.graphSaveData = dataRebuilder.dataContainer.GraphData;
+            ImportedAsset.treeSaveData = dataRebuilder.dataContainer.TreeData;
 
             string assetJson = ImportedAsset.ToJson();
             string existingJson = File.ReadAllText(Path);

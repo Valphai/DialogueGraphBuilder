@@ -7,7 +7,7 @@ namespace Chocolate4.Editor
     [System.Serializable]
     internal class DataRebuilder
     {
-        private DataContainer dataContainer;
+        public DataContainer dataContainer;
 
         public DataRebuilder()
         {

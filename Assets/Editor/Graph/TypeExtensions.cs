@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Chocolate4
 {
-    public static class TypeHelpers
+    public static class TypeExtensions
     {
         public static IEnumerable<Type> GetTypes<T>() where T : class
         {

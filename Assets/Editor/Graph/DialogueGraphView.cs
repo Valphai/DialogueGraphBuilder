@@ -4,6 +4,7 @@ using Chocolate4.Saving;
 using Chocolate4.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -15,8 +16,10 @@ namespace Chocolate4
     {
         public const string DefaultGroupName = "Dialogue Group";
 
-        private string activeSituationGuid = string.Empty;
-        private List<SituationSaveData> situationToData = new List<SituationSaveData>();
+        private string activeSituationGuid = "1";
+        private List<SituationSaveData> situationToData;
+
+        public event Action<string> OnSituationCached;
 
         public void Initialize()
         {
@@ -50,15 +53,15 @@ namespace Chocolate4
 
         public void Rebuild(GraphSaveData graphSaveData)
         {
-            //return;
             if (graphSaveData.situationSaveData.IsNullOrEmpty())
             {
                 return;
             }
 
+            situationToData = new List<SituationSaveData>();
             foreach (SituationSaveData situationSaveData in graphSaveData.situationSaveData)
             {
-                situationToData.Add(situationSaveData);
+                situationToData.Add(new SituationSaveData(situationSaveData));
             }
 
             SituationSaveData situationData = graphSaveData.situationSaveData.Find(
@@ -73,10 +76,9 @@ namespace Chocolate4
             RebuildGraph(situationData);
         }
 
-        public void DialogueTreeView_OnSituationSelected(string newSituationGuid)
+        internal void DialogueTreeView_OnSituationSelected(string newSituationGuid)
         {
             CacheActiveSituation();
-            DeleteElements(graphElements);
 
             activeSituationGuid = newSituationGuid;
             SituationSaveData situationSaveData = situationToData.Find(
@@ -91,11 +93,19 @@ namespace Chocolate4
             RebuildGraph(situationSaveData);
         }
 
+        internal void DialogueTreeView_OnTreeItemRemoved(string treeItemGuid)
+        {
+            if (!IsCached(treeItemGuid, out SituationSaveData cachedSituationSaveData))
+            {
+                return;
+            }
+
+            situationToData.Remove(cachedSituationSaveData);
+        }
 
         private SituationSaveData SaveActiveSituation()
         {
-            Dictionary<BaseNode, List<BaseNode>> nodeToOtherNodes = SaveActiveGraph();
-            return StructureSaver.SaveSituation(activeSituationGuid, nodeToOtherNodes);
+            return StructureSaver.SaveSituation(activeSituationGuid, graphElements);
         }
 
         private bool IsCached(string situationGuid, out SituationSaveData cachedSaveData)
@@ -111,47 +121,52 @@ namespace Chocolate4
         {
             SituationSaveData situationSaveData = SaveActiveSituation();
 
-            if (!IsCached(situationSaveData.situationGuid, out SituationSaveData _))
+            if (!IsCached(situationSaveData.situationGuid, out SituationSaveData cachedSituationSaveData))
             {
                 situationToData.Add(situationSaveData);
+
+                OnSituationCached?.Invoke(situationSaveData.situationGuid);
+                return;
             }
-        }
 
-        private Dictionary<BaseNode, List<BaseNode>> SaveActiveGraph()
-        {
-            var nodeToOtherNodes = new Dictionary<BaseNode, List<BaseNode>>();
-
-            graphElements.ForEach(element => {
-                if (element is BaseNode node)
-                {
-                    Port inputPort = node.inputContainer.Q<Port>();
-                    var connectionsMap = GetConnections(inputPort);
-
-                    nodeToOtherNodes.Add(node, connectionsMap);
-                }
-            });
-
-            return nodeToOtherNodes;
+            int cachedIndex = situationToData.IndexOf(cachedSituationSaveData);
+            situationToData[cachedIndex] = situationSaveData;
         }
 
         private void RebuildGraph(SituationSaveData situationData)
         {
+            DeleteElements(graphElements);
+
+            List<BaseNode> nodes = new List<BaseNode>();
+            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
             foreach (NodeSaveData nodeData in situationData.nodeData)
             {
-                AddElement(nodeData.parentNode);
+                Type matchedType = nodeTypes.First(type => type.ToString().Equals(nodeData.nodeType));
+                BaseNode node = CreateNode(nodeData.position, matchedType);
+                node.Load(nodeData);
+                nodes.Add(node);
             }
 
-            foreach (NodeSaveData nodeData in situationData.nodeData)
-            {
-                BaseNode node = nodeData.parentNode;
-                Port inputPort = node.inputContainer.Q<Port>();
-                List<BaseNode> connections = nodeData.parentInputs;
+            RebuildConnections(nodes);
+        }
 
-                ConnectPorts(inputPort, connections);
+        private void RebuildConnections(List<BaseNode> nodes)
+        {
+            foreach (BaseNode node in nodes)
+            {
+                for (int i = 0; i < node.InputIDs.Count; i++)
+                {
+                    string parentID = node.InputIDs[i];
+                    IEnumerable<BaseNode> connections =
+                        nodes.Where(parentNode => parentNode.ID == parentID && parentNode.ID != node.ID);
+
+                    Port inputPort = node.inputContainer.Q<Port>();
+                    ConnectPorts(inputPort, connections);
+                }
             }
         }
 
-        private void ConnectPorts(Port port, List<BaseNode> connections)
+        private void ConnectPorts(Port port, IEnumerable<BaseNode> connections)
         {
             foreach (BaseNode otherNode in connections)
             {
@@ -165,19 +180,6 @@ namespace Chocolate4
             }
         }
 
-        private List<BaseNode> GetConnections(Port port)
-        {
-            IEnumerable<Edge> connections = port.connections;
-
-            var connectionsMap = new List<BaseNode>();
-
-            foreach (Edge connection in connections)
-            {
-                connectionsMap.Add(connection.output.node as BaseNode);
-            }
-            return connectionsMap;
-        }
-
         private void AddManipulators()
         {
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
@@ -189,7 +191,7 @@ namespace Chocolate4
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             ));
 
-            IEnumerable<Type> nodeTypes = TypeHelpers.GetTypes<BaseNode>();
+            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
 
             string contextElementTitle;
             foreach (Type nodeType in nodeTypes)

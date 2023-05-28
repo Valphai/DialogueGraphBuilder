@@ -1,11 +1,13 @@
-﻿using Chocolate4.Saving;
+﻿using Chocolate4.Editor.Graph.Utilities;
+using Chocolate4.Saving;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Editor.Saving
 {
-    internal class StructureSaver
+    public class StructureSaver
     {
         public static GraphSaveData SaveGraph(List<SituationSaveData> situationToData)
         {
@@ -16,17 +18,34 @@ namespace Chocolate4.Editor.Saving
         }
 
         public static SituationSaveData SaveSituation(
-            string situationGuid, Dictionary<BaseNode, List<BaseNode>> nodeToOtherNodes
+            string situationGuid, UQueryState<GraphElement> graphElements
         )
         {
-            List<NodeSaveData> nodeSaveData = new List<NodeSaveData>();
-            foreach (var pair in nodeToOtherNodes)
-            {
-                nodeSaveData.Add(new NodeSaveData(pair.Key, pair.Value));
-            }
+            List<NodeSaveData> nodeSaveDatas = new List<NodeSaveData>();
 
-            return new SituationSaveData(situationGuid, nodeSaveData);
+            graphElements.ForEach(element => {
+                if (element is BaseNode node)
+                {
+                    nodeSaveDatas.Add(SaveNode(node));
+                }
+            });
+
+            return new SituationSaveData(situationGuid, nodeSaveDatas);
+
+            NodeSaveData SaveNode(BaseNode node)
+            {
+                Port inputPort = node.inputContainer.Q<Port>();
+                var connectionsMap = NodeUtilities.GetConnections(inputPort);
+
+                if (!connectionsMap.IsNullOrEmpty())
+                {
+                    connectionsMap.ForEach(parent => node.InputIDs.Add(parent.ID));
+                }
+
+                return new NodeSaveData(node);
+            }
         }
+
 
         public static TreeSaveData SaveTree(TreeView treeView)
         {
