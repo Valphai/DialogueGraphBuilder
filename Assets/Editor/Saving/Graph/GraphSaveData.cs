@@ -1,10 +1,9 @@
-﻿using Chocolate4.Editor;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Chocolate4.Saving
 {
     [System.Serializable]
-    public class GraphSaveData : SaveData<SituationSaveData>
+    public class GraphSaveData
     {
         public List<SituationSaveData> situationSaveData = new List<SituationSaveData>();
 

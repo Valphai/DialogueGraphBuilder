@@ -1,3 +1,5 @@
+using Chocolate4.Editor;
+using Chocolate4.Editor.Saving;
 using Chocolate4.Saving;
 using Chocolate4.Utilities;
 using System;
@@ -9,7 +11,7 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4
 {
-    public class DialogueGraphView : GraphView
+    public class DialogueGraphView : GraphView, IRebuildable<GraphSaveData>
     {
         public const string DefaultGroupName = "Dialogue Group";
 
@@ -38,6 +40,18 @@ namespace Chocolate4
             });
 
             return compatiblePorts;
+        }
+
+        public GraphSaveData Save()
+        {
+            return new GraphSaveData()
+            {
+                situationSaveData = situationToData
+            };
+        }
+
+        public void Rebuild(GraphSaveData saveData)
+        {
         }
 
         public void DialogueTreeView_OnSituationSelected(string newSituationGuid)
@@ -73,18 +87,10 @@ namespace Chocolate4
             RebuildGraph(graphSaveData);
         }
 
-        public GraphSaveData SaveGraph()
-        {
-            return new GraphSaveData()
-            {
-                situationSaveData = situationToData
-            };
-        }
-
         private SituationSaveData SaveActiveSituation()
         {
             Dictionary<BaseNode, List<BaseNode>> nodeToOtherNodes = SaveActiveGraph();
-            return DialogueAssetManager.SaveSituation(activeSituationGuid, nodeToOtherNodes);
+            return StructureSaver.SaveSituation(activeSituationGuid, nodeToOtherNodes);
         }
 
         private bool IsCached(string situationGuid, out SituationSaveData cachedSaveData)
@@ -261,16 +267,6 @@ namespace Chocolate4
             styleSheets.Add(graphStyleSheet);
             styleSheets.Add(nodeStyleSheet);
         }
-
-        //private void OnGraphViewChanged()
-        //{
-        //    graphViewChanged = (changes) => {
-
-
-
-        //        return changes;
-        //    };
-        //}
 
         private Vector2 GetLocalMousePosition(Vector2 mousePosition)
         {

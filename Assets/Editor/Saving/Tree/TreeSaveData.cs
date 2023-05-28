@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Chocolate4.Saving
 {
     [System.Serializable]
-    public class TreeSaveData : SaveData<TreeItemSaveData>
+    public class TreeSaveData
     {
         public List<TreeItemSaveData> treeItemData;
 

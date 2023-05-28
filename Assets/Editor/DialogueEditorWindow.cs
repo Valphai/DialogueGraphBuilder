@@ -119,7 +119,7 @@ namespace Chocolate4
         {
             dialogueTreeView.OnSituationSelected -= graphView.DialogueTreeView_OnSituationSelected;
 
-            TreeSaveData treeSaveData = dialogueTreeView.SaveTree();
+            TreeSaveData treeSaveData = dialogueTreeView.Save();
             GraphSaveData graphSaveData = graphView.SaveGraph();
             dialogueAssetManager.Store(graphSaveData, treeSaveData);
         }
@@ -201,7 +201,7 @@ namespace Chocolate4
 
         private void SaveButton_clicked()
         {
-            TreeSaveData treeData = dialogueTreeView.SaveTree();
+            TreeSaveData treeData = dialogueTreeView.Save();
             dialogueAssetManager.Save(null, treeData);
         }
 

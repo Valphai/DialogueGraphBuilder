@@ -2,7 +2,7 @@
 {
     internal interface IRebuildable<T>
     {
-        SaveData<T> Save();
-        void Rebuild(SaveData<T> saveData);
+        T Save();
+        void Rebuild(T saveData);
     }
 }

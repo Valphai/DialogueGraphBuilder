@@ -5,16 +5,16 @@ using UnityEngine.UIElements;
 using Chocolate4.Utilities;
 using System.Linq;
 using Chocolate4.Saving;
+using Chocolate4.Editor.Saving;
+using Chocolate4.Editor;
 
 namespace Chocolate4.Tree
 {
     [Serializable]
-    public class DialogueTreeView
+    public class DialogueTreeView : IRebuildable<TreeSaveData>
     {
         private const int TreeViewSelectionRestoreDelay = 1;
         private const int TreeViewInitialSelectionDelay = 2;
-
-        //private VisualElement contentPanel;
 
         public TreeView TreeView { get; private set; }
 
@@ -47,6 +47,11 @@ namespace Chocolate4.Tree
             CreateTreeView();
         }
 
+        public TreeSaveData Save()
+        {
+            return StructureSaver.SaveTree(TreeView);
+        }
+
         private static List<TreeViewItemData<DialogueTreeItem>> GetChildren(TreeItemSaveData treeItemSaveData, int nextId)
         {
             if (treeItemSaveData.children == null)
@@ -64,11 +69,6 @@ namespace Chocolate4.Tree
             }
 
             return children;
-        }
-
-        public TreeSaveData SaveTree() 
-        {
-            return DialogueAssetManager.SaveTree(TreeView);
         }
 
         public void AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int groupID = -1)
@@ -171,9 +171,6 @@ namespace Chocolate4.Tree
                 return;
 
             DialogueTreeItem sampleItem = TreeView.GetItemDataForIndex<DialogueTreeItem>(selectedIndices.First());
-
-            //contentPanel.Clear();
-            //contentPanel.Add(sampleItem.makeItem(sampleItem));
 
             if (sampleItem.prefix == TreeGroups.Situation.GetString(TreeItemType.Group))
             {
