@@ -3,44 +3,32 @@
         "situationSaveData": [
             {
                 "situationGuid": "1",
-                "nodeData": [
-                    {
-                        "inputIDs": [],
-                        "nodeID": "ae7542f3-3f76-4fa8-8c64-8702e7882dd6",
-                        "nodeType": "Chocolate4.DialogueNode",
-                        "text": "",
-                        "position": {
-                            "x": 192.0,
-                            "y": 65.0
-                        },
-                        "groupID": ""
-                    },
-                    {
-                        "inputIDs": [
-                            "ae7542f3-3f76-4fa8-8c64-8702e7882dd6"
-                        ],
-                        "nodeID": "572da9cd-799a-43ae-800f-c31ed0f6e4eb",
-                        "nodeType": "Chocolate4.DialogueNode",
-                        "text": "",
-                        "position": {
-                            "x": 450.0,
-                            "y": 272.0
-                        },
-                        "groupID": ""
-                    }
-                ]
+                "nodeData": []
             },
             {
                 "situationGuid": "5d396da1-fe1b-4487-b832-d437f2ab869a",
                 "nodeData": [
+                    {
+                        "inputIDs": [
+                            "fe85911e-0138-4d49-95aa-aa109417c7bb"
+                        ],
+                        "nodeID": "00f6a995-1ac7-46de-8fe2-98adeae4bb75",
+                        "nodeType": "Chocolate4.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 572.0,
+                            "y": 310.0
+                        },
+                        "groupID": ""
+                    },
                     {
                         "inputIDs": [],
                         "nodeID": "fe85911e-0138-4d49-95aa-aa109417c7bb",
                         "nodeType": "Chocolate4.DialogueNode",
                         "text": "",
                         "position": {
-                            "x": 240.0,
-                            "y": 179.0
+                            "x": 150.0,
+                            "y": 328.0
                         },
                         "groupID": ""
                     }
@@ -50,14 +38,6 @@
     },
     "treeSaveData": {
         "treeItemData": [
-            {
-                "rootItem": {
-                    "displayName": "Default Situation",
-                    "guid": "1",
-                    "prefix": "S"
-                },
-                "children": []
-            },
             {
                 "rootItem": {
                     "displayName": "New Variable Group",
@@ -71,6 +51,14 @@
                     "displayName": "New Event Group",
                     "guid": "3",
                     "prefix": "EG"
+                },
+                "children": []
+            },
+            {
+                "rootItem": {
+                    "displayName": "Default Situation",
+                    "guid": "1",
+                    "prefix": "S"
                 },
                 "children": []
             },

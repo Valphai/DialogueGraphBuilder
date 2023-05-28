@@ -39,7 +39,12 @@ namespace Chocolate4.Editor.Saving
 
                 if (!connectionsMap.IsNullOrEmpty())
                 {
-                    connectionsMap.ForEach(parent => node.InputIDs.Add(parent.ID));
+                    connectionsMap.ForEach(parent => {
+                        if (!node.InputIDs.Contains(parent.ID))
+                        {
+                            node.InputIDs.Add(parent.ID);
+                        }
+                    });
                 }
 
                 return new NodeSaveData(node);
