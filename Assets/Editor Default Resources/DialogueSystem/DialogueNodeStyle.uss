@@ -1,0 +1,40 @@
+.base-node__extensions-container
+{
+	background-color: var(colors-window-dark-grey-1);
+	padding: var(metrics-window-pixels-8);
+}
+
+.base-node__content-container
+{
+	background-color: var(colors-window-dark-grey-2);
+	padding: var(metrics-window-pixels-8);
+}
+
+.base-node__textfield__hidden > .unity-text-field__input
+{
+	background-color: transparent;
+	border-color: var(colors-window-dark-grey-2)
+}
+
+.base-node__textfield__hidden > .unity-text-field__input:focus
+{
+	background-color: var(colors-window-dark-grey-1);
+	border-color: var(colors-window-dark-grey-2)
+}
+
+.base-node__filename-textfield > .unity-text-field__input
+{
+	max-width: var(metrics-window-pixels-300);
+}
+
+.base-node__filename-textfield > .unity-text-field__input:focus
+{
+	margin: var(metrics-window-pixels-4);
+	padding: var(metrics-window-pixels-4);
+}
+
+Textfield
+{
+	margin-left: 0px;
+	max-width: var(metrics-window-pixels-300);
+}

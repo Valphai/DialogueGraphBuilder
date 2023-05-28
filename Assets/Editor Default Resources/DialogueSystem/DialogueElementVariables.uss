@@ -1,0 +1,5 @@
+ElementVariables 
+{
+	--colors-window-dark-grey-1: #1D1D1E;
+	--colors-window-dark-grey-2: #212325;
+}

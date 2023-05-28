@@ -1,0 +1,27 @@
+{
+    "graphSaveData": {
+        "situationSaveData": []
+    },
+    "treeSaveData": {
+        "treeItemData": [
+            {
+                "rootItem": {
+                    "displayName": "Default Situation"
+                },
+                "children": []
+            },
+            {
+                "rootItem": {
+                    "displayName": "New Variable Group"
+                },
+                "children": []
+            },
+            {
+                "rootItem": {
+                    "displayName": "New Event Group"
+                },
+                "children": []
+            }
+        ]
+    }
+}
