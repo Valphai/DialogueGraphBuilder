@@ -1,9 +1,9 @@
 ﻿using Chocolate4.Editor.Graph.Nodes;
 using UnityEngine;
 
-namespace Chocolate4
+namespace Chocolate4.Assets.Editor.Graph.Nodes
 {
-    public class PlayerOptionNode : BaseNode
+    public class VariableSetterNode : BaseNode
     {
         public override void Initialize(Vector3 startingPosition)
         {

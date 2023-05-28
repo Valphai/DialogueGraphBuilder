@@ -118,9 +118,13 @@ namespace Chocolate4
         private void OnDisable()
         {
             dialogueTreeView.OnSituationSelected -= graphView.DialogueTreeView_OnSituationSelected;
+            StoreData();
+        }
 
+        private void StoreData()
+        {
             TreeSaveData treeSaveData = dialogueTreeView.Save();
-            GraphSaveData graphSaveData = graphView.SaveGraph();
+            GraphSaveData graphSaveData = graphView.Save();
             dialogueAssetManager.Store(graphSaveData, treeSaveData);
         }
 
@@ -202,7 +206,8 @@ namespace Chocolate4
         private void SaveButton_clicked()
         {
             TreeSaveData treeData = dialogueTreeView.Save();
-            dialogueAssetManager.Save(null, treeData);
+            GraphSaveData graphData = graphView.Save();
+            dialogueAssetManager.Save(graphData, treeData);
         }
 
         private void AddListView()

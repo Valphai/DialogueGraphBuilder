@@ -1,3 +1,5 @@
+using Chocolate4.Editor.Graph.Nodes;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -5,7 +7,6 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4
 {
-    [System.Serializable]
     public abstract class BaseNode : Node
     {
         private const string ExtensionContainerUSS = "base-node__extension-container";
@@ -13,12 +14,15 @@ namespace Chocolate4
         private const string FilenameTextFieldUSS = "base-node__filename-textfield";
         private const string TextFieldHiddenUSS = "base-node__textfield__hidden";
 
+        public string ID { get; set; }
         public string Name { get; set; }
         public List<string> Choices { get; set; }
         public string Text { get; set; }
+        public NodeTypes NodeType { get; set; }
 
         public virtual void Initialize(Vector3 startingPosition)
         {
+            ID = Guid.NewGuid().ToString();
             Name = "Dialogue name";
             Choices = new List<string>();
             Text = string.Empty;

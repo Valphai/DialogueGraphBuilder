@@ -1,4 +1,5 @@
-﻿using UnityEditor.Experimental.GraphView;
+﻿using Chocolate4.Editor.Graph.Nodes;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Chocolate4
@@ -8,6 +9,8 @@ namespace Chocolate4
         public override void Initialize(Vector3 startingPosition)
         {
             base.Initialize(startingPosition);
+
+            NodeType = NodeTypes.LogicNode;
 
             Choices.Add("True");
             Choices.Add("False");

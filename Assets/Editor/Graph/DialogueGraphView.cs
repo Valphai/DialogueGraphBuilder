@@ -15,7 +15,7 @@ namespace Chocolate4
     {
         public const string DefaultGroupName = "Dialogue Group";
 
-        private string activeSituationGuid;
+        private string activeSituationGuid = string.Empty;
         private List<SituationSaveData> situationToData = new List<SituationSaveData>();
 
         public void Initialize()
@@ -44,14 +44,33 @@ namespace Chocolate4
 
         public GraphSaveData Save()
         {
-            return new GraphSaveData()
-            {
-                situationSaveData = situationToData
-            };
+            CacheActiveSituation();
+            return StructureSaver.SaveGraph(situationToData);
         }
 
-        public void Rebuild(GraphSaveData saveData)
+        public void Rebuild(GraphSaveData graphSaveData)
         {
+            //return;
+            if (graphSaveData.situationSaveData.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            foreach (SituationSaveData situationSaveData in graphSaveData.situationSaveData)
+            {
+                situationToData.Add(situationSaveData);
+            }
+
+            SituationSaveData situationData = graphSaveData.situationSaveData.Find(
+                data => data.situationGuid.Equals(activeSituationGuid)
+            );
+
+            if (situationData == null)
+            {
+                return;
+            }
+
+            RebuildGraph(situationData);
         }
 
         public void DialogueTreeView_OnSituationSelected(string newSituationGuid)
@@ -72,20 +91,6 @@ namespace Chocolate4
             RebuildGraph(situationSaveData);
         }
 
-        public void LoadGraph(GraphSaveData graphSaveData)
-        {
-            if (graphSaveData.situationSaveData.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            foreach (SituationSaveData situationSaveData in graphSaveData.situationSaveData)
-            {
-                situationToData.Add(situationSaveData);
-            }
-
-            RebuildGraph(graphSaveData);
-        }
 
         private SituationSaveData SaveActiveSituation()
         {
@@ -127,25 +132,6 @@ namespace Chocolate4
             });
 
             return nodeToOtherNodes;
-        }
-
-        private void RebuildGraph(GraphSaveData graphSaveData)
-        {
-            SituationSaveData situationData = graphSaveData.situationSaveData.Find(
-                situationData => situationData.situationGuid.Equals(activeSituationGuid)
-            );
-            
-            RebuildGraph(situationData);
-        }
-
-        private void RebuildGraph(string situationGuid)
-        {
-            if(!IsCached(situationGuid, out SituationSaveData cachedSaveData))
-            {
-                return;
-            }
-
-            RebuildGraph(cachedSaveData);
         }
 
         private void RebuildGraph(SituationSaveData situationData)

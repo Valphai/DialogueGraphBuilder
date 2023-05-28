@@ -7,8 +7,8 @@ namespace Chocolate4
     public class DialogueTreeItem
     {
         public string displayName;
-        public readonly string guid;
-        public readonly string prefix; // TODO: make an icon for this
+        public string guid;
+        public string prefix; // TODO: make an icon for this
         public readonly Func<DialogueTreeItem, VisualElement> makeItem;
 
         public DialogueTreeItem(string name, string prefix, Func<DialogueTreeItem, VisualElement> makeItem)

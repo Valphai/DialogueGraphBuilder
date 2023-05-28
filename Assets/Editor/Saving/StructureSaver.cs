@@ -7,6 +7,14 @@ namespace Chocolate4.Editor.Saving
 {
     internal class StructureSaver
     {
+        public static GraphSaveData SaveGraph(List<SituationSaveData> situationToData)
+        {
+            return new GraphSaveData()
+            {
+                situationSaveData = situationToData
+            };
+        }
+
         public static SituationSaveData SaveSituation(
             string situationGuid, Dictionary<BaseNode, List<BaseNode>> nodeToOtherNodes
         )

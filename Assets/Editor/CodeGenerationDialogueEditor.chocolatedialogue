@@ -1,30 +1,49 @@
 {
     "graphSaveData": {
-        "situationSaveData": []
+        "situationSaveData": [
+            {
+                "situationGuid": "",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "1",
+                "nodeData": [
+                    {}
+                ]
+            }
+        ]
     },
     "treeSaveData": {
         "treeItemData": [
             {
                 "rootItem": {
-                    "displayName": "Default Situation"
+                    "displayName": "Default Situation",
+                    "guid": "1",
+                    "prefix": "S"
                 },
                 "children": []
             },
             {
                 "rootItem": {
-                    "displayName": "New Variable Group"
+                    "displayName": "New Variable Group",
+                    "guid": "2",
+                    "prefix": "VG"
                 },
                 "children": []
             },
             {
                 "rootItem": {
-                    "displayName": "New Event Group"
+                    "displayName": "New Event Group",
+                    "guid": "3",
+                    "prefix": "EG"
                 },
                 "children": []
             },
             {
                 "rootItem": {
-                    "displayName": "New Situation"
+                    "displayName": "New Situation",
+                    "guid": "4",
+                    "prefix": "S"
                 },
                 "children": []
             }

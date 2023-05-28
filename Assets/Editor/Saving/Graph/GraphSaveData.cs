@@ -10,10 +10,5 @@ namespace Chocolate4.Saving
         public GraphSaveData()
         {
         }
-
-        public GraphSaveData(string situationGuid, List<NodeSaveData> nodeData)
-        {
-            situationSaveData.Add(new SituationSaveData(situationGuid, nodeData));
-        }
     }
 }

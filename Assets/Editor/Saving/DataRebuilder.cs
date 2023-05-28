@@ -17,8 +17,7 @@ namespace Chocolate4.Editor
         internal void Rebuild(DialogueTreeView treeView, DialogueGraphView graphView)
         {
             treeView.Rebuild(dataContainer.TreeData);
-            graphView.LoadGraph(dataContainer.GraphData);
-            //graphView.Rebuild(dataContainer.GraphData);
+            graphView.Rebuild(dataContainer.GraphData);
         }
 
         internal void Store(GraphSaveData graphData, TreeSaveData treeData)
