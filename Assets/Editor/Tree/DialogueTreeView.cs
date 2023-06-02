@@ -7,15 +7,13 @@ using System.Linq;
 using Chocolate4.Saving;
 using Chocolate4.Editor.Saving;
 using Chocolate4.Editor;
+using Chocolate4.Editor.Tree.Utilities;
 
 namespace Chocolate4.Tree
 {
     [Serializable]
     public class DialogueTreeView : IRebuildable<TreeSaveData>
     {
-        private const int TreeViewSelectionRestoreDelay = 1;
-        private const int TreeViewInitialSelectionDelay = 2;
-
         public TreeView TreeView { get; private set; }
 
         public event Action<string> OnSituationSelected;
@@ -40,7 +38,9 @@ namespace Chocolate4.Tree
             for (int i = 0; i < rootElementCount; i++)
             {
                 items.Add(
-                    new TreeViewItemData<DialogueTreeItem>(i, rootElements.ElementAt(i), GetChildren(treeSaveData.treeItemData[i], rootElementCount + 1))
+                    new TreeViewItemData<DialogueTreeItem>(i, rootElements.ElementAt(i), 
+                        TreeUtilities.GetChildren(treeSaveData.treeItemData[i], rootElementCount + 1)
+                    )
                 );
             }
             TreeView.SetRootItems(items);
@@ -51,25 +51,6 @@ namespace Chocolate4.Tree
         public TreeSaveData Save()
         {
             return StructureSaver.SaveTree(TreeView);
-        }
-
-        private static List<TreeViewItemData<DialogueTreeItem>> GetChildren(TreeItemSaveData treeItemSaveData, int nextId)
-        {
-            if (treeItemSaveData.children == null)
-            {
-                return null;
-            }
-
-            int count = treeItemSaveData.children.Count;
-            var children = new List<TreeViewItemData<DialogueTreeItem>>();
-            int childStartingId = nextId + count;
-            for (int i = 0; i < count; i++)
-            {
-                var child = treeItemSaveData.children[i];
-                children.Add(new TreeViewItemData<DialogueTreeItem>(nextId + i, treeItemSaveData.rootItem, GetChildren(child, childStartingId)));
-            }
-
-            return children;
         }
 
         public void RemoveTreeItem(DialogueTreeItem item, int id)
@@ -178,11 +159,16 @@ namespace Chocolate4.Tree
 
             TreeView.makeItem = MakeTreeViewItem;
             TreeView.bindItem = BindTreeViewItem;
+            //TreeView.unbindItem = UnbindTreeViewItem;
             TreeView.selectedIndicesChanged += OnSelectionChanged;
 
             TreeView.Rebuild();
-            ForceRefresh(TreeView, OnSelectionChanged);
+            TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
         }
+
+        //private void UnbindTreeViewItem(VisualElement element, int index)
+        //{
+        //}
 
         private void OnSelectionChanged(IEnumerable<int> selectedIndices)
         {
@@ -195,23 +181,6 @@ namespace Chocolate4.Tree
             {
                 OnSituationSelected?.Invoke(sampleItem.guid);
             }
-        }
-
-        private static void ForceRefresh(TreeView treeView, Action<IEnumerable<int>> onSelectionChanged)
-        {
-            // Force TreeView to call onSelectionChanged when it restores its own selection from view data.
-            treeView.schedule.Execute(() => {
-                onSelectionChanged(treeView.selectedIndices);
-            }).StartingIn(TreeViewSelectionRestoreDelay);
-
-            // Force TreeView to select something if nothing is selected.
-            treeView.schedule.Execute(() => {
-                if (treeView.selectedItems.Count() > 0)
-                    return;
-
-                treeView.SetSelection(0);
-
-            }).StartingIn(TreeViewInitialSelectionDelay);
         }
 
         public void GraphView_OnSituationCached(string situationGuid)
