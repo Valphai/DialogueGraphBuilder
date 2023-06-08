@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace Chocolate4
 {
-    [ScriptedImporter(kVersion, Extension)]
+    [ScriptedImporter(Version, Extension)]
     public class DialogueImporter : ScriptedImporter
     {
-        private const int kVersion = 1;
+        public const string AssetIcon = "Icons/Kok.png";
         public const string Extension = "chocolatedialogue";
-        private const string kAssetIcon = "Kok.png";
+        private const int Version = 1;
 
         public override void OnImportAsset(AssetImportContext ctx)
         {
@@ -48,7 +48,7 @@ namespace Chocolate4
             // as the 'name' property in JSON.
             asset.name = Path.GetFileNameWithoutExtension(assetPath);
 
-            var assetIcon = (Texture2D)EditorGUIUtility.Load(kAssetIcon);
+            var assetIcon = (Texture2D)EditorGUIUtility.Load(AssetIcon);
             
             // Add asset.
             ctx.AddObjectToAsset("<root>", asset, assetIcon);

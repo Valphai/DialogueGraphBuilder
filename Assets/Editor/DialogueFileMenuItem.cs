@@ -1,11 +1,13 @@
-using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEngine;
 
 namespace Chocolate4.CodeGeneration
 {
     public static class DialogueFileMenuItem
     {
+        private const string FileName = "DialogueEditor";
+
         [MenuItem("Assets/Create/DialogueEditor")]
         public static void MakeDialogueEditorFile()
         {
@@ -15,45 +17,21 @@ namespace Chocolate4.CodeGeneration
 
             writer.Write("\"graphSaveData\": ");
             writer.BeginBlock();
-            writer.Write("\"situationSaveData\": []");
+            writer.WriteLine("\"situationSaveData\": []");
             writer.EndBlock(",");
 
             writer.Write("\"treeSaveData\": ");
             writer.BeginBlock();
-            writer.WriteLine("\"treeItemData\": [");
-            writer.BeginBlock();
-
-            writer.Write("\"rootItem\": ");
-            writer.BeginBlock();
-            writer.WriteLine("\"displayName\": \"Default Situation\"");
-            writer.EndBlock(",");
-            writer.WriteLine("\"children\": []");
-            writer.EndBlock(",");
-            writer.BeginBlock();
-
-            writer.Write("\"rootItem\": ");
-            writer.BeginBlock();
-            writer.WriteLine("\"displayName\": \"Default Situation\"");
-            writer.EndBlock(",");
-            writer.WriteLine("\"children\": []");
-            writer.EndBlock(",");
-            writer.BeginBlock();
-
-            writer.Write("\"rootItem\": ");
-            writer.BeginBlock();
-            writer.WriteLine("\"displayName\": \"Default Situation\"");
-            writer.EndBlock(",");
-            writer.WriteLine("\"children\": []");
-            writer.EndBlock();
-
-            writer.WriteLine("]");
+            writer.WriteLine("\"treeItemData\": []");
             writer.EndBlock();
 
             writer.EndBlock();
 
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject) + "DialogueEditor.json";
-            File.WriteAllText(path, writer.buffer.ToString());
-            //AssetDatabase.ImportAsset(path);
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject) + "/" + FileName + "." + DialogueImporter.Extension;
+
+            ProjectWindowUtil.CreateAssetWithContent(path, writer.buffer.ToString(), (Texture2D)EditorGUIUtility.Load(DialogueImporter.AssetIcon));
+
+            AssetDatabase.Refresh();
         }
     }
 }
