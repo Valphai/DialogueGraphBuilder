@@ -16,12 +16,5 @@ namespace Chocolate4.Saving
             this.nodeData = nodeData;
             //this.groupData = groupData;
         }
-        
-        public SituationSaveData(SituationSaveData otherSituationSaveData)
-        {
-            situationGuid = otherSituationSaveData.situationGuid;
-            nodeData = otherSituationSaveData.nodeData;
-            //groupData = otherSituationSaveData.groupData;
-        }
     }
 }

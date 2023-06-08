@@ -119,7 +119,7 @@ namespace Chocolate4
         {
             dialogueTreeView.OnSituationSelected -= graphView.DialogueTreeView_OnSituationSelected;
             dialogueTreeView.OnTreeItemRemoved -= graphView.DialogueTreeView_OnTreeItemRemoved;
-            graphView.OnSituationCached -= dialogueTreeView.GraphView_OnSituationCached;
+            graphView.SituationCache.OnSituationCached -= dialogueTreeView.GraphView_OnSituationCached;
 
             StoreData();
         }
@@ -159,7 +159,7 @@ namespace Chocolate4
             dialogueTreeView.OnSituationSelected += graphView.DialogueTreeView_OnSituationSelected;
             dialogueTreeView.OnTreeItemRemoved += graphView.DialogueTreeView_OnTreeItemRemoved;
 
-            graphView.OnSituationCached += dialogueTreeView.GraphView_OnSituationCached;
+            graphView.SituationCache.OnSituationCached += dialogueTreeView.GraphView_OnSituationCached;
         }
 
         private void Rebuild()
@@ -229,9 +229,13 @@ namespace Chocolate4
             VisualElement buttonsContainer = new VisualElement().WithStyle(ContainerStyle);
 
             buttonsContainer.WithButton(TreeGroupsExtensions.SituationString).WithOnClick(
-                () => dialogueTreeView.AddTreeItem(
-                    TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Group
-                )
+                () => {
+                    DialogueTreeItem item = dialogueTreeView.AddTreeItem(
+                        TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Group
+                    );
+
+                    graphView.SituationCache.TryCache(new SituationSaveData(item.guid, null));
+                }
             );
 
             buttonsContainer.WithButton(TreeGroupsExtensions.VariableGroupString).WithOnClick(

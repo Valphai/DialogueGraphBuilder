@@ -16,13 +16,14 @@ namespace Chocolate4
     {
         public const string DefaultGroupName = "Dialogue Group";
 
-        private string activeSituationGuid = "1";
-        private List<SituationSaveData> situationToData;
+        private string activeSituationGuid = string.Empty;
 
-        public event Action<string> OnSituationCached;
+        internal SituationCache SituationCache { get; private set; }
 
         public void Initialize()
         {
+            SituationCache = new SituationCache(null);
+
             AddManipulators();
             AddGridBackground();
 
@@ -48,7 +49,7 @@ namespace Chocolate4
         public GraphSaveData Save()
         {
             CacheActiveSituation();
-            return StructureSaver.SaveGraph(situationToData);
+            return StructureSaver.SaveGraph(SituationCache.SituationToData.ToList());
         }
 
         public void Rebuild(GraphSaveData graphSaveData)
@@ -58,11 +59,7 @@ namespace Chocolate4
                 return;
             }
 
-            situationToData = new List<SituationSaveData>();
-            foreach (SituationSaveData situationSaveData in graphSaveData.situationSaveData)
-            {
-                situationToData.Add(new SituationSaveData(situationSaveData));
-            }
+            SituationCache = new SituationCache(graphSaveData.situationSaveData);
 
             SituationSaveData situationData = graphSaveData.situationSaveData.Find(
                 data => data.situationGuid.Equals(activeSituationGuid)
@@ -78,64 +75,49 @@ namespace Chocolate4
 
         internal void DialogueTreeView_OnSituationSelected(string newSituationGuid)
         {
-            CacheActiveSituation();
-
-            activeSituationGuid = newSituationGuid;
-            SituationSaveData situationSaveData = situationToData.Find(
-                situation => situation.situationGuid == newSituationGuid
-            );
-
-            if (situationSaveData == null)
+            if (!activeSituationGuid.Equals(string.Empty))
             {
-                return;
+                CacheActiveSituation(); 
             }
 
-            RebuildGraph(situationSaveData);
+            activeSituationGuid = newSituationGuid;
+
+            if (SituationCache.IsCached(newSituationGuid, out SituationSaveData situationSaveData))
+            {
+                RebuildGraph(situationSaveData);
+            }
         }
 
         internal void DialogueTreeView_OnTreeItemRemoved(string treeItemGuid)
         {
-            if (!IsCached(treeItemGuid, out SituationSaveData cachedSituationSaveData))
+            if (!SituationCache.IsCached(treeItemGuid, out SituationSaveData cachedSituationSaveData))
             {
                 return;
             }
 
-            situationToData.Remove(cachedSituationSaveData);
-        }
-
-        private SituationSaveData SaveActiveSituation()
-        {
-            return StructureSaver.SaveSituation(activeSituationGuid, graphElements);
-        }
-
-        private bool IsCached(string situationGuid, out SituationSaveData cachedSaveData)
-        {
-            cachedSaveData = situationToData.Find(
-                situation => situation.situationGuid == situationGuid
-            );
-
-            return cachedSaveData != null;
+            if (!SituationCache.TryRemove(cachedSituationSaveData))
+            {
+                Debug.LogError($"Situation {cachedSituationSaveData.situationGuid} could not be removed.");
+                return;
+            }
         }
 
         private void CacheActiveSituation()
         {
-            SituationSaveData situationSaveData = SaveActiveSituation();
+            SituationSaveData situationSaveData = 
+                StructureSaver.SaveSituation(activeSituationGuid, graphElements);
 
-            if (!IsCached(situationSaveData.situationGuid, out SituationSaveData cachedSituationSaveData))
-            {
-                situationToData.Add(situationSaveData);
-
-                OnSituationCached?.Invoke(situationSaveData.situationGuid);
-                return;
-            }
-
-            int cachedIndex = situationToData.IndexOf(cachedSituationSaveData);
-            situationToData[cachedIndex] = situationSaveData;
+            SituationCache.TryCache(situationSaveData);
         }
 
         private void RebuildGraph(SituationSaveData situationData)
         {
             DeleteElements(graphElements);
+
+            if (situationData.nodeData == null)
+            {
+                return;
+            }
 
             List<BaseNode> nodes = new List<BaseNode>();
             IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();

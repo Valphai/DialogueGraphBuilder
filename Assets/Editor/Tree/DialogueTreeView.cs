@@ -8,6 +8,7 @@ using Chocolate4.Saving;
 using Chocolate4.Editor.Saving;
 using Chocolate4.Editor;
 using Chocolate4.Editor.Tree.Utilities;
+using UnityEditor;
 
 namespace Chocolate4.Tree
 {
@@ -53,8 +54,11 @@ namespace Chocolate4.Tree
             return StructureSaver.SaveTree(TreeView);
         }
 
-        public void RemoveTreeItem(DialogueTreeItem item, int id)
+        public void RemoveTreeItem(DialogueTreeItem item, int index)
         {
+            TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
+
+            int id = TreeView.GetIdForIndex(index);
             if (!TreeView.TryRemoveItem(id))
             {
                 return;
@@ -63,8 +67,10 @@ namespace Chocolate4.Tree
             OnTreeItemRemoved?.Invoke(item.guid);
         }
 
-        public void AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int groupID = -1, string guidOverride = "")
+        public DialogueTreeItem AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int index = -1, string guidOverride = "")
         {
+            int groupID = TreeView.GetIdForIndex(index);
+
             DialogueTreeItem treeItem = new DialogueTreeItem(defaultName, treeGroup.GetString(elementType), _ => new VisualElement());
             AddItemToGroup(treeItem, groupID);
 
@@ -72,22 +78,25 @@ namespace Chocolate4.Tree
             {
                 treeItem.guid = guidOverride;
             }
+
+            return treeItem;
         }
 
         private void AddItemToGroup(DialogueTreeItem treeItem, int groupID)
         {
-            int treeItemCount = TreeView.GetTreeCount();
-            int parentId = treeItemCount + 1;
+            int parentId = GUID.Generate().GetHashCode();
             TreeView.AddItem(
                 new TreeViewItemData<DialogueTreeItem>(parentId, treeItem), groupID
             );
 
-            TreeView.Rebuild();
+            TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
         }
 
         private void BindTreeViewItem(VisualElement element, int index)
         {
             DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
+
+
             VisualElement visualElement = element.ElementAt(0);
             VisualElement displayNameLabel = element.ElementAt(1);
 
@@ -95,48 +104,33 @@ namespace Chocolate4.Tree
             Label renamableLabel = displayNameLabel as Label;
             renamableLabel.text = item.displayName;
 
-            int groupID = TreeView.GetIdForIndex(index);
-
             element.AddContextualMenu("Rename", _ => 
                 VisualElementBuilder.Rename(renamableLabel, finishedText => {
                     item.displayName = finishedText;
                 })
             );
             
-            element.AddContextualMenu("Remove", _ => RemoveTreeItem(item, groupID));
+            element.AddContextualMenu("Remove", _ => RemoveTreeItem(item, index));
 
-
-            switch (item.prefix)
-            {
-                case TreeGroupsExtensions.SituationString:
-                    element.AddContextualMenu("Add Situation", _ => AddTreeItem(
-                        TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Item, groupID)
-                    );
+            element.AddContextualMenu("Add Situation", _ => AddTreeItem(
+                TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Item, index)
+            );
                     
-                    break;
+            element.AddContextualMenu("Add Variable", _ => AddTreeItem(
+                TreeGroupsExtensions.DefaultVariableName, TreeGroups.Variable, TreeItemType.Item, index)
+            );
 
-                case TreeGroupsExtensions.VariableGroupString:
-                    element.AddContextualMenu("Add Variable", _ => AddTreeItem(
-                        TreeGroupsExtensions.DefaultVariableName, TreeGroups.Variable, TreeItemType.Item, groupID)
-                    );
+            element.AddContextualMenu("Add Variable Group", _ => AddTreeItem(
+                TreeGroupsExtensions.DefaultVariableGroupName, TreeGroups.Variable, TreeItemType.Group, index)
+            );
 
-                    element.AddContextualMenu("Add Variable Group", _ => AddTreeItem(
-                        TreeGroupsExtensions.DefaultVariableGroupName, TreeGroups.Variable, TreeItemType.Group, groupID)
-                    );
-                    break;
+            element.AddContextualMenu("Add Event", _ => AddTreeItem(
+                TreeGroupsExtensions.DefaultEventName, TreeGroups.Event, TreeItemType.Item, index)
+            );
 
-                case TreeGroupsExtensions.EventGroupString:
-                    element.AddContextualMenu("Add Event", _ => AddTreeItem(
-                        TreeGroupsExtensions.DefaultEventName, TreeGroups.Event, TreeItemType.Item, groupID)
-                    );
-
-                    element.AddContextualMenu("Add Event Group", _ => AddTreeItem(
-                        TreeGroupsExtensions.DefaultEventGroupName, TreeGroups.Event, TreeItemType.Group, groupID)
-                    );
-                    break;
-                default:
-                    break;
-            }
+            element.AddContextualMenu("Add Event Group", _ => AddTreeItem(
+                TreeGroupsExtensions.DefaultEventGroupName, TreeGroups.Event, TreeItemType.Group, index)
+            );
         }
 
         private VisualElement MakeTreeViewItem()
@@ -159,16 +153,10 @@ namespace Chocolate4.Tree
 
             TreeView.makeItem = MakeTreeViewItem;
             TreeView.bindItem = BindTreeViewItem;
-            //TreeView.unbindItem = UnbindTreeViewItem;
             TreeView.selectedIndicesChanged += OnSelectionChanged;
 
-            TreeView.Rebuild();
             TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
         }
-
-        //private void UnbindTreeViewItem(VisualElement element, int index)
-        //{
-        //}
 
         private void OnSelectionChanged(IEnumerable<int> selectedIndices)
         {
@@ -176,6 +164,11 @@ namespace Chocolate4.Tree
                 return;
 
             DialogueTreeItem sampleItem = TreeView.GetItemDataForIndex<DialogueTreeItem>(selectedIndices.First());
+
+            if (sampleItem == null)
+            {
+                return;
+            }
 
             if (sampleItem.prefix == TreeGroups.Situation.GetString(TreeItemType.Group))
             {
