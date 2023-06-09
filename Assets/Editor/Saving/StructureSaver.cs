@@ -1,13 +1,14 @@
-﻿using Chocolate4.Editor.Graph.Utilities;
-using Chocolate4.Saving;
-using System;
+﻿using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Edit.Tree;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Graph.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 
-namespace Chocolate4.Editor.Saving
+namespace Chocolate4.Dialogue.Edit.Saving
 {
     public class StructureSaver
     {
@@ -49,7 +50,15 @@ namespace Chocolate4.Editor.Saving
                     });
                 }
 
-                return new NodeSaveData(node);
+                return new NodeSaveData()
+                {
+                    inputIDs = node.InputIDs,
+                    nodeID = node.ID,
+                    nodeType = node.NodeType.ToString(),
+                    text = node.Text,
+                    position = node.GetPosition().position,
+                    groupID = node.GroupID,
+                };
             }
         }
 

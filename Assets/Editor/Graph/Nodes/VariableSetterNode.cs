@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Chocolate4.Assets.Editor.Graph.Nodes
+﻿namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class VariableSetterNode : BaseNode
     {

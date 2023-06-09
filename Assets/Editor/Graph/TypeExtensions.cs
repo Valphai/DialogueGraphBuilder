@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chocolate4
+namespace Chocolate4.Edit.Graph
 {
     public static class TypeExtensions
     {

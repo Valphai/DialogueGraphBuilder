@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine.UIElements;
 
-namespace Chocolate4
+namespace Chocolate4.Dialogue.Edit.Tree
 {
     [Serializable]
     public class DialogueTreeItem
@@ -9,14 +8,12 @@ namespace Chocolate4
         public string displayName;
         public string guid;
         public string prefix; // TODO: make an icon for this
-        public readonly Func<DialogueTreeItem, VisualElement> makeItem;
 
-        public DialogueTreeItem(string name, string prefix, Func<DialogueTreeItem, VisualElement> makeItem)
+        public DialogueTreeItem(string name, string prefix)
         {
             guid = Guid.NewGuid().ToString();
             displayName = name;
             this.prefix = prefix;
-            this.makeItem = makeItem;
         }
     }
 }

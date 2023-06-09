@@ -1,7 +1,6 @@
-﻿using Chocolate4.Editor;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Chocolate4.Saving
+namespace Chocolate4.Dialogue.Runtime.Saving
 {
     [System.Serializable]
     public class TreeSaveData

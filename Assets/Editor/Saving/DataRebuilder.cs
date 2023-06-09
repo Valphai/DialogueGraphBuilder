@@ -1,8 +1,8 @@
-﻿using Chocolate4.Editor.Saving;
-using Chocolate4.Saving;
-using Chocolate4.Tree;
+﻿using Chocolate4.Dialogue.Edit.Tree;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Graph;
 
-namespace Chocolate4.Editor
+namespace Chocolate4.Dialogue.Edit.Saving
 {
     [System.Serializable]
     internal class DataRebuilder

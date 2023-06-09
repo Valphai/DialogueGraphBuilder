@@ -1,10 +1,11 @@
+using Chocolate4.Dialogue.Runtime.Asset;
 using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
-namespace Chocolate4
+namespace Chocolate4.Dialogue.Edit.Asset
 {
     [ScriptedImporter(Version, Extension)]
     public class DialogueImporter : ScriptedImporter

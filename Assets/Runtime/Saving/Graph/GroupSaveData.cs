@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Chocolate4.Saving
+namespace Chocolate4.Dialogue.Runtime.Saving
 {
     [System.Serializable]
     public class GroupSaveData

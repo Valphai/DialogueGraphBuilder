@@ -1,0 +1,14 @@
+{
+    "name": "Chocolate4.Dialogue.Runtime",
+    "rootNamespace": "Chocolate4.Dialogue.Runtime",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

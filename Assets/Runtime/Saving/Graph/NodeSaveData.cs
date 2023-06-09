@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Chocolate4.Saving
+namespace Chocolate4.Dialogue.Runtime.Saving
 {
     [Serializable]
     public class NodeSaveData
@@ -13,15 +13,5 @@ namespace Chocolate4.Saving
         public string text;
         public Vector2 position;
         public string groupID;
-
-        public NodeSaveData(BaseNode node)
-        {
-            inputIDs = node.InputIDs;
-            nodeID = node.ID;
-            nodeType = node.NodeType.ToString();
-            text = node.Text;
-            position = node.GetPosition().position;
-            groupID = node.GroupID;
-        }
     }
 }

@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 
-namespace Chocolate4.Editor.Graph.Utilities
+namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class NodeUtilities
     {

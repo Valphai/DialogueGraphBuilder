@@ -1,16 +1,14 @@
-﻿using static Chocolate4.DialogueEditorWindow;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 using UnityEngine.UIElements;
 using Chocolate4.Utilities;
 using System.Linq;
-using Chocolate4.Saving;
-using Chocolate4.Editor.Saving;
-using Chocolate4.Editor;
-using Chocolate4.Editor.Tree.Utilities;
 using UnityEditor;
+using Chocolate4.Dialogue.Edit.Saving;
+using Chocolate4.Dialogue.Edit.Tree.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
 
-namespace Chocolate4.Tree
+namespace Chocolate4.Dialogue.Edit.Tree
 {
     [Serializable]
     public class DialogueTreeView : IRebuildable<TreeSaveData>
@@ -77,7 +75,7 @@ namespace Chocolate4.Tree
         {
             int groupID = TreeView.GetIdForIndex(index);
 
-            DialogueTreeItem treeItem = new DialogueTreeItem(defaultName, treeGroup.GetString(elementType), _ => new VisualElement());
+            DialogueTreeItem treeItem = new DialogueTreeItem(defaultName, treeGroup.GetString(elementType));
             AddItemToGroup(treeItem, groupID);
 
             if (!guidOverride.Equals(string.Empty))
@@ -143,7 +141,7 @@ namespace Chocolate4.Tree
         private VisualElement MakeTreeViewItem()
         {
             VisualElement box = new VisualElement();
-            box.AddToClassList(ContainerStyle);
+            box.AddToClassList(DialogueEditorWindow.ContainerStyle);
 
             Label label = new Label();
             Label textLabel = new Label();

@@ -1,6 +1,7 @@
-using Chocolate4.Editor;
-using Chocolate4.Editor.Saving;
-using Chocolate4.Saving;
+using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Edit.Saving;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Graph.Utilities;
 using Chocolate4.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Chocolate4
+namespace Chocolate4.Edit.Graph
 {
     public class DialogueGraphView : GraphView, IRebuildable<GraphSaveData>
     {

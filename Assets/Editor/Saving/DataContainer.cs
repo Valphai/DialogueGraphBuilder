@@ -1,7 +1,7 @@
-﻿using Chocolate4.Saving;
+﻿using Chocolate4.Dialogue.Runtime.Saving;
 using UnityEngine;
 
-namespace Chocolate4.Editor.Saving
+namespace Chocolate4.Dialogue.Edit.Saving
 {
     [System.Serializable]
     internal class DataContainer

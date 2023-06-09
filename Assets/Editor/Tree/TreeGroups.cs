@@ -1,4 +1,4 @@
-﻿namespace Chocolate4.Tree
+﻿namespace Chocolate4.Dialogue.Edit.Tree
 {
     public enum TreeGroups
     {

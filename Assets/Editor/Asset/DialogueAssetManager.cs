@@ -1,11 +1,13 @@
-﻿using Chocolate4.Editor;
-using Chocolate4.Saving;
-using Chocolate4.Tree;
+﻿using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Edit.Tree;
+using Chocolate4.Edit.Graph;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using Chocolate4.Dialogue.Edit.Saving;
+using Chocolate4.Dialogue.Runtime.Asset;
 
-namespace Chocolate4
+namespace Chocolate4.Dialogue.Edit.Asset
 {
     [System.Serializable]
     public class DialogueAssetManager

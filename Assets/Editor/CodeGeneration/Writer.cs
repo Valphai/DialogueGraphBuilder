@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Chocolate4.CodeGeneration
+namespace Chocolate4.Dialogue.Edit.CodeGeneration
 {
     internal struct Writer
     {

@@ -1,4 +1,4 @@
-﻿namespace Chocolate4.Editor
+﻿namespace Chocolate4.Dialogue.Edit.Saving
 {
     internal interface IRebuildable<T>
     {

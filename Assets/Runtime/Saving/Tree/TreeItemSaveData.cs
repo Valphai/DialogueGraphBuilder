@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Chocolate4.Dialogue.Edit.Tree;
+using System.Collections.Generic;
 
-namespace Chocolate4.Saving
+namespace Chocolate4.Dialogue.Runtime.Saving
 {
     [System.Serializable]
     public class TreeItemSaveData

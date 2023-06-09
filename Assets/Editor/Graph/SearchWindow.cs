@@ -2,7 +2,7 @@
 //using UnityEditor.Experimental.GraphView;
 //using UnityEngine;
 
-//namespace Chocolate4
+//namespace Chocolate4.Edit.Graph
 //{
 //    public class SearchWindow : ScriptableObject, ISearchWindowProvider
 //    {

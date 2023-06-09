@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine.UIElements;
-using Chocolate4.Saving;
+using Chocolate4.Dialogue.Runtime.Saving;
 
-namespace Chocolate4.Editor.Tree.Utilities
+namespace Chocolate4.Dialogue.Edit.Tree.Utilities
 {
     public static class TreeUtilities
     {

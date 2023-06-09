@@ -1,8 +1,9 @@
+using Chocolate4.Dialogue.Edit.Asset;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace Chocolate4.CodeGeneration
+namespace Chocolate4.Dialogue.Edit.CodeGeneration
 {
     public static class DialogueFileMenuItem
     {

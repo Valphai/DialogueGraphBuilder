@@ -20,6 +20,26 @@
             {
                 "situationGuid": "c28c8000-2c57-4cdc-b199-27360eff1937",
                 "nodeData": []
+            },
+            {
+                "situationGuid": "4e6e3e6f-9425-44ad-b098-cf0ae46bf360",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "13ba803a-6953-45d2-81f5-1a906166d90f",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "06f8fee7-9af6-43cb-8b87-ff865c108b2c",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "62b7fa94-1e57-4f44-b862-13365a2e84fa",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "99f78150-99b3-4c13-9514-72f04a9437b8",
+                "nodeData": []
             }
         ]
     },
@@ -42,6 +62,69 @@
                 "rootItem": {
                     "displayName": "New Situation",
                     "guid": "c28c8000-2c57-4cdc-b199-27360eff1937",
+                    "prefix": "S"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "4e6e3e6f-9425-44ad-b098-cf0ae46bf360",
+                    "prefix": "S"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "13ba803a-6953-45d2-81f5-1a906166d90f",
+                    "prefix": "S"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Variable Group",
+                    "guid": "a7ad3fe0-4c12-4992-8775-b868d480eb59",
+                    "prefix": "VG"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Event Group",
+                    "guid": "343957a4-0b57-4058-aa67-b0dec3424257",
+                    "prefix": "EG"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "06f8fee7-9af6-43cb-8b87-ff865c108b2c",
+                    "prefix": "S"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "62b7fa94-1e57-4f44-b862-13365a2e84fa",
+                    "prefix": "S"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "99f78150-99b3-4c13-9514-72f04a9437b8",
                     "prefix": "S"
                 },
                 "childrenGuids": []
