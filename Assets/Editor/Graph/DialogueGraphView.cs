@@ -166,10 +166,10 @@ namespace Chocolate4
         {
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
-            VisualElementExtensions.AddManipulator(this, new ContentDragger());
-            VisualElementExtensions.AddManipulator(this, new SelectionDragger());
-            VisualElementExtensions.AddManipulator(this, new RectangleSelector());
-            VisualElementExtensions.AddManipulator(this, VisualElementBuilder.CreateContextualMenuManipulator($"Add Group",
+            this.AddManipulator(new ContentDragger());
+            this.AddManipulator(new SelectionDragger());
+            this.AddManipulator(new RectangleSelector());
+            this.AddManipulator(VisualElementBuilder.CreateContextualMenuManipulator($"Add Group",
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             ));
 

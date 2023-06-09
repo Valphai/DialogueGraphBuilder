@@ -47,6 +47,11 @@ namespace Chocolate4.Tree
             }
             TreeView.SetRootItems(items);
 
+            if (!items.IsNullOrEmpty())
+            {
+                TreeView.SetSelection(0);
+            }
+
             CreateTreeView();
         }
 
@@ -91,6 +96,7 @@ namespace Chocolate4.Tree
             );
 
             TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
+            TreeView.SetSelection(TreeView.viewController.GetIndexForId(parentId));
         }
 
         private void BindTreeViewItem(VisualElement element, int index)

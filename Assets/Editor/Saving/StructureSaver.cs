@@ -11,18 +11,6 @@ namespace Chocolate4.Editor.Saving
 {
     public class StructureSaver
     {
-        private struct NodeDepthContainer
-        {
-            public readonly int depth;
-            public readonly IEnumerable<int> children;
-
-            public NodeDepthContainer(int depth, IEnumerable<int> children)
-            {
-                this.depth = depth;
-                this.children = children;
-            }
-        }
-
         public static GraphSaveData SaveGraph(List<SituationSaveData> situationToData)
         {
             return new GraphSaveData()
