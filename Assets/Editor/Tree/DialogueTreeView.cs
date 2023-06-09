@@ -32,15 +32,16 @@ namespace Chocolate4.Tree
 
             var items = new List<TreeViewItemData<DialogueTreeItem>>();
 
-            IEnumerable<DialogueTreeItem> rootElements = 
-                treeSaveData.treeItemData.Select(itemSaveData => itemSaveData.rootItem);
+            IEnumerable<TreeItemSaveData> rootDatas = 
+                treeSaveData.treeItemData.Where(itemSaveData => itemSaveData.depth == 0);
 
-            int rootElementCount = rootElements.Count();
+            int rootElementCount = rootDatas.Count();
             for (int i = 0; i < rootElementCount; i++)
             {
+                TreeItemSaveData rooitItemSaveData = rootDatas.ElementAt(i);
                 items.Add(
-                    new TreeViewItemData<DialogueTreeItem>(i, rootElements.ElementAt(i), 
-                        TreeUtilities.GetChildren(treeSaveData.treeItemData[i], rootElementCount + 1)
+                    new TreeViewItemData<DialogueTreeItem>(i, rooitItemSaveData.rootItem,
+                        TreeUtilities.GetChildren(treeSaveData, rooitItemSaveData, rootElementCount + 1)
                     )
                 );
             }

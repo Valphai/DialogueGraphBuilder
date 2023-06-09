@@ -5,13 +5,15 @@ namespace Chocolate4.Saving
     [System.Serializable]
     public class TreeItemSaveData
     {
+        public int depth;
         public DialogueTreeItem rootItem;
-        public List<TreeItemSaveData> children;
+        public List<string> childrenGuids;
 
-        public TreeItemSaveData(DialogueTreeItem rootItem, List<TreeItemSaveData> children)
+        public TreeItemSaveData(DialogueTreeItem rootItem, List<string> childrenGuids, int depth)
         {
             this.rootItem = rootItem;
-            this.children = children;
+            this.childrenGuids = childrenGuids;
+            this.depth = depth;
         }
     }
 }

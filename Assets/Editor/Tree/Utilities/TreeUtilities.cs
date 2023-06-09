@@ -22,20 +22,23 @@ namespace Chocolate4.Editor.Tree.Utilities
             });
         }
 
-        public static List<TreeViewItemData<DialogueTreeItem>> GetChildren(TreeItemSaveData treeItemSaveData, int nextId)
+        public static List<TreeViewItemData<DialogueTreeItem>> GetChildren(TreeSaveData treeSaveData, TreeItemSaveData treeItemSaveData, int nextId)
         {
-            if (treeItemSaveData.children == null)
+            if (treeItemSaveData.childrenGuids.IsNullOrEmpty())
             {
                 return null;
             }
 
-            int count = treeItemSaveData.children.Count;
+            int count = treeItemSaveData.childrenGuids.Count;
             var children = new List<TreeViewItemData<DialogueTreeItem>>();
             int childStartingId = nextId + count;
             for (int i = 0; i < count; i++)
             {
-                var child = treeItemSaveData.children[i];
-                children.Add(new TreeViewItemData<DialogueTreeItem>(nextId + i, treeItemSaveData.rootItem, GetChildren(child, childStartingId)));
+                string childGuid = treeItemSaveData.childrenGuids[i];
+                TreeItemSaveData childItemSaveData = treeSaveData.treeItemData.Find(itemData => itemData.rootItem.guid == childGuid);
+                DialogueTreeItem childItem = childItemSaveData.rootItem;
+
+                children.Add(new TreeViewItemData<DialogueTreeItem>(nextId + i, childItem, GetChildren(treeSaveData, childItemSaveData, childStartingId)));
             }
 
             return children;
