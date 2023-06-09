@@ -1,8 +1,163 @@
 {
     "graphSaveData": {
-        "situationSaveData": []
-},
+        "situationSaveData": [
+            {
+                "situationGuid": "8a9c8738-09f6-4e1c-bbd9-be5bc54b605d",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "0b0984df-625e-433b-8937-bf1c8c92d633",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "609461a0-654b-408a-a439-08d0f56bb296",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "792713c2-0c5c-4d22-86b3-232125a60d1a",
+                "nodeData": []
+            },
+            {
+                "situationGuid": "5f99907f-dfe6-4527-b5f0-bf6b70f5d6ad",
+                "nodeData": []
+            }
+        ]
+    },
     "treeSaveData": {
-        "treeItemData": []
-}
+        "treeItemData": [
+            {
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "8a9c8738-09f6-4e1c-bbd9-be5bc54b605d",
+                    "prefix": "S"
+                },
+                "children": [
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "0b0984df-625e-433b-8937-bf1c8c92d633",
+                            "prefix": "S"
+                        },
+                        "children": [
+                            {
+                                "rootItem": {
+                                    "displayName": "New Situation",
+                                    "guid": "609461a0-654b-408a-a439-08d0f56bb296",
+                                    "prefix": "S"
+                                },
+                                "children": []
+                            },
+                            {
+                                "rootItem": {
+                                    "displayName": "New Situation",
+                                    "guid": "5f99907f-dfe6-4527-b5f0-bf6b70f5d6ad",
+                                    "prefix": "S"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "609461a0-654b-408a-a439-08d0f56bb296",
+                            "prefix": "S"
+                        },
+                        "children": []
+                    },
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "0b0984df-625e-433b-8937-bf1c8c92d633",
+                            "prefix": "S"
+                        },
+                        "children": [
+                            {
+                                "rootItem": {
+                                    "displayName": "New Situation",
+                                    "guid": "609461a0-654b-408a-a439-08d0f56bb296",
+                                    "prefix": "S"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "5f99907f-dfe6-4527-b5f0-bf6b70f5d6ad",
+                            "prefix": "S"
+                        },
+                        "children": []
+                    },
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "0b0984df-625e-433b-8937-bf1c8c92d633",
+                            "prefix": "S"
+                        },
+                        "children": [
+                            {
+                                "rootItem": {
+                                    "displayName": "New Situation",
+                                    "guid": "5f99907f-dfe6-4527-b5f0-bf6b70f5d6ad",
+                                    "prefix": "S"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "792713c2-0c5c-4d22-86b3-232125a60d1a",
+                    "prefix": "S"
+                },
+                "children": []
+            },
+            {
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "0b0984df-625e-433b-8937-bf1c8c92d633",
+                    "prefix": "S"
+                },
+                "children": [
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "609461a0-654b-408a-a439-08d0f56bb296",
+                            "prefix": "S"
+                        },
+                        "children": []
+                    },
+                    {
+                        "rootItem": {
+                            "displayName": "New Situation",
+                            "guid": "5f99907f-dfe6-4527-b5f0-bf6b70f5d6ad",
+                            "prefix": "S"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "609461a0-654b-408a-a439-08d0f56bb296",
+                    "prefix": "S"
+                },
+                "children": []
+            },
+            {
+                "rootItem": {
+                    "displayName": "New Situation",
+                    "guid": "5f99907f-dfe6-4527-b5f0-bf6b70f5d6ad",
+                    "prefix": "S"
+                },
+                "children": []
+            }
+        ]
+    }
 }

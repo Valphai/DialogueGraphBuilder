@@ -1,14 +1,28 @@
 ﻿using Chocolate4.Editor.Graph.Utilities;
 using Chocolate4.Saving;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
+
 namespace Chocolate4.Editor.Saving
 {
     public class StructureSaver
     {
+        private struct NodeDepthContainer
+        {
+            public readonly int depth;
+            public readonly IEnumerable<int> children;
+
+            public NodeDepthContainer(int depth, IEnumerable<int> children)
+            {
+                this.depth = depth;
+                this.children = children;
+            }
+        }
+
         public static GraphSaveData SaveGraph(List<SituationSaveData> situationToData)
         {
             return new GraphSaveData()
@@ -51,30 +65,75 @@ namespace Chocolate4.Editor.Saving
             }
         }
 
-
         public static TreeSaveData SaveTree(TreeView treeView)
         {
-            int treeItemsCount = treeView.GetTreeCount();
-            IEnumerable<int> rootIds = treeView.GetRootIds();
+            //IEnumerable<int> rootIds = treeView.GetRootIds();
 
-            List<TreeItemSaveData> itemSaveData = new List<TreeItemSaveData>();
-            TreeSaveData treeSaveData = new TreeSaveData(itemSaveData);
+            //List<TreeItemSaveData> itemsSaveData = new List<TreeItemSaveData>();
+            //TreeSaveData treeSaveData = new TreeSaveData(itemsSaveData);
 
-            for (int i = 0; i < treeItemsCount; i++)
+            Dictionary<int, IEnumerable<int>> parentToChildrenID = new Dictionary<int, IEnumerable<int>>();
+
+            // go deepest and push children onto stuck
+
+            int treeCount = treeView.GetTreeCount();
+
+            for (int i = 0; i < treeCount; i++)
             {
-                int rootId = treeView.GetIdForIndex(i);
-                if (!rootIds.Any(root => root == rootId))
-                {
-                    continue;
-                }
+                int nextId = treeView.GetIdForIndex(i);
+                IEnumerable<int> childIds = treeView.viewController.GetChildrenIds(nextId);
 
-                DialogueTreeItem rootItem = treeView.GetItemDataForId<DialogueTreeItem>(rootId);
-                itemSaveData.Add(
-                    GetChildren(rootItem, i, treeView)
-                );
+                parentToChildrenID.Add(nextId, childIds);
             }
 
-            return treeSaveData;
+            List<TreeItemSaveData> resultData = new List<TreeItemSaveData>();
+            TreeSaveData result = new TreeSaveData(resultData);
+
+            var deepestChildIds = parentToChildrenID.ToList();
+            deepestChildIds.Sort((a, b) => treeView.GetDepthOfItemById(a.Key).CompareTo(treeView.GetDepthOfItemById(b.Key)));
+
+            //deepestChildIds.Reverse();
+
+            foreach (var deepestChildId in deepestChildIds)
+            {
+                int parentId = deepestChildId.Key;
+                //IEnumerable<int> childrenIds = deepestChildId.Value;
+                //DialogueTreeItem parent = treeView.GetItemDataForId<DialogueTreeItem>(parentId);
+                //List<TreeItemSaveData> childrenSaveData = new List<TreeItemSaveData>();
+                //TreeItemSaveData nodeSaveData = new TreeItemSaveData(parent, childrenSaveData);
+
+                List<TreeItemSaveData> childrenSaveData = new List<TreeItemSaveData>();
+                TreeItemSaveData nodeSaveData = null;
+
+                while (parentId != -1)
+                {
+                    /// save child
+                    DialogueTreeItem parent = treeView.GetItemDataForId<DialogueTreeItem>(parentId);
+
+
+                    if (nodeSaveData != null)
+                    {
+                        childrenSaveData.Add(nodeSaveData);
+                    }
+
+                    nodeSaveData = new TreeItemSaveData(parent, childrenSaveData.ToList());
+                    ///
+
+                    TreeItemSaveData alreadySavedData = resultData.Find(saveData => saveData.rootItem == parent);
+                    if (alreadySavedData != null)
+                    {
+                        alreadySavedData.children.AddRange(childrenSaveData);
+                    }
+                    else
+                    {
+                        resultData.Add(nodeSaveData);
+                    }
+
+                    parentId = treeView.viewController.GetParentId(parentId);
+                }
+            }
+
+            return result;
         }
 
         private static TreeItemSaveData GetChildren(DialogueTreeItem parent, int parentIndex, TreeView treeView)
