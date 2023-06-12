@@ -6,7 +6,13 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class NodeUtilities
     {
-        public static List<BaseNode> GetConnections(Port port)
+        public enum PortType
+        {
+            Input,
+            Output
+        }
+
+        public static List<BaseNode> GetConnections(Port port, PortType requestedPort)
         {
             IEnumerable<Edge> connections = port.connections;
 
@@ -14,7 +20,9 @@ namespace Chocolate4.Edit.Graph.Utilities
 
             foreach (Edge connection in connections)
             {
-                connectionsMap.Add(connection.output.node as BaseNode);
+                connectionsMap.Add(
+                    (requestedPort == PortType.Input ? connection.input.node : connection.output.node) as BaseNode
+                );
             }
             return connectionsMap;
         }

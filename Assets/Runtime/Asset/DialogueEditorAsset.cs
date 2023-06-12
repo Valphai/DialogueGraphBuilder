@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Chocolate4.Dialogue.Runtime.Asset
 {
-    public partial class DialogueEditorAsset : ScriptableObject
+    public class DialogueEditorAsset : ScriptableObject
     {
         public GraphSaveData graphSaveData;
         public TreeSaveData treeSaveData;

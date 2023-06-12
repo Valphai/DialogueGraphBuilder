@@ -1,4 +1,6 @@
+using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
@@ -18,17 +20,28 @@ namespace Chocolate4.Edit.Graph
         public const string DefaultGroupName = "Dialogue Group";
 
         private string activeSituationGuid = string.Empty;
+        private BlackBoardProvider blackBoardProvider;
 
+        public DragSelectablesHandler DragSelectablesHandler { get; private set; }
         internal SituationCache SituationCache { get; private set; }
-
+        
         public void Initialize()
         {
-            SituationCache = new SituationCache(null);
+            ResolveDependencies();
 
             AddManipulators();
             AddGridBackground();
 
             AddStyles();
+        }
+
+        private void ResolveDependencies()
+        {
+            SituationCache = new SituationCache(null);
+            DragSelectablesHandler = new DragSelectablesHandler();
+
+            blackBoardProvider = new BlackBoardProvider(this);
+            Add(blackBoardProvider.Blackboard);
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -86,7 +99,10 @@ namespace Chocolate4.Edit.Graph
             if (SituationCache.IsCached(newSituationGuid, out SituationSaveData situationSaveData))
             {
                 RebuildGraph(situationSaveData);
+                return;
             }
+
+            DeleteElements(graphElements);
         }
 
         internal void DialogueTreeView_OnTreeItemRemoved(string treeItemGuid)
@@ -137,15 +153,12 @@ namespace Chocolate4.Edit.Graph
         {
             foreach (BaseNode node in nodes)
             {
-                for (int i = 0; i < node.InputIDs.Count; i++)
-                {
-                    string parentID = node.InputIDs[i];
-                    IEnumerable<BaseNode> connections =
-                        nodes.Where(parentNode => parentNode.ID == parentID && parentNode.ID != node.ID);
+                string childID = node.NextNodeId;
+                IEnumerable<BaseNode> connections =
+                    nodes.Where(childNode => childNode.ID == childID && childNode.ID != node.ID);
 
-                    Port inputPort = node.inputContainer.Q<Port>();
-                    ConnectPorts(inputPort, connections);
-                }
+                Port outputPort = node.outputContainer.Q<Port>();
+                ConnectPorts(outputPort, connections);
             }
         }
 
@@ -153,7 +166,7 @@ namespace Chocolate4.Edit.Graph
         {
             foreach (BaseNode otherNode in connections)
             {
-                Port otherPort = otherNode.outputContainer.Q<Port>();
+                Port otherPort = otherNode.inputContainer.Q<Port>();
 
                 Edge edge = otherPort.ConnectTo(port);
 
@@ -170,6 +183,9 @@ namespace Chocolate4.Edit.Graph
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
+            this.AddManipulator(new ClickSelector());
+            this.AddManipulator(new DragAndDropManipulator(this));
+
             this.AddManipulator(VisualElementBuilder.CreateContextualMenuManipulator($"Add Group",
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             ));
@@ -189,15 +205,19 @@ namespace Chocolate4.Edit.Graph
         private BaseNode CreateNode(Vector2 startingPosition, Type nodeType)
         {
             BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
+            AddNode(startingPosition, node);
 
+            return node;
+        }
+
+        public void AddNode(Vector2 startingPosition, BaseNode node)
+        {
             node.Initialize(startingPosition);
             node.Draw();
 
             AddElement(node);
-
-            return node;
         }
-        
+
         private Group CreateGroup(Vector2 startingPosition)
         {
             Group group = new Group() {

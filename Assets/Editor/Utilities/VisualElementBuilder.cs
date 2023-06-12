@@ -1,5 +1,11 @@
-﻿using System;
+﻿using Chocolate4.Dialogue.Edit.Tree;
+using MacFsWatcher;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine.UIElements;
+using static Codice.Client.BaseCommands.WkStatus.Printers.StatusChangeInfo;
 
 namespace Chocolate4.Utilities
 {
@@ -43,7 +49,7 @@ namespace Chocolate4.Utilities
             return element;
         }
 
-        public static void Rename(Label renamableLabel, Action<string> onFinishText=null)
+        public static void Rename(Label renamableLabel, DialogueTreeView treeView, Action<string> onFinishText=null)
         {
             renamableLabel.text = string.Empty;
 
@@ -53,8 +59,11 @@ namespace Chocolate4.Utilities
             textField.Focus();
 
             textField.RegisterCallback<FocusOutEvent>(evt => {
-                renamableLabel.text = textField.text;
-                onFinishText?.Invoke(textField.text);
+
+                string[] existingNames = treeView.DialogueTreeItems.Select(item => item.displayName).ToArray();
+                renamableLabel.text = ObjectNames.GetUniqueName(existingNames, textField.text);
+
+                onFinishText?.Invoke(renamableLabel.text);
                 renamableLabel.Remove(textField);
             });
         }

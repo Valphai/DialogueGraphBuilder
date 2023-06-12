@@ -3,6 +3,7 @@ using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph;
+using Chocolate4.Edit.Graph.Utilities;
 using Chocolate4.Utilities;
 using System;
 using UnityEditor;
@@ -18,17 +19,19 @@ namespace Chocolate4.Dialogue.Edit
         public const string ContainerStyle = "tree-view__content-container";
         public const string ButtonBigStyle = "tree-view__content-button-big";
 
-        //private ListView leftListView;
-        private DialogueGraphView graphView;
-        private DialogueTreeView dialogueTreeView;
-        [SerializeField]
-        private DialogueAssetManager dialogueAssetManager;
+        public static DialogueEditorWindow Window { get; private set; }
+
         [SerializeField] 
         private bool hasInitialized;
 
+        //private ListView leftListView;
         private TwoPaneSplitView splitView;
         private VisualElement leftPanel;
         private Button saveButton;
+        private DialogueAssetManager dialogueAssetManager;
+
+        public DialogueGraphView GraphView { get; private set; }
+        public DialogueTreeView DialogueTreeView { get; private set; }
 
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
@@ -59,7 +62,7 @@ namespace Chocolate4.Dialogue.Edit
                     return false;
             }
 
-            var window = OpenEditor(asset, instanceId);
+            Window = OpenEditor(asset, instanceId);
 
             // If user clicked on an action inside the asset, focus on that action (if we can find it).
             //if (actionToSelect != null && window.m_ActionMapsTree.TrySelectItem(mapToSelect))
@@ -115,22 +118,24 @@ namespace Chocolate4.Dialogue.Edit
                 return;
             }
 
+            Window = this;
             Initialize();
         }
 
         private void OnDisable()
         {
-            dialogueTreeView.OnSituationSelected -= graphView.DialogueTreeView_OnSituationSelected;
-            dialogueTreeView.OnTreeItemRemoved -= graphView.DialogueTreeView_OnTreeItemRemoved;
-            graphView.SituationCache.OnSituationCached -= dialogueTreeView.GraphView_OnSituationCached;
+            DialogueTreeView.OnSituationSelected -= GraphView.DialogueTreeView_OnSituationSelected;
+            DialogueTreeView.OnTreeItemRemoved -= GraphView.DialogueTreeView_OnTreeItemRemoved;
+
+            GraphView.SituationCache.OnSituationCached -= DialogueTreeView.GraphView_OnSituationCached;
 
             StoreData();
         }
 
         private void StoreData()
         {
-            TreeSaveData treeSaveData = dialogueTreeView.Save();
-            GraphSaveData graphSaveData = graphView.Save();
+            TreeSaveData treeSaveData = DialogueTreeView.Save();
+            GraphSaveData graphSaveData = GraphView.Save();
             dialogueAssetManager.Store(graphSaveData, treeSaveData);
         }
 
@@ -154,32 +159,32 @@ namespace Chocolate4.Dialogue.Edit
         {
             leftPanel = new VisualElement();
 
-            graphView = new DialogueGraphView();
-            graphView.Initialize();
-            dialogueTreeView = new DialogueTreeView();
-            dialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
+            GraphView = new DialogueGraphView();
+            GraphView.Initialize();
+            DialogueTreeView = new DialogueTreeView();
+            DialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
 
-            dialogueTreeView.OnSituationSelected += graphView.DialogueTreeView_OnSituationSelected;
-            dialogueTreeView.OnTreeItemRemoved += graphView.DialogueTreeView_OnTreeItemRemoved;
+            DialogueTreeView.OnSituationSelected += GraphView.DialogueTreeView_OnSituationSelected;
+            DialogueTreeView.OnTreeItemRemoved += GraphView.DialogueTreeView_OnTreeItemRemoved;
 
-            graphView.SituationCache.OnSituationCached += dialogueTreeView.GraphView_OnSituationCached;
+            GraphView.SituationCache.OnSituationCached += DialogueTreeView.GraphView_OnSituationCached;
         }
 
         private void Rebuild()
         {
-            dialogueAssetManager.Rebuild(dialogueTreeView, graphView);
+            dialogueAssetManager.Rebuild(DialogueTreeView, GraphView);
         }
 
         private void DrawPanels()
         {
             rootVisualElement.Clear();
 
-            splitView = new TwoPaneSplitView(0, 250, TwoPaneSplitViewOrientation.Horizontal);
+            splitView = new TwoPaneSplitView(1, GraphConstants.TreeViewWindowWidth, TwoPaneSplitViewOrientation.Horizontal);
+            splitView.Add(GraphView);
             splitView.Add(leftPanel);
-            splitView.Add(graphView);
 
             rootVisualElement.Add(splitView);
-            
+
             AddToolbar();
             AddHeaderColumns();
             AddTreeView();
@@ -188,7 +193,7 @@ namespace Chocolate4.Dialogue.Edit
 
         private void AddTreeView()
         {
-            leftPanel.Add(dialogueTreeView.TreeView);
+            leftPanel.Add(DialogueTreeView.TreeView);
         }
 
         private void AddToolbar()
@@ -196,6 +201,8 @@ namespace Chocolate4.Dialogue.Edit
             Toolbar toolbar = new Toolbar();
 
             ToolbarSearchField searchField = new ToolbarSearchField();
+
+            searchField.style.width = GraphConstants.SearchBarWidth;
 
             saveButton = new Button(){
                 text = "Save"
@@ -211,8 +218,8 @@ namespace Chocolate4.Dialogue.Edit
 
         private void SaveButton_clicked()
         {
-            GraphSaveData graphData = graphView.Save();
-            TreeSaveData treeData = dialogueTreeView.Save();
+            GraphSaveData graphData = GraphView.Save();
+            TreeSaveData treeData = DialogueTreeView.Save();
             dialogueAssetManager.Save(graphData, treeData);
         }
 
@@ -233,22 +240,22 @@ namespace Chocolate4.Dialogue.Edit
 
             buttonsContainer.WithButton(TreeGroupsExtensions.SituationString).WithOnClick(
                 () => {
-                    DialogueTreeItem item = dialogueTreeView.AddTreeItem(
+                    DialogueTreeItem item = DialogueTreeView.AddTreeItem(
                         TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Group
                     );
 
-                    graphView.SituationCache.TryCache(new SituationSaveData(item.guid, null));
+                    GraphView.SituationCache.TryCache(new SituationSaveData(item.guid, null));
                 }
             );
 
             buttonsContainer.WithButton(TreeGroupsExtensions.VariableGroupString).WithOnClick(
-                () => dialogueTreeView.AddTreeItem(
+                () => DialogueTreeView.AddTreeItem(
                     TreeGroupsExtensions.DefaultVariableGroupName, TreeGroups.Variable, TreeItemType.Group
                 )
             );
 
             buttonsContainer.WithButton(TreeGroupsExtensions.EventGroupString).WithOnClick(
-            () => dialogueTreeView.AddTreeItem(
+            () => DialogueTreeView.AddTreeItem(
                     TreeGroupsExtensions.DefaultEventGroupName, TreeGroups.Event, TreeItemType.Group
                 )
             );

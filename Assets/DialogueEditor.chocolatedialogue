@@ -2,43 +2,46 @@
     "graphSaveData": {
         "situationSaveData": [
             {
-                "situationGuid": "11675397-0a4d-40db-93bd-764a78814c10",
+                "situationGuid": "435c066a-2dc4-4c8b-9ed5-0bdc87689b3f",
                 "nodeData": []
             },
             {
-                "situationGuid": "51c7dae9-fa16-4ea8-a17a-c1250d540839",
+                "situationGuid": "a8343394-5ab4-4a28-b16d-44506787b5a9",
+                "nodeData": [
+                    {
+                        "nodeID": "9ab6db80-5b1e-4071-9781-948581d7b843",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.SituationNode",
+                        "text": "",
+                        "position": {
+                            "x": 352.0,
+                            "y": 170.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": ""
+                    },
+                    {
+                        "nodeID": "83f55df2-b75f-466c-a059-ac0cd89b42ff",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 46.0,
+                            "y": 62.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": "9ab6db80-5b1e-4071-9781-948581d7b843"
+                    }
+                ]
+            },
+            {
+                "situationGuid": "8b952acf-d991-4f63-9793-5857f0dd87b4",
                 "nodeData": []
             },
             {
-                "situationGuid": "f3b5aa8e-f979-489c-a190-f4deba7a2951",
+                "situationGuid": "c4292f00-cd04-4ba8-b118-51c091f7e375",
                 "nodeData": []
             },
             {
-                "situationGuid": "8f919ff5-8f54-4327-a8c3-a0ae5a9e1e67",
-                "nodeData": []
-            },
-            {
-                "situationGuid": "c28c8000-2c57-4cdc-b199-27360eff1937",
-                "nodeData": []
-            },
-            {
-                "situationGuid": "4e6e3e6f-9425-44ad-b098-cf0ae46bf360",
-                "nodeData": []
-            },
-            {
-                "situationGuid": "13ba803a-6953-45d2-81f5-1a906166d90f",
-                "nodeData": []
-            },
-            {
-                "situationGuid": "06f8fee7-9af6-43cb-8b87-ff865c108b2c",
-                "nodeData": []
-            },
-            {
-                "situationGuid": "62b7fa94-1e57-4f44-b862-13365a2e84fa",
-                "nodeData": []
-            },
-            {
-                "situationGuid": "99f78150-99b3-4c13-9514-72f04a9437b8",
+                "situationGuid": "2fc0cf95-b52f-4904-90e5-3678059cb962",
                 "nodeData": []
             }
         ]
@@ -48,20 +51,8 @@
             {
                 "depth": 0,
                 "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "11675397-0a4d-40db-93bd-764a78814c10",
-                    "prefix": "S"
-                },
-                "childrenGuids": [
-                    "51c7dae9-fa16-4ea8-a17a-c1250d540839",
-                    "f3b5aa8e-f979-489c-a190-f4deba7a2951"
-                ]
-            },
-            {
-                "depth": 0,
-                "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "c28c8000-2c57-4cdc-b199-27360eff1937",
+                    "displayName": "dwqd (1)",
+                    "guid": "435c066a-2dc4-4c8b-9ed5-0bdc87689b3f",
                     "prefix": "S"
                 },
                 "childrenGuids": []
@@ -69,8 +60,8 @@
             {
                 "depth": 0,
                 "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "4e6e3e6f-9425-44ad-b098-cf0ae46bf360",
+                    "displayName": "New Situation (1)",
+                    "guid": "a8343394-5ab4-4a28-b16d-44506787b5a9",
                     "prefix": "S"
                 },
                 "childrenGuids": []
@@ -79,7 +70,7 @@
                 "depth": 0,
                 "rootItem": {
                     "displayName": "New Situation",
-                    "guid": "13ba803a-6953-45d2-81f5-1a906166d90f",
+                    "guid": "8b952acf-d991-4f63-9793-5857f0dd87b4",
                     "prefix": "S"
                 },
                 "childrenGuids": []
@@ -87,26 +78,8 @@
             {
                 "depth": 0,
                 "rootItem": {
-                    "displayName": "New Variable Group",
-                    "guid": "a7ad3fe0-4c12-4992-8775-b868d480eb59",
-                    "prefix": "VG"
-                },
-                "childrenGuids": []
-            },
-            {
-                "depth": 0,
-                "rootItem": {
-                    "displayName": "New Event Group",
-                    "guid": "343957a4-0b57-4058-aa67-b0dec3424257",
-                    "prefix": "EG"
-                },
-                "childrenGuids": []
-            },
-            {
-                "depth": 0,
-                "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "06f8fee7-9af6-43cb-8b87-ff865c108b2c",
+                    "displayName": "New Situation (3)",
+                    "guid": "c4292f00-cd04-4ba8-b118-51c091f7e375",
                     "prefix": "S"
                 },
                 "childrenGuids": []
@@ -114,46 +87,8 @@
             {
                 "depth": 0,
                 "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "62b7fa94-1e57-4f44-b862-13365a2e84fa",
-                    "prefix": "S"
-                },
-                "childrenGuids": []
-            },
-            {
-                "depth": 0,
-                "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "99f78150-99b3-4c13-9514-72f04a9437b8",
-                    "prefix": "S"
-                },
-                "childrenGuids": []
-            },
-            {
-                "depth": 1,
-                "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "51c7dae9-fa16-4ea8-a17a-c1250d540839",
-                    "prefix": "S"
-                },
-                "childrenGuids": [
-                    "8f919ff5-8f54-4327-a8c3-a0ae5a9e1e67"
-                ]
-            },
-            {
-                "depth": 1,
-                "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "f3b5aa8e-f979-489c-a190-f4deba7a2951",
-                    "prefix": "S"
-                },
-                "childrenGuids": []
-            },
-            {
-                "depth": 2,
-                "rootItem": {
-                    "displayName": "New Situation",
-                    "guid": "8f919ff5-8f54-4327-a8c3-a0ae5a9e1e67",
+                    "displayName": "hrherhe",
+                    "guid": "2fc0cf95-b52f-4904-90e5-3678059cb962",
                     "prefix": "S"
                 },
                 "childrenGuids": []

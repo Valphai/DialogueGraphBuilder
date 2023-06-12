@@ -37,22 +37,32 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
             NodeSaveData SaveNode(BaseNode node)
             {
-                Port inputPort = node.inputContainer.Q<Port>();
-                var connectionsMap = NodeUtilities.GetConnections(inputPort);
-
-                if (!connectionsMap.IsNullOrEmpty())
+                Port outputPort = node.outputContainer.Q<Port>();
+                if (outputPort != null)
                 {
-                    connectionsMap.ForEach(parent => {
-                        if (!node.InputIDs.Contains(parent.ID))
-                        {
-                            node.InputIDs.Add(parent.ID);
-                        }
-                    });
+                    var connectionsMap = NodeUtilities.GetConnections(outputPort, NodeUtilities.PortType.Input);
+
+                    if (!connectionsMap.IsNullOrEmpty())
+                    {
+                        connectionsMap.ForEach(child => {
+                            if (string.IsNullOrEmpty(node.NextNodeId))
+                            {
+                                node.NextNodeId = child.ID;
+                                return;
+                            }
+
+                            if (!node.NextNodeId.Equals(child.ID))
+                            {
+                                node.NextNodeId = child.ID;
+                                return;
+                            }
+                        });
+                    }
                 }
 
                 return new NodeSaveData()
                 {
-                    inputIDs = node.InputIDs,
+                    nextNodeId = node.NextNodeId,
                     nodeID = node.ID,
                     nodeType = node.NodeType.ToString(),
                     text = node.Text,

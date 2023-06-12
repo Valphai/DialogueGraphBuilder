@@ -12,7 +12,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
     [System.Serializable]
     public class DialogueAssetManager
     {
-        [SerializeField] 
+        [field:SerializeField] 
         public DialogueEditorAsset ImportedAsset { get; private set; }
         [SerializeField] 
         private int instanceId;

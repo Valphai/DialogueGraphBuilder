@@ -14,7 +14,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private const string FilenameTextFieldUSS = "base-node__filename-textfield";
         private const string TextFieldHiddenUSS = "base-node__textfield__hidden";
 
-        public List<string> InputIDs { get; set; } = new List<string>();
+        public string NextNodeId { get; set; }
         public string GroupID { get; set; }
         public string ID { get; set; }
         public string Name { get; set; }
@@ -38,7 +38,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Load(NodeSaveData saveData)
         {
-            InputIDs = saveData.inputIDs;
+            NextNodeId = saveData.nextNodeId;
             ID = saveData.nodeID;
             Text = saveData.text;
             GroupID = saveData.groupID;
@@ -53,7 +53,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             RefreshExpandedState();
         }
 
-        public virtual void DrawTitle()
+        protected virtual void DrawTitle()
         {
             TextField dialogueNameTextField = new TextField() {
                 value = Name
@@ -65,24 +65,19 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             titleContainer.Insert(0, dialogueNameTextField);
         }
 
-        public virtual void DrawPorts()
+        protected virtual void DrawPorts()
         {
             DrawInputPort();
             DrawOutputPort();
         }
 
-        public virtual VisualElement DrawContent()
+        protected virtual VisualElement DrawContent()
         {
             VisualElement contentContainer = new VisualElement();
-
-            TextField textField = new TextField() {
-                value = Text,
-                multiline = true
-            };
+            
+            AddExtraContent(contentContainer);
 
             contentContainer.AddToClassList(ContentContainerUSS);
-
-            contentContainer.Add(textField);
 
             extensionContainer.AddToClassList(TextFieldHiddenUSS);
             extensionContainer.AddToClassList(FilenameTextFieldUSS);
@@ -90,6 +85,17 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             extensionContainer.Add(contentContainer);
 
             return contentContainer;
+        }
+
+        protected virtual void AddExtraContent(VisualElement contentContainer)
+        {
+            TextField textField = new TextField()
+            {
+                value = Text,
+                multiline = true
+            };
+
+            contentContainer.Add(textField);
         }
 
         protected void DrawOutputPort()

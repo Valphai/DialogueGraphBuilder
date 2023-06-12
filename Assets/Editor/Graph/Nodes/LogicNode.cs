@@ -13,7 +13,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             Choices.Add("False");
         }
 
-        public override void DrawPorts()
+        protected override void DrawPorts()
         {
             DrawInputPort();
 
