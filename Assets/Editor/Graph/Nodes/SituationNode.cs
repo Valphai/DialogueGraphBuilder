@@ -2,6 +2,7 @@ using Chocolate4.Dialogue.Edit.Tree;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public string NextSituationGuid { get; private set; } = string.Empty;
         public override NodeTask NodeTask { get; set; } = NodeTask.Dialogue;
+
+        public override bool CanConnectTo(BaseNode node, Direction direction)
+        {
+            return true;
+        }
 
         public override void Initialize(Vector3 startingPosition)
         {

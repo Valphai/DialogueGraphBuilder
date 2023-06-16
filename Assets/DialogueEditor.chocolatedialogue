@@ -3,7 +3,63 @@
         "situationSaveData": [
             {
                 "situationGuid": "435c066a-2dc4-4c8b-9ed5-0bdc87689b3f",
-                "nodeData": []
+                "nodeData": [
+                    {
+                        "nodeID": "4c346484-e837-41ea-8f7f-10da98c46dcc",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 241.0,
+                            "y": 279.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": "7f18ced7-cb62-4f9d-9f0b-e7f2100aa232"
+                    },
+                    {
+                        "nodeID": "ad75b527-78a8-4e7f-997f-d32e51c685f3",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.AdditionNode",
+                        "text": "",
+                        "position": {
+                            "x": 662.0,
+                            "y": 297.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": "d6d72eb3-8f3b-4a06-a2a3-808a287d9e97"
+                    },
+                    {
+                        "nodeID": "7f18ced7-cb62-4f9d-9f0b-e7f2100aa232",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.IntegerPropertyNode",
+                        "text": "",
+                        "position": {
+                            "x": 480.0,
+                            "y": 279.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": "ad75b527-78a8-4e7f-997f-d32e51c685f3"
+                    },
+                    {
+                        "nodeID": "d6d72eb3-8f3b-4a06-a2a3-808a287d9e97",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.IntegerPropertyNode",
+                        "text": "",
+                        "position": {
+                            "x": 863.0,
+                            "y": 221.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": ""
+                    },
+                    {
+                        "nodeID": "759d9279-80ba-40ac-9f1d-43b5db564cd9",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.IntegerPropertyNode",
+                        "text": "",
+                        "position": {
+                            "x": 490.0,
+                            "y": 424.0
+                        },
+                        "groupID": "",
+                        "nextNodeId": "ad75b527-78a8-4e7f-997f-d32e51c685f3"
+                    }
+                ]
             },
             {
                 "situationGuid": "a8343394-5ab4-4a28-b16d-44506787b5a9",

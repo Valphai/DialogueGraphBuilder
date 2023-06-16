@@ -5,7 +5,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
     public enum PropertyType
     {
         Boolean,
-        Float,
         Integer
     }
 

@@ -4,13 +4,13 @@ using System;
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 {
     [Serializable]
-    public class FloatDialogueProperty : DialogueProperty<float>
+    public class IntegerDialogueProperty : DialogueProperty<int>
     {
-        public override PropertyType PropertyType => PropertyType.Float;
+        public override PropertyType PropertyType => PropertyType.Integer;
 
-        public FloatDialogueProperty()
+        public IntegerDialogueProperty()
         {
-            DisplayName = "Float";
+            DisplayName = PropertyType.ToString();
         }
 
         public override BaseNode ToConcreteNode()
@@ -22,12 +22,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
             //}
 
-            BaseNode node = new DialogueNode();
+            IntegerPropertyNode node = new IntegerPropertyNode() { PropertyGuid = Guid, Value = Value };
             //node.FindInputSlot<Vector1MaterialSlot>(Vector1Node.InputSlotXId).value = value;
             return node;
         }
 
-        public override IDialogueProperty Copy() => new FloatDialogueProperty()
+        public override IDialogueProperty Copy() => new IntegerDialogueProperty()
         {
             DisplayName = DisplayName,
             Value = Value

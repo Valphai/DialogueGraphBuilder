@@ -50,7 +50,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         private void AddItemRequested(Blackboard blackboard)
         {
             var gm = new GenericMenu();
-            gm.AddItem(new GUIContent("Float"), false, () => AddProperty(new FloatDialogueProperty(), true));
+            gm.AddItem(new GUIContent("Float"), false, () => AddProperty(new IntegerDialogueProperty(), true));
             //gm.AddItem(new GUIContent("Boolean"), false, () => AddProperty(new BooleanShaderProperty(), true));
             gm.ShowAsContext();
         }

@@ -49,10 +49,29 @@ namespace Chocolate4.Edit.Graph
             List<Port> compatiblePorts = new List<Port>();
 
             ports.ForEach(port => {
-                
-                if (startPort.node == port.node) return;
 
-                if (startPort.direction == port.direction) return;
+                if (startPort.node == port.node)
+                {
+                    return;
+                }
+
+                if (startPort.direction == port.direction)
+                {
+                    return;
+                }
+
+                BaseNode startNode = (BaseNode)startPort.node;
+                BaseNode node = (BaseNode)port.node;
+
+                if (startNode.IsConnectedTo(node))
+                {
+                    return;
+                }
+
+                if (!startNode.CanConnectTo(node, startPort.direction))
+                {
+                    return;
+                }
 
                 compatiblePorts.Add(port);
             });
@@ -137,10 +156,10 @@ namespace Chocolate4.Edit.Graph
             }
 
             List<BaseNode> nodes = new List<BaseNode>();
-            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
+            List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>().ToList();
             foreach (NodeSaveData nodeData in situationData.nodeData)
             {
-                Type matchedType = nodeTypes.First(type => type.ToString().Equals(nodeData.nodeType));
+                Type matchedType = nodeTypes.First(type => type.ToString().Contains(nodeData.nodeType));
                 BaseNode node = CreateNode(nodeData.position, matchedType);
                 node.Load(nodeData);
                 nodes.Add(node);

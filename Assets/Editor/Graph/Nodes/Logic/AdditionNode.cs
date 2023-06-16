@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Edit.Graph.Utilities;
 using Chocolate4.Utilities;
 using System.Linq;
@@ -12,7 +13,55 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private const string Port1 = "Input 1";
         private const string Port2 = "Input 2";
 
+        private Port inputPort1;
+        private Port inputPort2;
+
         public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
+
+        public override bool CanConnectTo(BaseNode node, Direction direction)
+        {
+            if (node.NodeTask != NodeTask.Property)
+            {
+                return false;
+            }
+
+            PropertyType nodePropertyType = (node as IPropertyNode).PropertyType;
+            IPropertyNode connectedInputNode1 = null;
+            IPropertyNode connectedInputNode2 = null;
+
+            if (!inputPort1.connections.IsNullOrEmpty())
+            {
+                connectedInputNode1 = inputPort1.connections.First(edge => edge.output.node != this).output.node as IPropertyNode; 
+            }
+            if (!inputPort2.connections.IsNullOrEmpty())
+            {
+                connectedInputNode2 = inputPort2.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
+            }
+
+            if (connectedInputNode1 == null && connectedInputNode2 == null)
+            {
+                return true;
+            }
+
+            if (IsSamePropertyType(nodePropertyType, connectedInputNode1)
+                || IsSamePropertyType(nodePropertyType, connectedInputNode2)
+            )
+            {
+                return true;
+            }
+
+            return false;
+
+            bool IsSamePropertyType(PropertyType nodePropertyType, IPropertyNode alreadyConnectedNode)
+            {
+                if (alreadyConnectedNode == null)
+                {
+                    return false;
+                }
+
+                return nodePropertyType == alreadyConnectedNode.PropertyType;
+            }
+        }
 
         public override void Initialize(Vector3 startingPosition)
         {
@@ -23,11 +72,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            Port port1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single);
-            Port port2 = DrawPort(Port2, Direction.Input, Port.Capacity.Single);
+            inputPort1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single);
+            inputPort2 = DrawPort(Port2, Direction.Input, Port.Capacity.Single);
 
-            inputContainer.Add(port1);
-            inputContainer.Add(port2);
+            inputContainer.Add(inputPort1);
+            inputContainer.Add(inputPort2);
         }
 
         protected override void DrawTitle()
@@ -46,21 +95,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public void Evaluate()
         {
-            Port port1 = inputContainer.Q<Port>(Port1);
-            Port port2 = inputContainer.Q<Port>(Port2);
+            IPropertyNode connectedInputNode1 = inputPort1.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
+            IPropertyNode connectedInputNode2 = inputPort2.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
 
-            BaseNode node1 = (BaseNode)port1.connections.First(edge => edge.output.node != this).output.node;
-            BaseNode node2 = (BaseNode)port2.connections.First(edge => edge.output.node != this).output.node;
-
-            if (node1.NodeType != node2.NodeType)
+            if (connectedInputNode1 is IntegerPropertyNode)
             {
-                Debug.LogError($"Could not perform {node1.NodeType} + {node2.NodeType}");
-                return;
-            }
-
-            if (node1 is FloatPropertyNode)
-            {
-                outputContainer.Q<Port>("Output").userData = ((FloatPropertyNode)node1).Value + ((FloatPropertyNode)node2).Value;
+                outputContainer.Q<Port>("Output").userData = ((IntegerPropertyNode)connectedInputNode1).Value + ((IntegerPropertyNode)connectedInputNode2).Value;
             }
         }
     }

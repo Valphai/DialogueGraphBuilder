@@ -20,6 +20,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public Type NodeType { get; set; }
         public abstract NodeTask NodeTask { get; set; }
 
+        public abstract bool CanConnectTo(BaseNode node, Direction direction);
+
         public virtual void Initialize(Vector3 startingPosition)
         {
             ID = Guid.NewGuid().ToString();
