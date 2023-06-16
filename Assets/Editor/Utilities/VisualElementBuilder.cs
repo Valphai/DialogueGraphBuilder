@@ -1,11 +1,10 @@
 ﻿using Chocolate4.Dialogue.Edit.Tree;
-using MacFsWatcher;
+using Chocolate4.Edit.Graph.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
-using static Codice.Client.BaseCommands.WkStatus.Printers.StatusChangeInfo;
 
 namespace Chocolate4.Utilities
 {
@@ -43,9 +42,79 @@ namespace Chocolate4.Utilities
             return button;
         }
 
-        public static VisualElement WithStyle(this VisualElement element, string style)
+        public static VisualElement WithPropertyStyle(this VisualElement element)
         {
-            element.AddToClassList(style);
+            element.style.backgroundColor = UIStyles.propertyColor;
+            element.WithBaseNodeStyle();
+            return element;
+        }
+
+        public static VisualElement WithLogicStyle(this VisualElement element)
+        {
+            element.style.backgroundColor = UIStyles.logicColor;
+            element.style.paddingLeft = UIStyles.PaddingMedium;
+            element.WithBaseNodeStyle();
+            return element;
+        }
+        
+        public static VisualElement WithStoryStyle(this VisualElement element)
+        {
+            element.style.backgroundColor = UIStyles.storyColor;
+            element.WithBaseNodeStyle();
+            return element;
+        }
+        
+        public static VisualElement WithBaseNodeStyle(this VisualElement element)
+        {
+            element.WithMaxWidth(UIStyles.MaxWidth);
+            return element;
+        }
+        
+        public static VisualElement WithFontSize(this VisualElement element, float size)
+        {
+            element.style.fontSize = size;
+            return element;
+        }
+        
+        public static VisualElement WithMarginTop(this VisualElement element, float margin)
+        {
+            element.style.marginTop = margin;
+            return element;
+        }
+
+        public static VisualElement WithHorizontalGrow(this VisualElement element)
+        {
+            element.style.flexDirection = FlexDirection.Row;
+            return element;
+        }
+        
+        public static VisualElement WithVerticalGrow(this VisualElement element)
+        {
+            element.style.flexDirection = FlexDirection.Column;
+            return element;
+        }
+        
+        public static VisualElement WithStretchToParentHeight(this VisualElement element)
+        {
+            element.style.flexGrow = 1;
+            return element;
+        }
+        
+        public static VisualElement WithMinHeight(this VisualElement element, float minHeight)
+        {
+            element.style.minHeight = minHeight;
+            return element;
+        }
+
+        public static VisualElement WithMaxWidth(this VisualElement element, float maxWidth)
+        {
+            element.style.maxWidth = maxWidth;
+            return element;
+        }
+
+        public static VisualElement WithExpandableHeight(this VisualElement element)
+        {
+            element.style.whiteSpace = WhiteSpace.Normal;
             return element;
         }
 

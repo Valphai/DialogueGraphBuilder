@@ -1,16 +1,36 @@
-﻿using UnityEditor.Experimental.GraphView;
+﻿using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Utilities;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class LogicNode : BaseNode
+    public class ConditionNode : BaseNode
     {
+        public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
+
         public override void Initialize(Vector3 startingPosition)
         {
             base.Initialize(startingPosition);
 
             Choices.Add("True");
             Choices.Add("False");
+        }
+
+        protected override void DrawTitle()
+        {
+            Label Label = new Label() { text = "Condition" };
+
+            Label.WithFontSize(UIStyles.LogicFontSize);
+            Label.WithMarginTop(UIStyles.LogicMarginTop);
+
+            titleContainer.Insert(0, Label);
+            titleContainer.WithLogicStyle();
+        }
+
+        protected override void DrawContent()
+        {
         }
 
         protected override void DrawPorts()

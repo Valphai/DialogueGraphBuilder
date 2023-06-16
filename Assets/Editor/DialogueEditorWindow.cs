@@ -119,6 +119,7 @@ namespace Chocolate4.Dialogue.Edit
             }
 
             Window = this;
+
             Initialize();
         }
 
@@ -145,7 +146,6 @@ namespace Chocolate4.Dialogue.Edit
 
             Rebuild();
 
-            AddStyles();
             DrawPanels();
         }
 
@@ -236,7 +236,7 @@ namespace Chocolate4.Dialogue.Edit
 
         private void AddHeaderColumns()
         {
-            VisualElement buttonsContainer = new VisualElement().WithStyle(ContainerStyle);
+            VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
 
             buttonsContainer.WithButton(TreeGroupsExtensions.SituationString).WithOnClick(
                 () => {
@@ -261,13 +261,6 @@ namespace Chocolate4.Dialogue.Edit
             );
 
             leftPanel.Add(buttonsContainer);
-        }
-
-        private void AddStyles()
-        {
-            StyleSheet elementsStyleSheet = (StyleSheet)EditorGUIUtility.Load("DialogueSystem/DialogueElementsStyle.uss");
-
-            leftPanel.styleSheets.Add(elementsStyleSheet);
         }
     }
 }

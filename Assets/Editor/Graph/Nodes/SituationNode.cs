@@ -12,6 +12,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private PopupField<string> popupField;
 
         public string NextSituationGuid { get; private set; } = string.Empty;
+        public override NodeTask NodeTask { get; set; } = NodeTask.Dialogue;
 
         public override void Initialize(Vector3 startingPosition)
         {

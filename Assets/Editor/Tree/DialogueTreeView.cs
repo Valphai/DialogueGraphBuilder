@@ -177,8 +177,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
         private VisualElement MakeTreeViewItem()
         {
-            VisualElement box = new VisualElement();
-            box.AddToClassList(DialogueEditorWindow.ContainerStyle);
+            VisualElement box = new VisualElement().WithHorizontalGrow();
 
             Label label = new Label();
             Label textLabel = new Label();

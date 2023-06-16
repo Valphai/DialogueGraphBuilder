@@ -1,4 +1,6 @@
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -9,11 +11,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public abstract class BaseNode : Node
     {
-        private const string ExtensionContainerUSS = "base-node__extension-container";
-        private const string ContentContainerUSS = "base-node__content-container";
-        private const string FilenameTextFieldUSS = "base-node__filename-textfield";
-        private const string TextFieldHiddenUSS = "base-node__textfield__hidden";
-
         public string NextNodeId { get; set; }
         public string GroupID { get; set; }
         public string ID { get; set; }
@@ -21,6 +18,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public List<string> Choices { get; set; }
         public string Text { get; set; }
         public Type NodeType { get; set; }
+        public abstract NodeTask NodeTask { get; set; }
 
         public virtual void Initialize(Vector3 startingPosition)
         {
@@ -31,9 +29,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             NodeType = GetType();
 
             SetPosition(new Rect(startingPosition, Vector2.zero));
-
-            mainContainer.AddToClassList(ContentContainerUSS);
-            extensionContainer.AddToClassList(ExtensionContainerUSS);
         }
 
         public virtual void Load(NodeSaveData saveData)
@@ -55,14 +50,17 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawTitle()
         {
-            TextField dialogueNameTextField = new TextField() {
-                value = Name
-            };
+            TextField textField = new TextField() { value = Name};
 
-            dialogueNameTextField.AddToClassList(TextFieldHiddenUSS);
-            dialogueNameTextField.AddToClassList(FilenameTextFieldUSS);
+            textField.AddToClassList(UIStyles.TextFieldHiddenUSS);
 
-            titleContainer.Insert(0, dialogueNameTextField);
+            textField.Q<TextElement>()
+                .WithFontSize(UIStyles.LogicFontSize)
+                .WithMaxWidth(UIStyles.MaxWidth)
+                .WithExpandableHeight();
+
+            titleContainer.Insert(0, textField);
+            titleContainer.WithStoryStyle();
         }
 
         protected virtual void DrawPorts()
@@ -71,20 +69,15 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             DrawOutputPort();
         }
 
-        protected virtual VisualElement DrawContent()
+        protected virtual void DrawContent()
         {
-            VisualElement contentContainer = new VisualElement();
-            
+            VisualElement contentContainer = new VisualElement()
+                .WithMinHeight(UIStyles.MaxHeight)
+                .WithMaxWidth(UIStyles.MaxWidth);
+
             AddExtraContent(contentContainer);
 
-            contentContainer.AddToClassList(ContentContainerUSS);
-
-            extensionContainer.AddToClassList(TextFieldHiddenUSS);
-            extensionContainer.AddToClassList(FilenameTextFieldUSS);
-
             extensionContainer.Add(contentContainer);
-
-            return contentContainer;
         }
 
         protected virtual void AddExtraContent(VisualElement contentContainer)
@@ -92,19 +85,25 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             TextField textField = new TextField()
             {
                 value = Text,
-                multiline = true
+                multiline = true,
             };
+            textField.WithVerticalGrow()
+                .WithStretchToParentHeight();
 
             contentContainer.Add(textField);
+
+            textField.Q<TextElement>()
+                .WithMaxWidth(UIStyles.MaxWidth)
+                .WithExpandableHeight();
         }
 
-        protected void DrawOutputPort()
+        protected virtual void DrawOutputPort()
         {
             Port port = DrawPort("Output", Direction.Output, Port.Capacity.Single);
             outputContainer.Add(port);
         }
 
-        protected void DrawInputPort()
+        protected virtual void DrawInputPort()
         {
             Port port = DrawPort("Input", Direction.Input, Port.Capacity.Multi);
             inputContainer.Add(port);

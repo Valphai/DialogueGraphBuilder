@@ -2,5 +2,6 @@
 {
     public class PlayerOptionNode : BaseNode
     {
+        public override NodeTask NodeTask { get; set; } = NodeTask.Dialogue;
     }
 }
