@@ -5,6 +5,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class IntegerPropertyNode : PropertyNode<int>
     {
+        public override string Name { get; set; } = "Integer";
         public override PropertyType PropertyType => PropertyType.Integer;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
@@ -15,14 +16,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             }
 
             return node.NodeTask != NodeTask.Property;
-        }
-
-        public override void UnbindFromProperty()
-        {
-            Name = "Integer";
-            DisplayInputField();
-
-            PropertyGuid = string.Empty;
         }
 
         protected override ConstantPortInput CreateConstantPortInput()

@@ -16,6 +16,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private Port inputPort1;
         private Port inputPort2;
 
+        public override string Name { get; set; } = "Addition";
         public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
@@ -61,13 +62,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
                 return nodePropertyType == alreadyConnectedNode.PropertyType;
             }
-        }
-
-        public override void Initialize(Vector3 startingPosition)
-        {
-            base.Initialize(startingPosition);
-
-            Name = "Addition";
         }
 
         protected override void DrawInputPort()

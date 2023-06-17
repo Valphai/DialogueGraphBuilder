@@ -8,6 +8,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class ConditionNode : BaseNode
     {
+        public override string Name { get; set; } = "Condition";
         public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
@@ -30,7 +31,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawTitle()
         {
-            Label Label = new Label() { text = "Condition" };
+            Label Label = new Label() { text = Name };
 
             Label.WithFontSize(UIStyles.LogicFontSize);
             Label.WithMarginTop(UIStyles.LogicMarginTop);

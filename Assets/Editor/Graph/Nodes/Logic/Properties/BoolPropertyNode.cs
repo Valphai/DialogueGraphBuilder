@@ -5,6 +5,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class BoolPropertyNode : PropertyNode<bool>
     {
+        public override string Name { get; set; } = "Bool";
         public override PropertyType PropertyType => PropertyType.Bool;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
@@ -15,14 +16,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             }
 
             return node.NodeTask != NodeTask.Property;
-        }
-
-        public override void UnbindFromProperty()
-        {
-            Name = "Bool";
-            DisplayInputField();
-
-            PropertyGuid = string.Empty;
         }
 
         protected override ConstantPortInput CreateConstantPortInput()

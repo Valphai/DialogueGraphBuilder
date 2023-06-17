@@ -54,26 +54,38 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
             Blackboard.graphView.graphElements.ForEach(element => {
 
-                if (element is not IPropertyNode)
+                if (!ElementIsDialogueProperty(element, deletedProperty, out IPropertyNode propertyNode))
                 {
                     return;
                 }
 
-                IPropertyNode propertyNode = (IPropertyNode)element;
-                string propertyGuid = propertyNode.PropertyGuid;
-                if (string.IsNullOrEmpty(propertyGuid))
-                {
-                    return;
-                }
-
-                if (propertyGuid != deletedProperty.Guid)
-                {
-                    return;
-                }
-
-                propertyRows.Remove(propertyGuid);
+                propertyRows.Remove(deletedProperty.Guid);
                 propertyNode.UnbindFromProperty();
             });
+        }
+
+        private bool ElementIsDialogueProperty(GraphElement element, IDialogueProperty property, out IPropertyNode propertyNode)
+        {
+            propertyNode = null;
+            if (element is not IPropertyNode)
+            {
+                return false;
+            }
+
+            propertyNode = (IPropertyNode)element;
+            string propertyGuid = propertyNode.PropertyGuid;
+
+            if (string.IsNullOrEmpty(propertyGuid))
+            {
+                return false;
+            }
+
+            if (propertyGuid != property.Guid)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void MoveItemRequested(Blackboard arg1, int arg2, VisualElement arg3)
@@ -85,7 +97,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         {
             var gm = new GenericMenu();
             gm.AddItem(new GUIContent("Integer"), false, () => AddProperty(new IntegerDialogueProperty(), true));
-            //gm.AddItem(new GUIContent("Boolean"), false, () => AddProperty(new BooleanShaderProperty(), true));
+            gm.AddItem(new GUIContent("Bool"), false, () => AddProperty(new BoolDialogueProperty(), true));
             gm.ShowAsContext();
         }
 
@@ -100,8 +112,22 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 //newText = m_Graph.SanitizePropertyName(newText, property.guid);
                 property.DisplayName = newText;
                 field.text = newText;
+                UpdateNodesWith(property);
                 //DirtyNodes();
             }
+        }
+
+        private void UpdateNodesWith(IDialogueProperty property)
+        {
+            Blackboard.graphView.graphElements.ForEach(element => {
+
+                if (!ElementIsDialogueProperty(element, property, out IPropertyNode propertyNode))
+                {
+                    return;
+                }
+
+                propertyNode.BindToProperty(property);
+            });
         }
 
         public void AddProperty(IDialogueProperty property, bool create = false, int index = -1)

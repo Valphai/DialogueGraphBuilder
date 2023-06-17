@@ -14,10 +14,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public string NextNodeId { get; set; }
         public string GroupID { get; set; }
         public string ID { get; set; }
-        public string Name { get; set; }
         public List<string> Choices { get; set; }
         public string Text { get; set; }
         public Type NodeType { get; set; }
+        public abstract string Name { get; set; }
         public abstract NodeTask NodeTask { get; set; }
 
         public abstract bool CanConnectTo(BaseNode node, Direction direction);
@@ -25,7 +25,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public virtual void Initialize(Vector3 startingPosition)
         {
             ID = Guid.NewGuid().ToString();
-            Name = "Dialogue name";
             Choices = new List<string>();
             Text = string.Empty;
             NodeType = GetType();
@@ -64,6 +63,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             textField.Q<TextElement>()
                 .WithFontSize(UIStyles.LogicFontSize)
                 .WithMaxWidth(UIStyles.MaxWidth)
+                .WithHorizontalGrow()
                 .WithExpandableHeight();
 
             titleContainer.Insert(0, textField);

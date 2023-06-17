@@ -45,6 +45,31 @@ namespace Chocolate4.Edit.Graph
             Add(blackBoardProvider.Blackboard);
         }
 
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            base.BuildContextualMenu(evt);
+
+            evt.menu.AppendAction($"Add Group",
+                actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
+            );
+
+            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
+
+            string contextElementTitle;
+            foreach (Type nodeType in nodeTypes)
+            {
+                contextElementTitle = nodeType.Name;
+                evt.menu.AppendAction($"Add {contextElementTitle}",
+                    actionEvent => CreateNode(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition), nodeType)
+                );
+            }
+
+            if (evt.target is BaseNode)
+            {
+                evt.menu.AppendAction("Convert To Property", ConvertToProperty, ConvertToPropertyStatus);
+            }
+        }
+
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             List<Port> compatiblePorts = new List<Port>();
@@ -207,31 +232,6 @@ namespace Chocolate4.Edit.Graph
             this.AddManipulator(new DragAndDropManipulator(this));
         }
 
-        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
-        {
-            base.BuildContextualMenu(evt);
-
-            evt.menu.AppendAction($"Add Group",
-                actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
-            );
-
-            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
-
-            string contextElementTitle;
-            foreach (Type nodeType in nodeTypes)
-            {
-                contextElementTitle = nodeType.Name;
-                evt.menu.AppendAction($"Add {contextElementTitle}",
-                    actionEvent => CreateNode(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition), nodeType)
-                );
-            }
-
-            if (evt.target is BaseNode)
-            {
-                evt.menu.AppendAction("Convert To Property", ConvertToProperty, ConvertToPropertyStatus);
-            }
-        }
-
         private void ConvertToProperty(DropdownMenuAction arg)
         {
             IEnumerable<IPropertyNode> selectedPropertyNodes = selection.OfType<IPropertyNode>();
@@ -251,12 +251,12 @@ namespace Chocolate4.Edit.Graph
 
         private DropdownMenuAction.Status ConvertToPropertyStatus(DropdownMenuAction arg)
         {
-            if (selection.OfType<IPropertyNode>().Any(node => node != null))
+            if (selection.OfType<IPropertyNode>().Any(node => node.IsBoundToProperty))
             {
-                return DropdownMenuAction.Status.Normal;
+                return DropdownMenuAction.Status.Hidden;
             }
 
-            return DropdownMenuAction.Status.Hidden;
+            return DropdownMenuAction.Status.Normal;
         }
 
         private BaseNode CreateNode(Vector2 startingPosition, Type nodeType)

@@ -11,7 +11,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
     public interface IDialogueProperty
     {
         string DisplayName { get; set; }
-
         PropertyType PropertyType { get; }
         string Guid { get; }
 

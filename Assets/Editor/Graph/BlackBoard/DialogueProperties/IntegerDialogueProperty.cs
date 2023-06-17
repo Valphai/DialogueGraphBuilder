@@ -15,20 +15,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
         public override BaseNode ToConcreteNode()
         {
-            //switch (FloatType)
-            //{
-            //    case FloatType.Integer:
-            //        return new IntegerNode { value = (int)value };
-
-            //}
-
             IntegerPropertyNode node = new IntegerPropertyNode()
             {
-                PropertyName = DisplayName,
+                Name = DisplayName,
                 PropertyGuid = Guid,
                 Value = Value
             };
-            //node.FindInputSlot<Vector1MaterialSlot>(Vector1Node.InputSlotXId).value = value;
+
             return node;
         }
     }

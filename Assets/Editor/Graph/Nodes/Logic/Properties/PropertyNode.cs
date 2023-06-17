@@ -12,10 +12,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         protected ConstantPortInput constantPortInput;
 
         public override NodeTask NodeTask { get; set; } = NodeTask.Property;
-        public string PropertyName { get; internal set; }
         public string PropertyGuid { get; internal set; }
         public T Value { get; internal set; }
-        protected bool IsPropertyBound => PropertyGuid != string.Empty;
+        public bool IsBoundToProperty => !string.IsNullOrEmpty(PropertyGuid);
         public abstract PropertyType PropertyType { get; }
 
         protected abstract ConstantPortInput CreateConstantPortInput();
@@ -24,7 +23,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             base.Initialize(startingPosition);
 
-            Name = PropertyName;
+            if (!IsBoundToProperty)
+            {
+                Name = PropertyType.ToString(); 
+            }
 
             VisualElement element = this.Q<VisualElement>("node-border");
             if (element != null)
@@ -40,7 +42,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             constantPortInput = CreateConstantPortInput();
             constantPortInput.style.position = Position.Absolute;
             
-            if (!IsPropertyBound)
+            if (!IsBoundToProperty)
             {
                 DisplayInputField();
             }
@@ -63,20 +65,18 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void UnbindFromProperty()
         {
+            Name = PropertyType.ToString();
             PropertyGuid = string.Empty;
             DisplayInputField();
-
-            //dynamicManipulatorHandler.AddManipulator();
-            //ContextualMenu.
+            UpdateLabel();
         }
 
         public virtual void BindToProperty(IDialogueProperty property)
         {
-            PropertyName = property.DisplayName;
+            Name = property.DisplayName;
             PropertyGuid = property.Guid;
             HideInputField();
-
-            //dynamicManipulatorHandler.RemoveManipulator();
+            UpdateLabel();
         }
 
         protected virtual void HideInputField()
@@ -91,7 +91,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawTitle()
         {
-            base.DrawTitle();
+            Label label = UpdateLabel();
+            label.WithFontSize(UIStyles.LogicFontSize)
+                .WithMaxWidth(UIStyles.MaxWidth);
+
+            label.style.unityTextAlign = TextAnchor.MiddleCenter;
+
             titleContainer.WithPropertyStyle();
         }
 
@@ -105,5 +110,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
         }
 
+        private Label UpdateLabel()
+        {
+            Label label = titleContainer.Q<Label>();
+            label.text = Name;
+
+            return label;
+        }
     }
 }
