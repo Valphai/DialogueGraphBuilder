@@ -90,7 +90,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 multiline = true,
             };
             textField.WithVerticalGrow()
-                .WithStretchToParentHeight();
+                .WithFlexGrow();
 
             contentContainer.Add(textField);
 

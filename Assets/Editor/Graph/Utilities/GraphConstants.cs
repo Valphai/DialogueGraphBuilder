@@ -2,7 +2,12 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class GraphConstants
     {
-        public const int TreeViewWindowWidth = 250;
-        public const int SearchBarWidth = TreeViewWindowWidth - 50;
+        public const float TreeViewWindowWidth = 250f;
+        public const float SaveButtonWidth = 50f;
+        public const float InsertButtonWidth = 25f;
+        public const float SearchBarWidth = TreeViewWindowWidth - SaveButtonWidth;
+
+        public const int SituationViewIndex = 0;
+        public const int EntityViewIndex = 1;
     }
 }

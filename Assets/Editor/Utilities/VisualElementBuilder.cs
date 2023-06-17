@@ -3,7 +3,6 @@ using Chocolate4.Edit.Graph.Utilities;
 using System;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Utilities
@@ -94,15 +93,27 @@ namespace Chocolate4.Utilities
             return element;
         }
         
-        public static VisualElement WithStretchToParentHeight(this VisualElement element)
+        public static VisualElement WithFlexGrow(this VisualElement element)
         {
-            element.style.flexGrow = 1;
+            element.style.flexGrow = 1f;
+            return element;
+        }
+        
+        public static VisualElement WithFlexShrink(this VisualElement element)
+        {
+            element.style.flexShrink = 1f;
             return element;
         }
         
         public static VisualElement WithMinHeight(this VisualElement element, float minHeight)
         {
             element.style.minHeight = minHeight;
+            return element;
+        }
+        
+        public static VisualElement WithMinWidth(this VisualElement element, float minWidth)
+        {
+            element.style.minWidth = minWidth;
             return element;
         }
 
