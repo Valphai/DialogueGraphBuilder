@@ -33,6 +33,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             SetPosition(new Rect(startingPosition, Vector2.zero));
         }
 
+        public virtual void PostInitialize()
+        {
+
+        }
+
         public virtual void Load(NodeSaveData saveData)
         {
             NextNodeId = saveData.nextNodeId;

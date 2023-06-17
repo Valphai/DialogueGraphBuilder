@@ -3,6 +3,7 @@ using Chocolate4.Edit.Graph.Utilities;
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Utilities
@@ -43,14 +44,14 @@ namespace Chocolate4.Utilities
 
         public static VisualElement WithPropertyStyle(this VisualElement element)
         {
-            element.style.backgroundColor = UIStyles.propertyColor;
+            element.WithBackgroundColor(UIStyles.propertyColor);
             element.WithBaseNodeStyle();
             return element;
         }
 
         public static VisualElement WithLogicStyle(this VisualElement element)
         {
-            element.style.backgroundColor = UIStyles.logicColor;
+            element.WithBackgroundColor(UIStyles.logicColor);
             element.style.paddingLeft = UIStyles.PaddingMedium;
             element.WithBaseNodeStyle();
             return element;
@@ -58,7 +59,7 @@ namespace Chocolate4.Utilities
         
         public static VisualElement WithStoryStyle(this VisualElement element)
         {
-            element.style.backgroundColor = UIStyles.storyColor;
+            element.WithBackgroundColor(UIStyles.storyColor);
             element.WithBaseNodeStyle();
             return element;
         }
@@ -66,6 +67,61 @@ namespace Chocolate4.Utilities
         public static VisualElement WithBaseNodeStyle(this VisualElement element)
         {
             element.WithMaxWidth(UIStyles.MaxWidth);
+            return element;
+        }
+
+        public static VisualElement WithPortStyle(this VisualElement element, Color backgroundColor, Color borderColor)
+        {
+            element.style.borderRightColor = element.style.borderLeftColor = element.style.borderBottomColor = element.style.borderTopColor = borderColor;
+
+            const float radius = UIStyles.ConstantPortWidth;
+
+            element.WithBackgroundColor(backgroundColor)
+                .WithWidth(radius)
+                .WithHeight(radius)
+                .WithBorderRadius(radius)
+                .WithBorderWidth(1f);
+
+            const float innerRadius = UIStyles.ConstantPortOffset;
+
+            element.style.alignItems = Align.Center;
+            element.style.alignSelf = Align.Center;
+            element.style.justifyContent = Justify.Center;
+            element.style.marginLeft = innerRadius;
+            element.style.marginRight = innerRadius;
+
+            VisualElement cap = new VisualElement()
+                .WithBackgroundColor(borderColor)
+                .WithWidth(innerRadius)
+                .WithHeight(innerRadius)
+                .WithBorderRadius(innerRadius);
+
+            element.Add(cap);
+
+            return element;
+        }
+        
+        public static VisualElement WithBorderRadius(this VisualElement element, float radius)
+        {
+            element.style.borderBottomLeftRadius = element.style.borderBottomRightRadius =
+                element.style.borderTopLeftRadius =
+                element.style.borderTopRightRadius = radius;
+
+            return element;
+        }
+        
+        public static VisualElement WithBorderWidth(this VisualElement element, float width)
+        {
+            element.style.borderLeftWidth = element.style.borderRightWidth =
+                element.style.borderTopWidth =
+                element.style.borderBottomWidth = width;
+
+            return element;
+        }
+
+        public static VisualElement WithBackgroundColor(this VisualElement element, Color color)
+        {
+            element.style.backgroundColor = color;
             return element;
         }
         
@@ -81,6 +137,12 @@ namespace Chocolate4.Utilities
             return element;
         }
 
+        public static VisualElement WithMarginLeft(this VisualElement element, float margin)
+        {
+            element.style.marginLeft = margin;
+            return element;
+        }
+
         public static VisualElement WithHorizontalGrow(this VisualElement element)
         {
             element.style.flexDirection = FlexDirection.Row;
@@ -93,6 +155,12 @@ namespace Chocolate4.Utilities
             return element;
         }
         
+        public static VisualElement WithFlexBasis(this VisualElement element, float value)
+        {
+            element.style.flexBasis = value;
+            return element;
+        }
+
         public static VisualElement WithFlexGrow(this VisualElement element)
         {
             element.style.flexGrow = 1f;
@@ -105,6 +173,12 @@ namespace Chocolate4.Utilities
             return element;
         }
         
+        public static VisualElement WithOverflow(this VisualElement element)
+        {
+            element.style.overflow = Overflow.Visible; 
+            return element;
+        }
+
         public static VisualElement WithMinHeight(this VisualElement element, float minHeight)
         {
             element.style.minHeight = minHeight;
@@ -114,6 +188,18 @@ namespace Chocolate4.Utilities
         public static VisualElement WithMinWidth(this VisualElement element, float minWidth)
         {
             element.style.minWidth = minWidth;
+            return element;
+        }
+        
+        public static VisualElement WithWidth(this VisualElement element, float width)
+        {
+            element.style.width = width;
+            return element;
+        }
+        
+        public static VisualElement WithHeight(this VisualElement element, float height)
+        {
+            element.style.height = height;
             return element;
         }
 

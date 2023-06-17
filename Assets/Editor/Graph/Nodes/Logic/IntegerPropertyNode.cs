@@ -16,5 +16,18 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             return node.NodeTask != NodeTask.Property;
         }
+
+        public override void UnbindFromProperty()
+        {
+            Name = "Integer";
+            DisplayInputField();
+
+            PropertyGuid = string.Empty;
+        }
+
+        protected override ConstantPortInput CreateConstantPortInput()
+        {
+            return new ConstantPortInput(new IntegerSlotControlView(this));
+        }
     }
 }

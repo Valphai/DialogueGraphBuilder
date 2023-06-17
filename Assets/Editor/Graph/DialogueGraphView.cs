@@ -233,6 +233,7 @@ namespace Chocolate4.Edit.Graph
         {
             node.Initialize(startingPosition);
             node.Draw();
+            node.PostInitialize();
 
             AddElement(node);
         }

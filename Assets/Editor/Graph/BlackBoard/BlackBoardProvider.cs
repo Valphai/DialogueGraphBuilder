@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Edit.Graph;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         private void AddItemRequested(Blackboard blackboard)
         {
             var gm = new GenericMenu();
-            gm.AddItem(new GUIContent("Float"), false, () => AddProperty(new IntegerDialogueProperty(), true));
+            gm.AddItem(new GUIContent("Integer"), false, () => AddProperty(new IntegerDialogueProperty(), true));
             //gm.AddItem(new GUIContent("Boolean"), false, () => AddProperty(new BooleanShaderProperty(), true));
             gm.ShowAsContext();
         }
@@ -89,6 +90,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             ) { userData = property };
 
             BlackboardRow row = new BlackboardRow(field, null);
+            row.RegisterCallback<DetachFromPanelEvent>(OnBlackboardRowRemoved);
+
             row.userData = property;
 
             if (index < 0)
@@ -114,6 +117,25 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 Properties.Append(property);
                 field.OpenTextEditor();
             }
+        }
+
+        private void OnBlackboardRowRemoved(DetachFromPanelEvent evt)
+        {
+            IDialogueProperty deletedProperty = evt.currentTarget as IDialogueProperty;
+
+            Blackboard.graphView.graphElements.ForEach(element => {
+
+                if (element is not IPropertyNode)
+                {
+                    return;
+                }
+
+                IPropertyNode propertyNode = (IPropertyNode)element;
+                if (propertyNode.PropertyGuid != deletedProperty.Guid)
+                {
+                    return;
+                }
+            });
         }
     }
 }
