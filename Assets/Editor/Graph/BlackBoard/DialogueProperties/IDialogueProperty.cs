@@ -4,7 +4,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 {
     public enum PropertyType
     {
-        Boolean,
+        Bool,
         Integer
     }
 
@@ -16,7 +16,5 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         string Guid { get; }
 
         BaseNode ToConcreteNode();
-
-        IDialogueProperty Copy();
     }
 }

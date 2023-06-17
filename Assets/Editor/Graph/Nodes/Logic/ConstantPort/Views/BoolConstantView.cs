@@ -2,9 +2,9 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class BooleanSlotControlView : ConstantViewGeneric<bool>
+    public class BoolConstantView : ConstantViewGeneric<bool>
     {
-        public BooleanSlotControlView(PropertyNode<bool> propertyNode) : base(propertyNode) { }
+        public BoolConstantView(PropertyNode<bool> propertyNode) : base(propertyNode) { }
 
         public override VisualElement CreateControl()
         {

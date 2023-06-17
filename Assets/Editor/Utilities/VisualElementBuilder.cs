@@ -19,13 +19,12 @@ namespace Chocolate4.Utilities
             return contextualMenuManipulator;
         }
 
-        public static VisualElement AddContextualMenu(this VisualElement element, string actionEntryTitle, Action<DropdownMenuAction> action)
+        public static IManipulator AddContextualMenu(this VisualElement element, string actionEntryTitle, Action<DropdownMenuAction> action)
         {
-            VisualElementExtensions.AddManipulator(element,
-                CreateContextualMenuManipulator(actionEntryTitle, action)
-            );
+            IManipulator manipulator = CreateContextualMenuManipulator(actionEntryTitle, action);
+            element.AddManipulator(manipulator);
 
-            return element;
+            return manipulator;
         }
 
         public static Button WithOnClick(this Button button, Action clicked)

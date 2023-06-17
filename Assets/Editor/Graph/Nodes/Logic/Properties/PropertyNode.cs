@@ -20,11 +20,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected abstract ConstantPortInput CreateConstantPortInput();
 
-        public virtual void UnbindFromProperty()
-        {
-            DisplayInputField();
-        }
-
         public override void Initialize(Vector3 startingPosition)
         {
             base.Initialize(startingPosition);
@@ -44,7 +39,16 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             constantPortInput = CreateConstantPortInput();
             constantPortInput.style.position = Position.Absolute;
-            constantPortInput.visible = IsPropertyBound;
+            
+            if (!IsPropertyBound)
+            {
+                DisplayInputField();
+            }
+            else
+            {
+                HideInputField();
+            }
+            
             constantPortInput.BringToFront();
             constantPortInput
                 .WithMarginLeft(UIStyles.ConstantPortInputMarginLeft)
@@ -55,6 +59,34 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 .WithBackgroundColor(UIStyles.defaultDarkColor);
 
             inputContainer.Add(constantPortInput);
+        }
+
+        public virtual void UnbindFromProperty()
+        {
+            PropertyGuid = string.Empty;
+            DisplayInputField();
+
+            //dynamicManipulatorHandler.AddManipulator();
+            //ContextualMenu.
+        }
+
+        public virtual void BindToProperty(IDialogueProperty property)
+        {
+            PropertyName = property.DisplayName;
+            PropertyGuid = property.Guid;
+            HideInputField();
+
+            //dynamicManipulatorHandler.RemoveManipulator();
+        }
+
+        protected virtual void HideInputField()
+        {
+            constantPortInput.style.visibility = Visibility.Hidden;
+        }
+        
+        protected virtual void DisplayInputField()
+        {
+            constantPortInput.style.visibility = Visibility.Visible;
         }
 
         protected override void DrawTitle()
@@ -73,14 +105,5 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
         }
 
-        protected virtual void HideInputField()
-        {
-            constantPortInput.visible = false;
-        }
-        
-        protected virtual void DisplayInputField()
-        {
-            constantPortInput.visible = true;
-        }
     }
 }

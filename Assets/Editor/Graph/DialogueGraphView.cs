@@ -4,7 +4,6 @@ using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +26,8 @@ namespace Chocolate4.Edit.Graph
         
         public void Initialize()
         {
+            graphViewChanged = OnGraphViewChange;
+
             ResolveDependencies();
 
             AddManipulators();
@@ -204,10 +205,15 @@ namespace Chocolate4.Edit.Graph
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new ClickSelector());
             this.AddManipulator(new DragAndDropManipulator(this));
+        }
 
-            this.AddManipulator(VisualElementBuilder.CreateContextualMenuManipulator($"Add Group",
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            base.BuildContextualMenu(evt);
+
+            evt.menu.AppendAction($"Add Group",
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
-            ));
+            );
 
             IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
 
@@ -215,10 +221,42 @@ namespace Chocolate4.Edit.Graph
             foreach (Type nodeType in nodeTypes)
             {
                 contextElementTitle = nodeType.Name;
-                VisualElementExtensions.AddManipulator(this, VisualElementBuilder.CreateContextualMenuManipulator($"Add {contextElementTitle}", 
+                evt.menu.AppendAction($"Add {contextElementTitle}",
                     actionEvent => CreateNode(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition), nodeType)
-                ));
+                );
             }
+
+            if (evt.target is BaseNode)
+            {
+                evt.menu.AppendAction("Convert To Property", ConvertToProperty, ConvertToPropertyStatus);
+            }
+        }
+
+        private void ConvertToProperty(DropdownMenuAction arg)
+        {
+            IEnumerable<IPropertyNode> selectedPropertyNodes = selection.OfType<IPropertyNode>();
+            IEnumerable<Type> propertyTypes = TypeExtensions.GetTypes<IDialogueProperty>();
+
+            foreach (IPropertyNode propertyNode in selectedPropertyNodes)
+            {
+                Type typeToMake = 
+                    propertyTypes.First(type => type.ToString().Contains(propertyNode.PropertyType.ToString()));
+
+                IDialogueProperty property = (IDialogueProperty)Activator.CreateInstance(typeToMake);
+
+                blackBoardProvider.AddProperty(property, true);
+                propertyNode.BindToProperty(property);
+            }
+        }
+
+        private DropdownMenuAction.Status ConvertToPropertyStatus(DropdownMenuAction arg)
+        {
+            if (selection.OfType<IPropertyNode>().Any(node => node != null))
+            {
+                return DropdownMenuAction.Status.Normal;
+            }
+
+            return DropdownMenuAction.Status.Hidden;
         }
 
         private BaseNode CreateNode(Vector2 startingPosition, Type nodeType)
@@ -283,6 +321,25 @@ namespace Chocolate4.Edit.Graph
         {
             Vector2 mousePositionWorld = mousePosition;
             return contentViewContainer.WorldToLocal(mousePositionWorld);
+        }
+
+        private GraphViewChange OnGraphViewChange(GraphViewChange change)
+        {
+            if (change.elementsToRemove.IsNullOrEmpty())
+            {
+                return change;
+            }
+
+            foreach (GraphElement elementToRemove in change.elementsToRemove)
+            {
+                if (elementToRemove.userData is IDialogueProperty)
+                {
+                    blackBoardProvider.HandlePropertyRemove(elementToRemove.userData as IDialogueProperty);
+                    return change;
+                }
+            }
+
+            return change;
         }
     }
 }

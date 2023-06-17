@@ -3,12 +3,12 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class IntegerSlotControlView : ConstantViewGeneric<int>
+    public class IntegerConstantView : ConstantViewGeneric<int>
     {
         [SerializeField]
         private TextField textField;
 
-        public IntegerSlotControlView(PropertyNode<int> propertyNode) : base(propertyNode) { }
+        public IntegerConstantView(PropertyNode<int> propertyNode) : base(propertyNode) { }
 
         public override VisualElement CreateControl()
         {

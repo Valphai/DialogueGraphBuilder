@@ -43,6 +43,39 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             Blackboard.Add(section);
         }
 
+        public void HandlePropertyRemove(IDialogueProperty deletedProperty)
+        {
+            if (!propertyRows.TryGetValue(deletedProperty.Guid, out BlackboardRow row))
+            {
+                return;
+            }
+
+            row.RemoveFromHierarchy();
+
+            Blackboard.graphView.graphElements.ForEach(element => {
+
+                if (element is not IPropertyNode)
+                {
+                    return;
+                }
+
+                IPropertyNode propertyNode = (IPropertyNode)element;
+                string propertyGuid = propertyNode.PropertyGuid;
+                if (string.IsNullOrEmpty(propertyGuid))
+                {
+                    return;
+                }
+
+                if (propertyGuid != deletedProperty.Guid)
+                {
+                    return;
+                }
+
+                propertyRows.Remove(propertyGuid);
+                propertyNode.UnbindFromProperty();
+            });
+        }
+
         private void MoveItemRequested(Blackboard arg1, int arg2, VisualElement arg3)
         {
             throw new NotImplementedException();
@@ -71,7 +104,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
         }
 
-        private void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
+        public void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
         {
             if (propertyRows.ContainsKey(property.Guid))
             {
@@ -90,7 +123,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             ) { userData = property };
 
             BlackboardRow row = new BlackboardRow(field, null);
-            row.RegisterCallback<DetachFromPanelEvent>(OnBlackboardRowRemoved);
 
             row.userData = property;
 
@@ -117,25 +149,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 Properties.Append(property);
                 field.OpenTextEditor();
             }
-        }
-
-        private void OnBlackboardRowRemoved(DetachFromPanelEvent evt)
-        {
-            IDialogueProperty deletedProperty = evt.currentTarget as IDialogueProperty;
-
-            Blackboard.graphView.graphElements.ForEach(element => {
-
-                if (element is not IPropertyNode)
-                {
-                    return;
-                }
-
-                IPropertyNode propertyNode = (IPropertyNode)element;
-                if (propertyNode.PropertyGuid != deletedProperty.Guid)
-                {
-                    return;
-                }
-            });
         }
     }
 }

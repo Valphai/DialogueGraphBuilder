@@ -35,15 +35,8 @@ namespace Chocolate4.Edit.Graph.Utilities
 
             List<Port> outputPorts = node.outputContainer.Children()
                 .OfType<Port>().ToList();
-            
-            //IEnumerable<Port> anotherInputPorts = node.inputContainer.Children()
-            //    .OfType<Port>();
-
-            //IEnumerable<Port> anotherOutputPorts = node.outputContainer.Children()
-            //    .OfType<Port>();
 
             IEnumerable<Port> allPorts = inputPorts.Concat(outputPorts);
-            //IEnumerable<Port> anotherAllPorts = anotherInputPorts.Concat(anotherOutputPorts);
 
             return allPorts.Any(port => port.IsConnectedTo(another));
         }

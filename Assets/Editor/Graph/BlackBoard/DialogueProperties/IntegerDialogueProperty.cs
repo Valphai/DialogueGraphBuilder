@@ -22,20 +22,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
             //}
 
-            IntegerPropertyNode node = new IntegerPropertyNode() 
-            { 
-                PropertyName = DisplayName, 
-                PropertyGuid = Guid, 
-                Value = Value 
+            IntegerPropertyNode node = new IntegerPropertyNode()
+            {
+                PropertyName = DisplayName,
+                PropertyGuid = Guid,
+                Value = Value
             };
             //node.FindInputSlot<Vector1MaterialSlot>(Vector1Node.InputSlotXId).value = value;
             return node;
         }
-
-        public override IDialogueProperty Copy() => new IntegerDialogueProperty()
-        {
-            DisplayName = DisplayName,
-            Value = Value
-        };
     }
 }

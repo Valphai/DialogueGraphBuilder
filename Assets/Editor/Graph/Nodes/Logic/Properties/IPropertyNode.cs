@@ -9,5 +9,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         PropertyType PropertyType { get; }
 
         void UnbindFromProperty();
+        void BindToProperty(IDialogueProperty property);
     }
 }

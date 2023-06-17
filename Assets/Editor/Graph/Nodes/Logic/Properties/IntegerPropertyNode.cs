@@ -27,7 +27,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override ConstantPortInput CreateConstantPortInput()
         {
-            return new ConstantPortInput(new IntegerSlotControlView(this));
+            return new ConstantPortInput(new IntegerConstantView(this));
         }
     }
 }

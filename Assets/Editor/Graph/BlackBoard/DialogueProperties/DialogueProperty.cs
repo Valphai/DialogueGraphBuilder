@@ -25,6 +25,5 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         public abstract PropertyType PropertyType { get; }
 
         public abstract BaseNode ToConcreteNode();
-        public abstract IDialogueProperty Copy();
     }
 }
