@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Edit.Tree;
+using Chocolate4.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -30,6 +31,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         protected override void DrawPorts()
         {
             DrawInputPort();
+        }
+
+        protected override void DrawTitle()
+        {
+            base.DrawTitle();
+            titleContainer.WithTransferStyle();
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)

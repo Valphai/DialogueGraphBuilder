@@ -58,7 +58,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 .WithMinHeight(UIStyles.ConstantPortInputMinHeight)
                 .WithHorizontalGrow()
                 .WithMarginTop(0f)
-                .WithBackgroundColor(UIStyles.defaultDarkColor);
+                .WithBackgroundColor(UIStyles.DefaultDarkColor);
 
             inputContainer.Add(constantPortInput);
         }

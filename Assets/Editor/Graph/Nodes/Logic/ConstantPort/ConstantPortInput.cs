@@ -19,8 +19,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 @from = new Vector2(95f, 11.5f),
                 to = new Vector2(95f + 24f, 11.5f),
                 edgeWidth = 2,
-                inputColor = UIStyles.defaultLightColor,
-                outputColor = UIStyles.defaultLightColor,
+                inputColor = UIStyles.DefaultLightColor,
+                outputColor = UIStyles.DefaultLightColor,
                 pickingMode = PickingMode.Ignore
             };
 
@@ -44,7 +44,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 container.Add(containerControl);
             }
 
-            VisualElement connector = new VisualElement().WithPortStyle(UIStyles.defaultDarkerColor, UIStyles.defaultLightColor);
+            VisualElement connector = new VisualElement().WithPortStyle(UIStyles.DefaultDarkerColor, UIStyles.DefaultLightColor);
 
             container.Add(connector);
             Add(container);

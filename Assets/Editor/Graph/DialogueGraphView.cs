@@ -24,9 +24,10 @@ namespace Chocolate4.Edit.Graph
 
         public DragSelectablesHandler DragSelectablesHandler { get; private set; }
         internal SituationCache SituationCache { get; private set; }
-        
+
         public void Initialize()
         {
+            deleteSelection = CustomDeleteSelection;
             graphViewChanged = OnGraphViewChange;
 
             ResolveDependencies();
@@ -208,7 +209,7 @@ namespace Chocolate4.Edit.Graph
 
                     string childID = portData.nextNodeID;
                     IEnumerable<BaseNode> connections =
-                        nodes.Where(childNode => childNode.ID == childID);// this might be not needed? && childNode.ID != node.ID);
+                        nodes.Where(childNode => childNode.ID == childID);
 
                     Port outputPort = node.outputContainer.Q<Port>(portData.thisPortName);
 
@@ -353,6 +354,28 @@ namespace Chocolate4.Edit.Graph
             }
 
             return change;
+        }
+
+        private void CustomDeleteSelection(string operationName, AskUser askUser)
+        {
+            HashSet<GraphElement> toRemove = new HashSet<GraphElement>();
+            foreach (ISelectable selectable in selection)
+            {
+                if (selectable is not GraphElement)
+                {
+                    continue;
+                }
+
+                if (selectable is StartNode or EndNode)
+                {
+                    continue;
+                }
+
+                toRemove.Add(selectable as GraphElement);
+            }
+
+            //graph.owner.RegisterCompleteObjectUndo(operationName);
+            DeleteElements(toRemove);
         }
     }
 }

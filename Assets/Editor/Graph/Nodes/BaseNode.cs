@@ -78,9 +78,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawContent()
         {
-            VisualElement contentContainer = new VisualElement()
-                .WithMinHeight(UIStyles.MaxHeight)
-                .WithMaxWidth(UIStyles.MaxWidth);
+            VisualElement contentContainer = new VisualElement();
 
             AddExtraContent(contentContainer);
 
@@ -89,19 +87,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void AddExtraContent(VisualElement contentContainer)
         {
-            TextField textField = new TextField()
-            {
-                value = Text,
-                multiline = true,
-            };
-            textField.WithVerticalGrow()
-                .WithFlexGrow();
-
-            contentContainer.Add(textField);
-
-            textField.Q<TextElement>()
-                .WithMaxWidth(UIStyles.MaxWidth)
-                .WithExpandableHeight();
+            
         }
 
         protected virtual void DrawOutputPort()

@@ -43,14 +43,14 @@ namespace Chocolate4.Utilities
 
         public static VisualElement WithPropertyStyle(this VisualElement element)
         {
-            element.WithBackgroundColor(UIStyles.propertyColor);
+            element.WithBackgroundColor(UIStyles.PropertyColor);
             element.WithBaseNodeStyle();
             return element;
         }
 
         public static VisualElement WithLogicStyle(this VisualElement element)
         {
-            element.WithBackgroundColor(UIStyles.logicColor);
+            element.WithBackgroundColor(UIStyles.LogicColor);
             element.style.paddingLeft = UIStyles.PaddingMedium;
             element.WithBaseNodeStyle();
             return element;
@@ -58,7 +58,14 @@ namespace Chocolate4.Utilities
         
         public static VisualElement WithStoryStyle(this VisualElement element)
         {
-            element.WithBackgroundColor(UIStyles.storyColor);
+            element.WithBackgroundColor(UIStyles.StoryColor);
+            element.WithBaseNodeStyle();
+            return element;
+        }
+        
+        public static VisualElement WithTransferStyle(this VisualElement element)
+        {
+            element.WithBackgroundColor(UIStyles.TransferColor);
             element.WithBaseNodeStyle();
             return element;
         }

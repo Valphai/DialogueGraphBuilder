@@ -5,5 +5,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 		Logic,
 		Property,
 		Dialogue,
+		Transfer
 	}
 }
