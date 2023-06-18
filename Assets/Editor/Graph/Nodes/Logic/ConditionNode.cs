@@ -21,20 +21,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             return node.NodeTask == NodeTask.Dialogue;
         }
 
-        public override void Initialize(Vector3 startingPosition)
-        {
-            base.Initialize(startingPosition);
-
-            Choices.Add("True");
-            Choices.Add("False");
-        }
-
         protected override void DrawTitle()
         {
             Label Label = new Label() { text = Name };
 
-            Label.WithFontSize(UIStyles.LogicFontSize);
-            Label.WithMarginTop(UIStyles.LogicMarginTop);
+            Label.WithFontSize(UIStyles.LogicFontSize)
+                .WithMarginTop(UIStyles.LogicMarginTop);
 
             titleContainer.Insert(0, Label);
             titleContainer.WithLogicStyle();
@@ -48,12 +40,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             DrawInputPort();
 
-            foreach (string choice in Choices)
-            {
-                Port choicePort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-                choicePort.portName = choice;
-                outputContainer.Add(choicePort);
-            }
+            Port truePort = DrawPort("True", Direction.Output, Port.Capacity.Single);
+            Port falsePort = DrawPort("False", Direction.Output, Port.Capacity.Single);
+
+            outputContainer.Add(truePort);
+            outputContainer.Add(falsePort);
         }
     }
 }

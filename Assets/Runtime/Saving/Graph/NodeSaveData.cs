@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Chocolate4.Dialogue.Runtime.Saving
@@ -11,6 +12,6 @@ namespace Chocolate4.Dialogue.Runtime.Saving
         public string text;
         public Vector2 position;
         public string groupID;
-        public string nextNodeId;
+        public List<PortData> portDatas;
     }
 }

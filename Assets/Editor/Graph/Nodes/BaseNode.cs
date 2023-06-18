@@ -14,9 +14,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public string NextNodeId { get; set; }
         public string GroupID { get; set; }
         public string ID { get; set; }
-        public List<string> Choices { get; set; }
         public string Text { get; set; }
         public Type NodeType { get; set; }
+        public List<PortData> OutputPortDatas { get; set; }
         public abstract string Name { get; set; }
         public abstract NodeTask NodeTask { get; set; }
 
@@ -25,7 +25,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public virtual void Initialize(Vector3 startingPosition)
         {
             ID = Guid.NewGuid().ToString();
-            Choices = new List<string>();
+            OutputPortDatas = new List<PortData>();
             Text = string.Empty;
             NodeType = GetType();
 
@@ -39,7 +39,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Load(NodeSaveData saveData)
         {
-            NextNodeId = saveData.nextNodeId;
+            OutputPortDatas = saveData.portDatas;
             ID = saveData.nodeID;
             Text = saveData.text;
             GroupID = saveData.groupID;
@@ -106,20 +106,24 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawOutputPort()
         {
-            Port port = DrawPort("Output", Direction.Output, Port.Capacity.Single);
-            outputContainer.Add(port);
+            Port outputPort = DrawPort("Output", Direction.Output, Port.Capacity.Single);
+            outputContainer.Add(outputPort);
+
+            PortData portData = new PortData() { thisPortName = outputPort.portName };
+            OutputPortDatas.Add(portData);
         }
 
         protected virtual void DrawInputPort()
         {
-            Port port = DrawPort("Input", Direction.Input, Port.Capacity.Multi);
-            inputContainer.Add(port);
+            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Multi);
+            inputContainer.Add(inputPort);
         }
 
         protected Port DrawPort(string name, Direction direction, Port.Capacity capacity)
         {
             Port port = InstantiatePort(Orientation.Horizontal, direction, capacity, typeof(bool));
-            port.portName = name;
+            port.portName = port.name = name;
+
             return port;
         }
     }

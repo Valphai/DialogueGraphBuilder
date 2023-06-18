@@ -37,32 +37,29 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
             NodeSaveData SaveNode(BaseNode node)
             {
-                Port outputPort = node.outputContainer.Q<Port>();
-                if (outputPort != null)
+                IEnumerable<Port> outputPorts = node.outputContainer.Children().OfType<Port>();
+
+                if (!outputPorts.IsNullOrEmpty())
                 {
-                    var connectionsMap = NodeUtilities.GetConnections(outputPort, NodeUtilities.PortType.Input);
-
-                    if (!connectionsMap.IsNullOrEmpty())
+                    foreach (Port outputPort in outputPorts)
                     {
-                        connectionsMap.ForEach(child => {
-                            if (string.IsNullOrEmpty(node.NextNodeId))
-                            {
-                                node.NextNodeId = child.ID;
-                                return;
-                            }
+                        PortData portData = node.OutputPortDatas.Find(portData => portData.thisPortName.Equals(outputPort.portName));
 
-                            if (!node.NextNodeId.Equals(child.ID))
-                            {
-                                node.NextNodeId = child.ID;
-                                return;
-                            }
-                        });
+                        List<BaseNode> connectedNodes = 
+                            NodeUtilities.GetConnections(outputPort, portData, NodeUtilities.PortType.Input);
+
+                        if (connectedNodes.IsNullOrEmpty())
+                        {
+                            continue;
+                        }
+
+                        connectedNodes.ForEach(child => portData.nextNodeID = child.ID);
                     }
                 }
 
                 return new NodeSaveData()
                 {
-                    nextNodeId = node.NextNodeId,
+                    portDatas = node.OutputPortDatas,
                     nodeID = node.ID,
                     nodeType = node.NodeType.ToString(),
                     text = node.Text,

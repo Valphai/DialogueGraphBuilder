@@ -10,6 +10,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Edit.Graph
@@ -198,25 +199,37 @@ namespace Chocolate4.Edit.Graph
         {
             foreach (BaseNode node in nodes)
             {
-                string childID = node.NextNodeId;
-                IEnumerable<BaseNode> connections =
-                    nodes.Where(childNode => childNode.ID == childID && childNode.ID != node.ID);
+                foreach (PortData portData in node.OutputPortDatas)
+                {
+                    if (string.IsNullOrEmpty(portData.thisPortName))
+                    {
+                        continue;
+                    }
 
-                Port outputPort = node.outputContainer.Q<Port>();
-                ConnectPorts(outputPort, connections);
+                    string childID = portData.nextNodeID;
+                    IEnumerable<BaseNode> connections =
+                        nodes.Where(childNode => childNode.ID == childID);// this might be not needed? && childNode.ID != node.ID);
+
+                    Port outputPort = node.outputContainer.Q<Port>(portData.thisPortName);
+
+                    ConnectPorts(outputPort, portData, connections);
+                }
             }
         }
 
-        private void ConnectPorts(Port port, IEnumerable<BaseNode> connections)
+        private void ConnectPorts(Port port, PortData portData, IEnumerable<BaseNode> connections)
         {
             foreach (BaseNode otherNode in connections)
             {
-                Port otherPort = otherNode.inputContainer.Q<Port>();
+                Port otherPort = otherNode.inputContainer.Q<Port>(portData.nextPortName);
+                if (otherPort == null)
+                {
+                    continue;
+                }
 
-                Edge edge = otherPort.ConnectTo(port);
+                Edge edge = port.ConnectTo(otherPort);
 
                 AddElement(edge);
-
                 otherNode.RefreshPorts();
             }
         }
