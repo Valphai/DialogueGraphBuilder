@@ -5,8 +5,8 @@ namespace Chocolate4.Dialogue.Runtime.Saving
     [Serializable]
     public class PortData
     {
-        public string nextNodeID;
-        public string nextPortName;
+        public string otherNodeID;
+        public string otherPortName;
         public string thisPortName;
     }
 }

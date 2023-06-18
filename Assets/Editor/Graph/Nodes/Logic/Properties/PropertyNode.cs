@@ -92,7 +92,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         protected override void DrawTitle()
         {
             Label label = UpdateLabel();
-            label.WithFontSize(UIStyles.LogicFontSize)
+            label.WithFontSize(UIStyles.FontSize)
                 .WithMaxWidth(UIStyles.MaxWidth);
 
             label.style.unityTextAlign = TextAnchor.MiddleCenter;

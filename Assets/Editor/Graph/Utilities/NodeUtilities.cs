@@ -23,7 +23,7 @@ namespace Chocolate4.Edit.Graph.Utilities
             foreach (Edge connection in connections)
             {
                 Port otherPort = requestedPort == PortType.Input ? connection.input : connection.output;
-                portData.nextPortName = otherPort.portName;
+                portData.otherPortName = otherPort.portName;
 
                 connectionsMap.Add(otherPort.node as BaseNode);
             }

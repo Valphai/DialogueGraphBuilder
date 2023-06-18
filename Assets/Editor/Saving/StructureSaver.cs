@@ -53,13 +53,13 @@ namespace Chocolate4.Dialogue.Edit.Saving
                             continue;
                         }
 
-                        connectedNodes.ForEach(child => portData.nextNodeID = child.ID);
+                        connectedNodes.ForEach(child => portData.otherNodeID = child.ID);
                     }
                 }
 
                 return new NodeSaveData()
                 {
-                    portDatas = node.OutputPortDatas,
+                    outputPortDatas = node.OutputPortDatas,
                     nodeID = node.ID,
                     nodeType = node.NodeType.ToString(),
                     text = node.Text,

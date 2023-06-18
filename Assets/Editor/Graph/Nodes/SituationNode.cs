@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -20,12 +19,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override bool CanConnectTo(BaseNode node, Direction direction)
         {
             return true;
-        }
-
-        public override void Initialize(Vector3 startingPosition)
-        {
-            base.Initialize(startingPosition);
-            Name = "Next Situation";
         }
 
         protected override void DrawPorts()

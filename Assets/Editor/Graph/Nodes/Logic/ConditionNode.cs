@@ -25,7 +25,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             Label Label = new Label() { text = Name };
 
-            Label.WithFontSize(UIStyles.LogicFontSize)
+            Label.WithFontSize(UIStyles.FontSize)
                 .WithMarginTop(UIStyles.LogicMarginTop);
 
             titleContainer.Insert(0, Label);

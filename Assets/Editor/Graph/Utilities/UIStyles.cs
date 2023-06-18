@@ -14,7 +14,7 @@ namespace Chocolate4.Edit.Graph.Utilities
         public static Color DefaultDarkerColor { get; private set; } = new Color(33f / 255f, 35f / 255f, 37f / 255f);
         public static Color DefaultLightColor { get; private set; } = new Color(180f / 255f, 180f / 255f, 180f / 255f);
 
-        public const float LogicFontSize = 14f;
+        public const float FontSize = 14f;
 
         public const float LogicMarginTop = 10f;
         public const float PaddingSmall = 4f;

@@ -16,7 +16,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public string ID { get; set; }
         public string Text { get; set; }
         public Type NodeType { get; set; }
-        public List<PortData> OutputPortDatas { get; set; }
+        public List<PortData> OutputPortDatas { get; private set; }
         public abstract string Name { get; set; }
         public abstract NodeTask NodeTask { get; set; }
 
@@ -39,7 +39,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Load(NodeSaveData saveData)
         {
-            OutputPortDatas = saveData.portDatas;
+            OutputPortDatas = saveData.outputPortDatas;
             ID = saveData.nodeID;
             Text = saveData.text;
             GroupID = saveData.groupID;
@@ -61,7 +61,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             textField.AddToClassList(UIStyles.TextFieldHiddenUSS);
 
             textField.Q<TextElement>()
-                .WithFontSize(UIStyles.LogicFontSize)
+                .WithFontSize(UIStyles.FontSize)
                 .WithMaxWidth(UIStyles.MaxWidth)
                 .WithHorizontalGrow()
                 .WithExpandableHeight();

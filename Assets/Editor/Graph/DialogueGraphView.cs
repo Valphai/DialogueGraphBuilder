@@ -208,7 +208,7 @@ namespace Chocolate4.Edit.Graph
                         continue;
                     }
 
-                    string childID = portData.nextNodeID;
+                    string childID = portData.otherNodeID;
                     IEnumerable<BaseNode> connections =
                         nodes.Where(childNode => childNode.ID == childID);
 
@@ -223,7 +223,7 @@ namespace Chocolate4.Edit.Graph
         {
             foreach (BaseNode otherNode in connections)
             {
-                Port otherPort = otherNode.inputContainer.Q<Port>(portData.nextPortName);
+                Port otherPort = otherNode.inputContainer.Q<Port>(portData.otherPortName);
                 if (otherPort == null)
                 {
                     continue;

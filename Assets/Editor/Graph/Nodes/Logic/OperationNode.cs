@@ -1,22 +1,33 @@
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Edit.Graph.Utilities;
 using Chocolate4.Utilities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class AdditionNode : BaseNode, ILogicEvaluate
+    public enum Operator
+    {
+        Add,
+        Subtract,
+        Multiply,
+        Divide
+    }
+
+    public class OperationNode : BaseNode//, ILogicEvaluate
     {
         private const string Port1 = "Input 1";
         private const string Port2 = "Input 2";
 
         private Port inputPort1;
         private Port inputPort2;
+        private PopupField<string> popupField;
+        private Operator operatorToUse;
 
-        public override string Name { get; set; } = "Addition";
+        public override string Name { get; set; } = "Operation";
         public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
@@ -75,27 +86,39 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawTitle()
         {
-            Label Label = new Label() { text = "Add" };
-            Label.WithFontSize(UIStyles.LogicFontSize);
-            Label.WithMarginTop(UIStyles.LogicMarginTop);
+            Label Label = new Label() { text = Name };
+            Label.WithFontSize(UIStyles.FontSize)
+                .WithMarginTop(UIStyles.LogicMarginTop);
 
             titleContainer.Insert(0, Label);
             titleContainer.WithLogicStyle();
         }
 
-        protected override void DrawContent()
+        protected override void AddExtraContent(VisualElement contentContainer)
         {
+            CreatePopup();
+            contentContainer.Add(popupField);
         }
 
-        public void Evaluate()
+        private void CreatePopup()
         {
-            IPropertyNode connectedInputNode1 = inputPort1.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
-            IPropertyNode connectedInputNode2 = inputPort2.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
+            List<string> choices = Enum.GetNames(typeof(Operator)).ToList();
 
-            if (connectedInputNode1 is IntegerPropertyNode)
-            {
-                outputContainer.Q<Port>("Output").userData = ((IntegerPropertyNode)connectedInputNode1).Value + ((IntegerPropertyNode)connectedInputNode2).Value;
-            }
+            popupField = new PopupField<string>(choices, 0, selectedName => {
+                operatorToUse = (Operator)Enum.Parse(typeof(Operator), selectedName);
+                return selectedName;
+            });
         }
+
+        //public void Evaluate()
+        //{
+        //    IPropertyNode connectedInputNode1 = inputPort1.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
+        //    IPropertyNode connectedInputNode2 = inputPort2.connections.First(edge => edge.output.node != this).output.node as IPropertyNode;
+
+        //    if (connectedInputNode1 is IntegerPropertyNode)
+        //    {
+        //        outputContainer.Q<Port>("Output").userData = ((IntegerPropertyNode)connectedInputNode1).Value + ((IntegerPropertyNode)connectedInputNode2).Value;
+        //    }
+        //}
     }
 }
