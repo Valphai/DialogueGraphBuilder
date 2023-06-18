@@ -2,8 +2,71 @@
     "graphSaveData": {
         "situationSaveData": [
             {
-                "situationGuid": "6f5659b0-031b-4339-b5a8-625cb17c9a4e",
-                "nodeData": []
+                "situationGuid": "334c5894-285f-4447-b748-46e412ae1613",
+                "nodeData": [
+                    {
+                        "nodeID": "afee8aef-5f94-42a1-8f79-1b941addf5d1",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "text": "",
+                        "position": {
+                            "x": 571.0,
+                            "y": 0.0
+                        },
+                        "groupID": "",
+                        "portDatas": []
+                    },
+                    {
+                        "nodeID": "df98d034-8dd0-4122-88f6-c36cb85e9c77",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.StartNode",
+                        "text": "",
+                        "position": {
+                            "x": 75.0,
+                            "y": 9.0
+                        },
+                        "groupID": "",
+                        "portDatas": [
+                            {
+                                "nextNodeID": "9355e11e-5e08-4193-954d-e87d988bb123",
+                                "nextPortName": "Input",
+                                "thisPortName": "Output"
+                            }
+                        ]
+                    },
+                    {
+                        "nodeID": "9355e11e-5e08-4193-954d-e87d988bb123",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 225.0,
+                            "y": -222.0
+                        },
+                        "groupID": "",
+                        "portDatas": [
+                            {
+                                "nextNodeID": "9a3bd91a-cccb-4e49-96f1-b4ab1af3b64b",
+                                "nextPortName": "Input",
+                                "thisPortName": "Output"
+                            }
+                        ]
+                    },
+                    {
+                        "nodeID": "9a3bd91a-cccb-4e49-96f1-b4ab1af3b64b",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                        "text": "",
+                        "position": {
+                            "x": 436.0,
+                            "y": -286.0
+                        },
+                        "groupID": "",
+                        "portDatas": [
+                            {
+                                "nextNodeID": "afee8aef-5f94-42a1-8f79-1b941addf5d1",
+                                "nextPortName": "Input",
+                                "thisPortName": "Output"
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -13,7 +76,7 @@
                 "depth": 0,
                 "rootItem": {
                     "displayName": "New Situation",
-                    "guid": "6f5659b0-031b-4339-b5a8-625cb17c9a4e",
+                    "guid": "334c5894-285f-4447-b748-46e412ae1613",
                     "prefix": "S"
                 },
                 "childrenGuids": []

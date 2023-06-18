@@ -2,6 +2,8 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class GraphConstants
     {
+        public const float StartingNodesOffset = 200f;
+
         public const float TreeViewWindowWidth = 250f;
         public const float SaveButtonWidth = 50f;
         public const float InsertButtonWidth = 25f;

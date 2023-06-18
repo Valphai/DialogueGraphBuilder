@@ -10,7 +10,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Edit.Graph
@@ -38,15 +37,6 @@ namespace Chocolate4.Edit.Graph
             AddStyles();
         }
 
-        private void ResolveDependencies()
-        {
-            SituationCache = new SituationCache(null);
-            DragSelectablesHandler = new DragSelectablesHandler();
-
-            blackBoardProvider = new BlackBoardProvider(this);
-            Add(blackBoardProvider.Blackboard);
-        }
-
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             base.BuildContextualMenu(evt);
@@ -55,7 +45,8 @@ namespace Chocolate4.Edit.Graph
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             );
 
-            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>();
+            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>()
+                .Except(new Type[] { typeof(StartNode), typeof(EndNode) });
 
             string contextElementTitle;
             foreach (Type nodeType in nodeTypes)
@@ -166,6 +157,15 @@ namespace Chocolate4.Edit.Graph
             }
         }
 
+        private void ResolveDependencies()
+        {
+            SituationCache = new SituationCache(null);
+            DragSelectablesHandler = new DragSelectablesHandler();
+
+            blackBoardProvider = new BlackBoardProvider(this);
+            Add(blackBoardProvider.Blackboard);
+        }
+
         private void CacheActiveSituation()
         {
             SituationSaveData situationSaveData = 
@@ -178,8 +178,9 @@ namespace Chocolate4.Edit.Graph
         {
             DeleteElements(graphElements);
 
-            if (situationData.nodeData == null)
+            if (situationData.nodeData.IsNullOrEmpty())
             {
+                AddStartingNodes();
                 return;
             }
 
@@ -376,6 +377,17 @@ namespace Chocolate4.Edit.Graph
 
             //graph.owner.RegisterCompleteObjectUndo(operationName);
             DeleteElements(toRemove);
+        }
+
+        private void AddStartingNodes()
+        {
+            Vector2 offset = Vector2.right * GraphConstants.StartingNodesOffset;
+            Vector2 middlePoint = new Vector2(
+                contentContainer.contentRect.width * .5f, contentContainer.contentRect.height * .5f
+            );
+
+            CreateNode(middlePoint - offset, typeof(StartNode));
+            CreateNode(middlePoint + offset, typeof(EndNode));
         }
     }
 }
