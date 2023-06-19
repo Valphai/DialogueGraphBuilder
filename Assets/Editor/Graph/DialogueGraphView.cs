@@ -46,8 +46,8 @@ namespace Chocolate4.Edit.Graph
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             );
 
-            IEnumerable<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>()
-                .Except(new Type[] { typeof(StartNode), typeof(EndNode) });
+            List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>()
+                .Except(new Type[] { typeof(StartNode), typeof(EndNode) }).ToList();
 
             string contextElementTitle;
             foreach (Type nodeType in nodeTypes)
@@ -210,8 +210,8 @@ namespace Chocolate4.Edit.Graph
                     }
 
                     string childID = portData.otherNodeID;
-                    IEnumerable<BaseNode> connections =
-                        nodes.Where(childNode => childNode.ID == childID);
+                    List<BaseNode> connections =
+                        nodes.Where(childNode => childNode.ID == childID).ToList();
 
                     Port outputPort = node.outputContainer.Q<Port>(portData.thisPortName);
 
@@ -220,7 +220,7 @@ namespace Chocolate4.Edit.Graph
             }
         }
 
-        private void ConnectPorts(Port port, PortData portData, IEnumerable<BaseNode> connections)
+        private void ConnectPorts(Port port, PortData portData, List<BaseNode> connections)
         {
             foreach (BaseNode otherNode in connections)
             {
@@ -250,8 +250,8 @@ namespace Chocolate4.Edit.Graph
 
         private void ConvertToProperty(DropdownMenuAction arg)
         {
-            IEnumerable<IPropertyNode> selectedPropertyNodes = selection.OfType<IPropertyNode>();
-            IEnumerable<Type> propertyTypes = TypeExtensions.GetTypes<IDialogueProperty>();
+            List<IPropertyNode> selectedPropertyNodes = selection.OfType<IPropertyNode>().ToList();
+            List<Type> propertyTypes = TypeExtensions.GetTypes<IDialogueProperty>().ToList();
 
             foreach (IPropertyNode propertyNode in selectedPropertyNodes)
             {

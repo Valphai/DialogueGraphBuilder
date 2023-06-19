@@ -16,7 +16,7 @@ namespace Chocolate4.Edit.Graph.Utilities
 
         public static List<BaseNode> GetConnections(Port port, PortData portData, PortType requestedPort)
         {
-            IEnumerable<Edge> connections = port.connections;
+            List<Edge> connections = port.connections.ToList();
 
             var connectionsMap = new List<BaseNode>();
 
@@ -32,14 +32,10 @@ namespace Chocolate4.Edit.Graph.Utilities
 
         public static bool IsConnectedTo(this BaseNode node, BaseNode another)
         {
-            List<Port> inputPorts = node.inputContainer.Children()
-                .OfType<Port>().ToList();
-
-            List<Port> outputPorts = node.outputContainer.Children()
-                .OfType<Port>().ToList();
+            IEnumerable<Port> inputPorts = node.inputContainer.Children().OfType<Port>();
+            IEnumerable<Port> outputPorts = node.outputContainer.Children().OfType<Port>();
 
             IEnumerable<Port> allPorts = inputPorts.Concat(outputPorts);
-
             return allPorts.Any(port => port.IsConnectedTo(another));
         }
     }

@@ -15,7 +15,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         private Dictionary<string, BlackboardRow> propertyRows;
         private BlackboardSection section;
 
-        public IEnumerable<IDialogueProperty> Properties { get; set; }
+        public List<IDialogueProperty> Properties { get; set; }
 
         public Blackboard Blackboard { get; private set; }
 

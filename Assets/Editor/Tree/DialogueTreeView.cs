@@ -25,7 +25,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
         {
             get
             {
-                IEnumerable<int> itemIds = TreeView.viewController.GetAllItemIds();
+                List<int> itemIds = TreeView.viewController.GetAllItemIds().ToList();
 
                 foreach (int id in itemIds)
                 {
@@ -54,13 +54,13 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
             var items = new List<TreeViewItemData<DialogueTreeItem>>();
 
-            IEnumerable<TreeItemSaveData> rootDatas = 
-                treeSaveData.treeItemData.Where(itemSaveData => itemSaveData.depth == 0);
+            TreeItemSaveData[] rootDatas = 
+                treeSaveData.treeItemData.Where(itemSaveData => itemSaveData.depth == 0).ToArray();
 
-            int rootElementCount = rootDatas.Count();
+            int rootElementCount = rootDatas.Length;
             for (int i = 0; i < rootElementCount; i++)
             {
-                TreeItemSaveData rooitItemSaveData = rootDatas.ElementAt(i);
+                TreeItemSaveData rooitItemSaveData = rootDatas[i];
                 items.Add(
                     new TreeViewItemData<DialogueTreeItem>(i, rooitItemSaveData.rootItem,
                         TreeUtilities.GetChildren(treeSaveData, rooitItemSaveData, rootElementCount + 1)

@@ -38,7 +38,7 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
             IDataHolder SaveNode(BaseNode node)
             {
-                IEnumerable<Port> outputPorts = node.outputContainer.Children().OfType<Port>();
+                List<Port> outputPorts = node.outputContainer.Children().OfType<Port>().ToList();
 
                 if (!outputPorts.IsNullOrEmpty())
                 {
@@ -59,22 +59,12 @@ namespace Chocolate4.Dialogue.Edit.Saving
                 }
 
                 return node.Save();
-
-                //return new NodeSaveData()
-                //{
-                //    outputPortDatas = node.OutputPortDatas,
-                //    nodeID = node.ID,
-                //    nodeType = node.NodeType.ToString(),
-                //    text = node.Text,
-                //    position = node.GetPosition().position,
-                //    groupID = node.GroupID,
-                //};
             }
         }
 
         public static TreeSaveData SaveTree(TreeView treeView)
         {
-            List<KeyValuePair<int, IEnumerable<int>>> deepestChildIds = GetNodesByDepth(treeView);
+            List<KeyValuePair<int, List<int>>> deepestChildIds = GetNodesByDepth(treeView);
 
             List<TreeItemSaveData> resultData = new List<TreeItemSaveData>();
             TreeSaveData result = new TreeSaveData(resultData);
@@ -90,16 +80,16 @@ namespace Chocolate4.Dialogue.Edit.Saving
             return result;
         }
 
-        private static List<KeyValuePair<int, IEnumerable<int>>> GetNodesByDepth(TreeView treeView)
+        private static List<KeyValuePair<int, List<int>>> GetNodesByDepth(TreeView treeView)
         {
-            Dictionary<int, IEnumerable<int>> parentToChildrenID = new Dictionary<int, IEnumerable<int>>();
+            Dictionary<int, List<int>> parentToChildrenID = new Dictionary<int, List<int>>();
 
             int treeCount = treeView.GetTreeCount();
 
             for (int i = 0; i < treeCount; i++)
             {
                 int nextId = treeView.GetIdForIndex(i);
-                IEnumerable<int> childIds = treeView.viewController.GetChildrenIds(nextId);
+                List<int> childIds = treeView.viewController.GetChildrenIds(nextId).ToList();
 
                 parentToChildrenID.Add(nextId, childIds);
             }
@@ -114,7 +104,7 @@ namespace Chocolate4.Dialogue.Edit.Saving
             DialogueTreeItem parent = treeView.GetItemDataForId<DialogueTreeItem>(parentId);
 
             List<string> childrenGuids = new List<string>();
-            IEnumerable<int> childrenIds = treeView.viewController.GetChildrenIds(parentId);
+            List<int> childrenIds = treeView.viewController.GetChildrenIds(parentId).ToList();
             if (!childrenIds.IsNullOrEmpty())
             {
                 foreach (int childId in childrenIds)

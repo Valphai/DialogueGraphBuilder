@@ -12,14 +12,26 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
             return AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(assembly => assembly.GetTypes())
                             .Where(type => typeof(T).IsAssignableFrom(type))
-                            .Where(type => !type.IsInterface && !type.IsAbstract);
+                            .Where(type => !type.IsInterface && !type.IsAbstract).ToList();
         }
 
         public static void DistributeListElementsToFieldsOfImplementingTypes<T, S>(List<T> listWithDifferentTypes, S instanceWithFields)
         {
-            IEnumerable<Type> implementingTypes = GetTypes<T>();
+            List<Type> implementingTypes = GetTypes<T>().ToList();
+            Type genericListType = typeof(List<>);
+
+            Dictionary<T, Type> elementToType = new Dictionary<T, Type>();
+
+            foreach (var item in listWithDifferentTypes)
+            {
+                if (!elementToType.ContainsKey(item))
+                {
+                    elementToType.Add(item, item.GetType());
+                }
+            }
 
             FieldInfo[] fields = typeof(S).GetFields();
+
             foreach (FieldInfo field in fields)
             {
                 if (!field.FieldType.IsGenericType)
@@ -27,28 +39,29 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
                     continue;
                 }
 
-                if (field.FieldType.GetGenericTypeDefinition() != typeof(List<>))
+                Type genericArgument = field.FieldType.GetGenericArguments().First();
+                if (genericArgument == null)
                 {
                     continue;
                 }
 
-                Type fieldTypeArgument = field.FieldType.GetGenericArguments()[0];
-
                 foreach (Type type in implementingTypes)
                 {
-                    if (fieldTypeArgument != type)
+                    if (genericArgument != type)
                     {
                         continue;
                     }
 
-                    Type listType = typeof(List<>).MakeGenericType(type);
+                    Type listType = genericListType.MakeGenericType(type);
                     object listInstance = Activator.CreateInstance(listType);
+                    MethodInfo addMethod = listType.GetMethod("Add");
 
                     foreach (var item in listWithDifferentTypes)
                     {
-                        if (item.GetType() == type)
+                        Type itemType = elementToType[item];
+                        if (itemType == type)
                         {
-                            AddToList(listInstance, item);
+                            addMethod.Invoke(listInstance, new[] { (object)item });
                         }
                     }
 
@@ -60,7 +73,7 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
         public static List<T> MergeFieldListsIntoOneImplementingType<T, S>(S instanceWithFields)
         {
             List<T> result = new List<T>();
-            IEnumerable<Type> implementingTypes = GetTypes<T>();
+            List<Type> implementingTypes = GetTypes<T>().ToList();
 
             FieldInfo[] fields = typeof(S).GetFields();
             foreach (FieldInfo field in fields)
@@ -70,37 +83,24 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
                     continue;
                 }
 
-                if (field.FieldType.GetGenericTypeDefinition() != typeof(List<>))
+                Type genericArgument = field.FieldType.GetGenericArguments().First();
+                if (genericArgument == null)
                 {
                     continue;
                 }
 
-                Type fieldTypeArgument = field.FieldType.GetGenericArguments()[0];
                 foreach (Type type in implementingTypes)
                 {
-                    if (fieldTypeArgument != type)
+                    if (genericArgument != type)
                     {
                         continue;
                     }
 
-                    result.AddRange(((IEnumerable<T>)field.GetValue(instanceWithFields)));
+                    result.AddRange((IEnumerable<T>)field.GetValue(instanceWithFields));
                 }
             }
 
             return result;
-        }
-
-        private static void AddToList(object list, object item)
-        {
-            Type listType = list.GetType();
-            if (listType.IsGenericType && listType.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                MethodInfo addMethod = listType.GetMethod("Add");
-                if (addMethod != null)
-                {
-                    addMethod.Invoke(list, new[] { item });
-                }
-            }
         }
     }
 }
