@@ -1,5 +1,5 @@
+using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
 using System;
 using System.Net;
 using UnityEditor.Experimental.GraphView;

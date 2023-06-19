@@ -1,6 +1,7 @@
 ﻿using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Chocolate4.Dialogue.Edit.Saving
             string situationGuid, UQueryState<GraphElement> graphElements
         )
         {
-            List<NodeSaveData> nodeSaveDatas = new List<NodeSaveData>();
+            List<IDataHolder> nodeSaveDatas = new List<IDataHolder>();
 
             graphElements.ForEach(element => {
                 if (element is BaseNode node)
@@ -35,7 +36,7 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
             return new SituationSaveData(situationGuid, nodeSaveDatas);
 
-            NodeSaveData SaveNode(BaseNode node)
+            IDataHolder SaveNode(BaseNode node)
             {
                 IEnumerable<Port> outputPorts = node.outputContainer.Children().OfType<Port>();
 
@@ -57,15 +58,17 @@ namespace Chocolate4.Dialogue.Edit.Saving
                     }
                 }
 
-                return new NodeSaveData()
-                {
-                    outputPortDatas = node.OutputPortDatas,
-                    nodeID = node.ID,
-                    nodeType = node.NodeType.ToString(),
-                    text = node.Text,
-                    position = node.GetPosition().position,
-                    groupID = node.GroupID,
-                };
+                return node.Save();
+
+                //return new NodeSaveData()
+                //{
+                //    outputPortDatas = node.OutputPortDatas,
+                //    nodeID = node.ID,
+                //    nodeType = node.NodeType.ToString(),
+                //    text = node.Text,
+                //    position = node.GetPosition().position,
+                //    groupID = node.GroupID,
+                //};
             }
         }
 

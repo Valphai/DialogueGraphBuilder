@@ -1,6 +1,7 @@
 using Chocolate4.Dialogue.Edit.Tree;
+using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,6 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public enum EqualityType
-    {
-        Equal,
-        NotEqual,
-        GreaterThan,
-        GreaterOrEqualThan,
-        LessThan,
-        LessOrEqualThan,
-    }
-
     public class EqualNode : BaseNode
     {
         private const string Port1 = "Input 1";
@@ -38,6 +29,19 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             }
 
             return node.NodeTask == NodeTask.Property;
+        }
+
+        public override IDataHolder Save()
+        {
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new EqualityNodeSaveData() { equalityEnum = equalityTypeToUse, nodeSaveData = saveData };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            EqualityNodeSaveData equalitySaveData = (EqualityNodeSaveData)saveData;
+            equalityTypeToUse = equalitySaveData.equalityEnum;
         }
 
         protected override void DrawTitle()

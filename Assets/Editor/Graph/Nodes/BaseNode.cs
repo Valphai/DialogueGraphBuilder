@@ -1,6 +1,7 @@
+using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
+using Chocolate4.Dialogue.Edit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -9,12 +10,11 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public abstract class BaseNode : Node
+    public abstract class BaseNode : Node, ISaveableNode
     {
         public string NextNodeId { get; set; }
         public string GroupID { get; set; }
         public string ID { get; set; }
-        public string Text { get; set; }
         public Type NodeType { get; set; }
         public List<PortData> OutputPortDatas { get; private set; }
         public abstract string Name { get; set; }
@@ -26,7 +26,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             ID = Guid.NewGuid().ToString();
             OutputPortDatas = new List<PortData>();
-            Text = string.Empty;
             NodeType = GetType();
 
             SetPosition(new Rect(startingPosition, Vector2.zero));
@@ -37,12 +36,23 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         }
 
-        public virtual void Load(NodeSaveData saveData)
+        public virtual IDataHolder Save()
         {
-            OutputPortDatas = saveData.outputPortDatas;
-            ID = saveData.nodeID;
-            Text = saveData.text;
-            GroupID = saveData.groupID;
+            return new NodeSaveData()
+            {
+                outputPortDatas = OutputPortDatas,
+                nodeID = ID,
+                nodeType = NodeType.ToString(),
+                position = GetPosition().position,
+                groupID = GroupID,
+            };
+        }
+
+        public virtual void Load(IDataHolder saveData)
+        {
+            OutputPortDatas = saveData.NodeData.outputPortDatas;
+            ID = saveData.NodeData.nodeID;
+            GroupID = saveData.NodeData.groupID;
         }
 
         public virtual void Draw()

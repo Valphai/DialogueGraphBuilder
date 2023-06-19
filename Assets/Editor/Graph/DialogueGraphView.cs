@@ -3,6 +3,7 @@ using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
 using System;
 using System.Collections.Generic;
@@ -178,7 +179,7 @@ namespace Chocolate4.Edit.Graph
         {
             DeleteElements(graphElements);
 
-            if (situationData.nodeData.IsNullOrEmpty())
+            if (!situationData.TryMergeDataIntoHolder(out List<IDataHolder> dataHolders))
             {
                 AddStartingNodes();
                 return;
@@ -186,11 +187,11 @@ namespace Chocolate4.Edit.Graph
 
             List<BaseNode> nodes = new List<BaseNode>();
             List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>().ToList();
-            foreach (NodeSaveData nodeData in situationData.nodeData)
+            foreach (IDataHolder dataHolder in dataHolders)
             {
-                Type matchedType = nodeTypes.First(type => type.ToString().Contains(nodeData.nodeType));
-                BaseNode node = CreateNode(nodeData.position, matchedType);
-                node.Load(nodeData);
+                Type matchedType = nodeTypes.First(type => type.ToString().Contains(dataHolder.NodeData.nodeType));
+                BaseNode node = CreateNode(dataHolder.NodeData.position, matchedType);
+                node.Load(dataHolder);
                 nodes.Add(node);
             }
 

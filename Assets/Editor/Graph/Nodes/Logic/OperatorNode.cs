@@ -1,6 +1,8 @@
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
+using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +11,7 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public enum Operator
-    {
-        Add,
-        Subtract,
-        Multiply,
-        Divide
-    }
-
-    public class OperationNode : BaseNode//, ILogicEvaluate
+    public class OperatorNode : BaseNode//, ILogicEvaluate
     {
         private const string Port1 = "Input 1";
         private const string Port2 = "Input 2";
@@ -25,9 +19,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private Port inputPort1;
         private Port inputPort2;
         private PopupField<string> popupField;
-        private Operator operatorToUse;
+        private OperatorType operatorToUse;
 
-        public override string Name { get; set; } = "Operation";
+        public override string Name { get; set; } = "Operator";
         public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
@@ -75,6 +69,19 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             }
         }
 
+        public override IDataHolder Save()
+        {
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new OperatorNodeSaveData() { operatorEnum = operatorToUse, nodeSaveData = saveData };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            OperatorNodeSaveData operatorSaveData = (OperatorNodeSaveData)saveData;
+            operatorToUse = operatorSaveData.operatorEnum;
+        }
+
         protected override void DrawInputPort()
         {
             inputPort1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single);
@@ -102,10 +109,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         private void CreatePopup()
         {
-            List<string> choices = Enum.GetNames(typeof(Operator)).ToList();
+            List<string> choices = Enum.GetNames(typeof(OperatorType)).ToList();
 
             popupField = new PopupField<string>(choices, 0, selectedName => {
-                operatorToUse = (Operator)Enum.Parse(typeof(Operator), selectedName);
+                operatorToUse = (OperatorType)Enum.Parse(typeof(OperatorType), selectedName);
                 return selectedName;
             });
         }

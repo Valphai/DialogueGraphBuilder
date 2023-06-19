@@ -1,4 +1,4 @@
-using Chocolate4.Utilities;
+using Chocolate4.Dialogue.Edit.Utilities;
 using UnityEditor.Experimental.GraphView;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes

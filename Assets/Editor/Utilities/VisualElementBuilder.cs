@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Chocolate4.Utilities
+namespace Chocolate4.Dialogue.Edit.Utilities
 {
     public static class VisualElementBuilder
     {

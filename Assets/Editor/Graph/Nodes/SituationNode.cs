@@ -1,5 +1,5 @@
 using Chocolate4.Dialogue.Edit.Tree;
-using Chocolate4.Utilities;
+using Chocolate4.Dialogue.Edit.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;

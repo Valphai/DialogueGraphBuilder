@@ -1,6 +1,8 @@
-﻿using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
+﻿using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Graph.Utilities;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -9,10 +11,30 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     {
         public override NodeTask NodeTask { get; set; } = NodeTask.Dialogue;
         public override string Name { get; set; } = "Dialogue Name";
+        public string Text { get; set; }
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
         {
             return node.NodeTask == NodeTask.Dialogue || node.NodeTask == NodeTask.Property;
+        }
+
+        public override void Initialize(Vector3 startingPosition)
+        {
+            base.Initialize(startingPosition);
+            Text = string.Empty;
+        }
+
+        public override IDataHolder Save()
+        {
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new DialogueNodeSaveData() { text = Text, nodeSaveData = saveData };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            DialogueNodeSaveData dialogueSaveData = (DialogueNodeSaveData)saveData;
+            Text = dialogueSaveData.text;
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)
@@ -26,6 +48,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 value = Text,
                 multiline = true,
             };
+            textField.RegisterValueChangedCallback(evt => Text = evt.newValue);
+
             textField.WithVerticalGrow()
                 .WithFlexGrow();
 

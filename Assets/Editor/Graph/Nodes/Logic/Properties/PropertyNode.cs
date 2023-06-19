@@ -1,6 +1,6 @@
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
+using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Utilities;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;

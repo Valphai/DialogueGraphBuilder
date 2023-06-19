@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chocolate4
+namespace Chocolate4.Dialogue.Runtime.Utilities
 {
     public static class IEnumerableExtensions
     {
