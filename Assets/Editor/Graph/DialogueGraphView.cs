@@ -202,7 +202,7 @@ namespace Chocolate4.Edit.Graph
         {
             foreach (BaseNode node in nodes)
             {
-                foreach (PortData portData in node.OutputPortDatas)
+                foreach (PortData portData in node.OutputPortDataCollection)
                 {
                     if (string.IsNullOrEmpty(portData.thisPortName))
                     {

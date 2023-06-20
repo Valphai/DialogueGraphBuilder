@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
@@ -16,7 +17,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public string GroupID { get; set; }
         public string ID { get; set; }
         public Type NodeType { get; set; }
-        public List<PortData> OutputPortDatas { get; private set; }
+        public List<PortData> InputPortDataCollection { get; private set; }
+        public List<PortData> OutputPortDataCollection { get; private set; }
         public abstract string Name { get; set; }
         public abstract NodeTask NodeTask { get; set; }
 
@@ -25,7 +27,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public virtual void Initialize(Vector3 startingPosition)
         {
             ID = Guid.NewGuid().ToString();
-            OutputPortDatas = new List<PortData>();
+            InputPortDataCollection = new List<PortData>();
+            OutputPortDataCollection = new List<PortData>();
             NodeType = GetType();
 
             SetPosition(new Rect(startingPosition, Vector2.zero));
@@ -33,14 +36,15 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void PostInitialize()
         {
-
+            CreatePortData();
         }
 
         public virtual IDataHolder Save()
         {
             return new NodeSaveData()
             {
-                outputPortDatas = OutputPortDatas,
+                inputPortDataCollection = InputPortDataCollection,
+                outputPortDataCollection = OutputPortDataCollection,
                 nodeID = ID,
                 nodeType = NodeType.ToString(),
                 position = GetPosition().position,
@@ -50,7 +54,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Load(IDataHolder saveData)
         {
-            OutputPortDatas = saveData.NodeData.outputPortDatas;
+            InputPortDataCollection = saveData.NodeData.inputPortDataCollection;
+            OutputPortDataCollection = saveData.NodeData.outputPortDataCollection;
             ID = saveData.NodeData.nodeID;
             GroupID = saveData.NodeData.groupID;
         }
@@ -104,9 +109,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             Port outputPort = DrawPort("Output", Direction.Output, Port.Capacity.Single);
             outputContainer.Add(outputPort);
-
-            PortData portData = new PortData() { thisPortName = outputPort.portName };
-            OutputPortDatas.Add(portData);
         }
 
         protected virtual void DrawInputPort()
@@ -121,6 +123,22 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             port.portName = port.name = name;
 
             return port;
+        }
+
+        protected void CreatePortData()
+        {
+            CreatePortData(inputContainer, InputPortDataCollection);
+            CreatePortData(outputContainer, OutputPortDataCollection);
+        }
+
+        private void CreatePortData(VisualElement container, List<PortData> dataCollection)
+        {
+            List<Port> inputPorts = container.Children().Where(port => port is Port).Select(port => (Port)port).ToList();
+            foreach (Port port in inputPorts)
+            {
+                PortData portData = new PortData() { thisPortName = port.portName };
+                dataCollection.Add(portData);
+            }
         }
     }
 }

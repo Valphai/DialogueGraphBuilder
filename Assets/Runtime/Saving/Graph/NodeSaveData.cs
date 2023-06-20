@@ -11,7 +11,8 @@ namespace Chocolate4.Dialogue.Runtime.Saving
         public string nodeType;
         public Vector2 position;
         public string groupID;
-        public List<PortData> outputPortDatas;
+        public List<PortData> inputPortDataCollection;
+        public List<PortData> outputPortDataCollection;
 
         public NodeSaveData NodeData => this;
     }

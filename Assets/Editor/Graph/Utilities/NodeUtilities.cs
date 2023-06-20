@@ -8,13 +8,7 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class NodeUtilities
     {
-        public enum PortType
-        {
-            Input,
-            Output
-        }
-
-        public static List<BaseNode> GetConnections(Port port, PortData portData, PortType requestedPort)
+        public static List<BaseNode> GetConnections(Port port, PortData portData, Direction requestedPort)
         {
             List<Edge> connections = port.connections.ToList();
 
@@ -22,7 +16,7 @@ namespace Chocolate4.Edit.Graph.Utilities
 
             foreach (Edge connection in connections)
             {
-                Port otherPort = requestedPort == PortType.Input ? connection.input : connection.output;
+                Port otherPort = requestedPort == Direction.Input ? connection.input : connection.output;
                 portData.otherPortName = otherPort.portName;
 
                 connectionsMap.Add(otherPort.node as BaseNode);

@@ -1,13 +1,12 @@
 using System.Linq;
-using static Chocolate4.Edit.Graph.Utilities.NodeUtilities;
 
 namespace UnityEditor.Experimental.GraphView
 {
     public static class PortExtensions
     {
-        public static bool IsConnectedTo(this Port port, Port another, PortType anotherPortType)
+        public static bool IsConnectedTo(this Port port, Port another, Direction anotherPortType)
         {
-            return anotherPortType == PortType.Input
+            return anotherPortType == Direction.Input
                 ? port.connections.Any(edge => edge.input == another)
                 : port.connections.Any(edge => edge.output == another);
         }

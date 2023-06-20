@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-
+using static Chocolate4.Edit.Graph.Utilities.NodeUtilities;
 
 namespace Chocolate4.Dialogue.Edit.Saving
 {
@@ -39,26 +39,32 @@ namespace Chocolate4.Dialogue.Edit.Saving
             IDataHolder SaveNode(BaseNode node)
             {
                 List<Port> outputPorts = node.outputContainer.Children().OfType<Port>().ToList();
+                List<Port> inputPorts = node.inputContainer.Children().OfType<Port>().ToList();
 
                 if (!outputPorts.IsNullOrEmpty())
                 {
-                    foreach (Port outputPort in outputPorts)
-                    {
-                        PortData portData = node.OutputPortDatas.Find(portData => portData.thisPortName.Equals(outputPort.portName));
-
-                        List<BaseNode> connectedNodes = 
-                            NodeUtilities.GetConnections(outputPort, portData, NodeUtilities.PortType.Input);
-
-                        if (connectedNodes.IsNullOrEmpty())
-                        {
-                            continue;
-                        }
-
-                        connectedNodes.ForEach(child => portData.otherNodeID = child.ID);
-                    }
+                    SaveConnections(node.OutputPortDataCollection, outputPorts, Direction.Input);
+                    SaveConnections(node.InputPortDataCollection, inputPorts, Direction.Output);
                 }
 
                 return node.Save();
+            }
+        }
+
+        private static void SaveConnections(List<PortData> portDataCollection, List<Port> ports, Direction requestedPort)
+        {
+            foreach (Port port in ports)
+            {
+                PortData portData = portDataCollection.Find(portData => portData.thisPortName.Equals(port.portName));
+
+                List<BaseNode> connectedNodes = GetConnections(port, portData, requestedPort);
+
+                if (connectedNodes.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                connectedNodes.ForEach(child => portData.otherNodeID = child.ID);
             }
         }
 
