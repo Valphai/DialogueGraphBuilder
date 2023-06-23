@@ -1,18 +1,14 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 {
-    public enum PropertyType
-    {
-        Bool,
-        Integer
-    }
-
-    public interface IDialogueProperty
+    public interface IDialogueProperty : ISaveable<DialoguePropertySaveData>
     {
         string DisplayName { get; set; }
         PropertyType PropertyType { get; }
-        string Guid { get; }
+        string Id { get; }
 
         BaseNode ToConcreteNode();
     }

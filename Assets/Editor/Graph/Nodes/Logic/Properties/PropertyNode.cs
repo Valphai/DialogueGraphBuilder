@@ -1,6 +1,9 @@
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,12 +15,40 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         protected ConstantPortInput constantPortInput;
 
         public override NodeTask NodeTask { get; set; } = NodeTask.Property;
-        public string PropertyGuid { get; internal set; }
+        public string PropertyID { get; internal set; }
         public T Value { get; internal set; }
-        public bool IsBoundToProperty => !string.IsNullOrEmpty(PropertyGuid);
-        public abstract PropertyType PropertyType { get; }
+        public bool IsBoundToProperty => !string.IsNullOrEmpty(PropertyID);
+        public abstract PropertyType PropertyType { get; protected set; }
 
         protected abstract ConstantPortInput CreateConstantPortInput();
+
+        public override IDataHolder Save()
+        {
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new PropertyNodeSaveData()
+            {
+                nodeSaveData = saveData,
+                propertyID = PropertyID,
+                value = Value.ToString(),
+                propertyType = PropertyType,
+            };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            PropertyNodeSaveData propertySaveData = (PropertyNodeSaveData)saveData;
+            PropertyID = propertySaveData.propertyID;
+            PropertyType = propertySaveData.propertyType;
+
+            UpdateLabel();
+            if (IsBoundToProperty)
+            {
+                return;
+            }
+
+            Value = (T)Convert.ChangeType(propertySaveData.value, typeof(T));
+        }
 
         public override void Initialize(Vector3 startingPosition)
         {
@@ -66,7 +97,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public virtual void UnbindFromProperty()
         {
             Name = PropertyType.ToString();
-            PropertyGuid = string.Empty;
+            PropertyID = string.Empty;
             DisplayInputField();
             UpdateLabel();
         }
@@ -74,7 +105,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public virtual void BindToProperty(IDialogueProperty property)
         {
             Name = property.DisplayName;
-            PropertyGuid = property.Guid;
+            PropertyID = property.Id;
             HideInputField();
             UpdateLabel();
         }

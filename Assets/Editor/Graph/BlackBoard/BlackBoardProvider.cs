@@ -1,8 +1,10 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Edit.Saving;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -10,16 +12,16 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 {
-    public class BlackBoardProvider
+    public class BlackboardProvider : IRebuildable<BlackboardSaveData>
     {
         private Dictionary<string, BlackboardRow> propertyRows;
         private BlackboardSection section;
+        private BlackboardSaveData blackboardData;
 
         public List<IDialogueProperty> Properties { get; set; }
-
         public Blackboard Blackboard { get; private set; }
 
-        public BlackBoardProvider(GraphView graphView)
+        public BlackboardProvider(GraphView graphView)
         {
             propertyRows = new Dictionary<string, BlackboardRow>();
 
@@ -33,19 +35,48 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             };
             
             section = new BlackboardSection { headerVisible = false };
-
             Properties = new List<IDialogueProperty>();
-            foreach (var property in Properties)
-            {
-                AddProperty(property);
-            } 
 
             Blackboard.Add(section);
         }
 
+        public BlackboardSaveData Save()
+        {
+            List<DialoguePropertySaveData> saveData = new List<DialoguePropertySaveData>();
+            foreach (IDialogueProperty property in Properties)
+            {
+                saveData.Add(property.Save());
+            }
+
+            return new BlackboardSaveData() { dialoguePropertiesSaveData = saveData } ;
+        }
+
+        public void Rebuild(BlackboardSaveData saveData)
+        {
+            blackboardData = saveData;
+
+            foreach (DialoguePropertySaveData propertySaveData in saveData.dialoguePropertiesSaveData)
+            {
+                IDialogueProperty property = propertySaveData.propertyType switch
+                {
+                    PropertyType.Bool => new BoolDialogueProperty(),
+                    PropertyType.Integer => new IntegerDialogueProperty(),
+                    _ => throw new NotImplementedException()
+                };
+
+                property.Load(propertySaveData);
+                AddProperty(property);
+
+                BlackboardField field = (BlackboardField)propertyRows[property.Id].userData;
+
+                field.text = property.DisplayName;
+                UpdateNodesWith(property);
+            }
+        }
+
         public void HandlePropertyRemove(IDialogueProperty deletedProperty)
         {
-            if (!propertyRows.TryGetValue(deletedProperty.Guid, out BlackboardRow row))
+            if (!propertyRows.TryGetValue(deletedProperty.Id, out BlackboardRow row))
             {
                 return;
             }
@@ -59,9 +90,17 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                     return;
                 }
 
-                propertyRows.Remove(deletedProperty.Guid);
+                propertyRows.Remove(deletedProperty.Id);
                 propertyNode.UnbindFromProperty();
             });
+        }
+
+        internal void UpdatePropertyBinds()
+        {
+            foreach (IDialogueProperty property in Properties)
+            {
+                UpdateNodesWith(property);
+            }
         }
 
         private bool ElementIsDialogueProperty(GraphElement element, IDialogueProperty property, out IPropertyNode propertyNode)
@@ -73,14 +112,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
 
             propertyNode = (IPropertyNode)element;
-            string propertyGuid = propertyNode.PropertyGuid;
+            string propertyGuid = propertyNode.PropertyID;
 
             if (string.IsNullOrEmpty(propertyGuid))
             {
                 return false;
             }
 
-            if (propertyGuid != property.Guid)
+            if (propertyGuid != property.Id)
             {
                 return false;
             }
@@ -132,7 +171,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
         public void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
         {
-            if (propertyRows.ContainsKey(property.Guid))
+            if (propertyRows.ContainsKey(property.Id))
             {
                 return;
             }
@@ -150,7 +189,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
             BlackboardRow row = new BlackboardRow(field, null);
 
-            row.userData = property;
+            row.userData = field;
 
             if (index < 0)
             {
@@ -166,13 +205,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 section.Insert(index, row);
             }
 
-            propertyRows[property.Guid] = row;
+            propertyRows[property.Id] = row;
 
+            Properties.Add(property);
             if (create)
             {
                 row.expanded = true;
                 //m_Graph.owner.RegisterCompleteObjectUndo("Create Property");
-                Properties.Append(property);
                 field.OpenTextEditor();
             }
         }

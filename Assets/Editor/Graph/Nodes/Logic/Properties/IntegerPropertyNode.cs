@@ -1,4 +1,4 @@
-﻿using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
+﻿using Chocolate4.Dialogue.Runtime.Utilities;
 using UnityEditor.Experimental.GraphView;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -6,7 +6,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     public class IntegerPropertyNode : PropertyNode<int>
     {
         public override string Name { get; set; } = "Integer";
-        public override PropertyType PropertyType => PropertyType.Integer;
+        public override PropertyType PropertyType { get; protected set; } = PropertyType.Integer;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
         {

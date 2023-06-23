@@ -6,6 +6,7 @@ namespace Chocolate4.Dialogue.Runtime.Saving
     public class GraphSaveData
     {
         public List<SituationSaveData> situationSaveData = new List<SituationSaveData>();
+        public BlackboardSaveData blackboardSaveData;
 
         public GraphSaveData()
         {

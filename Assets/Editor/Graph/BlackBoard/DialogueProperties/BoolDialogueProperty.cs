@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
 
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
@@ -6,7 +7,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
     [Serializable]
     public class BoolDialogueProperty : DialogueProperty<bool>
     {
-        public override PropertyType PropertyType => PropertyType.Bool;
+        public override PropertyType PropertyType { get; protected set; } = PropertyType.Bool;
 
         public BoolDialogueProperty()
         {
@@ -18,7 +19,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             BoolPropertyNode node = new BoolPropertyNode()
             {
                 Name = DisplayName,
-                PropertyGuid = Guid,
+                PropertyID = Id,
                 Value = Value
             };
 

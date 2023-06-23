@@ -1,4 +1,3 @@
-using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Utilities;
@@ -11,7 +10,7 @@ using System.Linq;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public abstract class BaseNode : Node, ISaveableNode
+    public abstract class BaseNode : Node, ISaveable<IDataHolder>
     {
         public string NextNodeId { get; set; }
         public string GroupID { get; set; }

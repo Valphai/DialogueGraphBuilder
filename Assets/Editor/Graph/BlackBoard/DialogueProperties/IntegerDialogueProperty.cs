@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
 
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
@@ -6,7 +7,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
     [Serializable]
     public class IntegerDialogueProperty : DialogueProperty<int>
     {
-        public override PropertyType PropertyType => PropertyType.Integer;
+        public override PropertyType PropertyType { get; protected set; } = PropertyType.Integer;
 
         public IntegerDialogueProperty()
         {
@@ -18,7 +19,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             IntegerPropertyNode node = new IntegerPropertyNode()
             {
                 Name = DisplayName,
-                PropertyGuid = Guid,
+                PropertyID = Id,
                 Value = Value
             };
 

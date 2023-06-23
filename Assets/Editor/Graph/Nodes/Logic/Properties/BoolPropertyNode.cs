@@ -1,4 +1,4 @@
-using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using UnityEditor.Experimental.GraphView;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -6,7 +6,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     public class BoolPropertyNode : PropertyNode<bool>
     {
         public override string Name { get; set; } = "Bool";
-        public override PropertyType PropertyType => PropertyType.Bool;
+        public override PropertyType PropertyType { get; protected set; } = PropertyType.Bool;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
         {

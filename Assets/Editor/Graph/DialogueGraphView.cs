@@ -20,7 +20,7 @@ namespace Chocolate4.Edit.Graph
         public const string DefaultGroupName = "Dialogue Group";
 
         private string activeSituationGuid = string.Empty;
-        private BlackBoardProvider blackBoardProvider;
+        private BlackboardProvider blackboardProvider;
 
         public DragSelectablesHandler DragSelectablesHandler { get; private set; }
         internal SituationCache SituationCache { get; private set; }
@@ -102,46 +102,41 @@ namespace Chocolate4.Edit.Graph
         public GraphSaveData Save()
         {
             CacheActiveSituation();
-            return StructureSaver.SaveGraph(SituationCache.SituationToData.ToList());
+            return new GraphSaveData()
+            {
+                situationSaveData = SituationCache.Cache.ToList(),
+                blackboardSaveData = blackboardProvider.Save()
+            };
         }
 
         public void Rebuild(GraphSaveData graphSaveData)
         {
-            if (graphSaveData.situationSaveData.IsNullOrEmpty())
+            DeleteElements(graphElements);
+            RebuildGraph(graphSaveData);
+
+            BlackboardSaveData blackboardSaveData = graphSaveData.blackboardSaveData;
+            if (blackboardSaveData != null)
             {
-                return;
+                blackboardProvider.Rebuild(blackboardSaveData);
             }
-
-            SituationCache = new SituationCache(graphSaveData.situationSaveData);
-
-            SituationSaveData situationData = graphSaveData.situationSaveData.Find(
-                data => data.situationGuid.Equals(activeSituationGuid)
-            );
-
-            if (situationData == null)
-            {
-                return;
-            }
-
-            RebuildGraph(situationData);
         }
 
         internal void DialogueTreeView_OnSituationSelected(string newSituationGuid)
         {
             if (!activeSituationGuid.Equals(string.Empty))
             {
-                CacheActiveSituation(); 
+                CacheActiveSituation();
             }
 
             activeSituationGuid = newSituationGuid;
 
+            DeleteElements(graphElements);
             if (SituationCache.IsCached(newSituationGuid, out SituationSaveData situationSaveData))
             {
                 RebuildGraph(situationSaveData);
-                return;
             }
 
-            DeleteElements(graphElements);
+            blackboardProvider.UpdatePropertyBinds();
         }
 
         internal void DialogueTreeView_OnTreeItemRemoved(string treeItemGuid)
@@ -153,7 +148,7 @@ namespace Chocolate4.Edit.Graph
 
             if (!SituationCache.TryRemove(cachedSituationSaveData))
             {
-                Debug.LogError($"Situation {cachedSituationSaveData.situationGuid} could not be removed.");
+                Debug.LogError($"Situation {cachedSituationSaveData.situationId} could not be removed.");
                 return;
             }
         }
@@ -163,8 +158,8 @@ namespace Chocolate4.Edit.Graph
             SituationCache = new SituationCache(null);
             DragSelectablesHandler = new DragSelectablesHandler();
 
-            blackBoardProvider = new BlackBoardProvider(this);
-            Add(blackBoardProvider.Blackboard);
+            blackboardProvider = new BlackboardProvider(this);
+            Add(blackboardProvider.Blackboard);
         }
 
         private void CacheActiveSituation()
@@ -175,10 +170,30 @@ namespace Chocolate4.Edit.Graph
             SituationCache.TryCache(situationSaveData);
         }
 
+        private void RebuildGraph(GraphSaveData graphSaveData)
+        {
+            List<SituationSaveData> situationSaveData = graphSaveData.situationSaveData;
+            if (situationSaveData.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            SituationCache = new SituationCache(situationSaveData);
+
+            SituationSaveData situationData = situationSaveData.Find(
+                data => data.situationId.Equals(activeSituationGuid)
+            );
+
+            if (situationData == null)
+            {
+                return;
+            }
+
+            RebuildGraph(situationData);
+        }
+
         private void RebuildGraph(SituationSaveData situationData)
         {
-            DeleteElements(graphElements);
-
             if (!situationData.TryMergeDataIntoHolder(out List<IDataHolder> dataHolders))
             {
                 AddStartingNodes();
@@ -260,7 +275,7 @@ namespace Chocolate4.Edit.Graph
 
                 IDialogueProperty property = (IDialogueProperty)Activator.CreateInstance(typeToMake);
 
-                blackBoardProvider.AddProperty(property, true);
+                blackboardProvider.AddProperty(property, true);
                 propertyNode.BindToProperty(property);
             }
         }
@@ -350,7 +365,7 @@ namespace Chocolate4.Edit.Graph
             {
                 if (elementToRemove.userData is IDialogueProperty)
                 {
-                    blackBoardProvider.HandlePropertyRemove(elementToRemove.userData as IDialogueProperty);
+                    blackboardProvider.HandlePropertyRemove(elementToRemove.userData as IDialogueProperty);
                     return change;
                 }
             }
