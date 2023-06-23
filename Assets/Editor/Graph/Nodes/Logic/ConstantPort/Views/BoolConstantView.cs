@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,7 +9,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         [SerializeField]
         private Toggle toggleField;
 
-        public BoolConstantView(PropertyNode<bool> propertyNode) : base(propertyNode) { }
+        public BoolConstantView(Action<bool> onValueChanged) : base(onValueChanged) { }
 
         public override VisualElement CreateControl()
         {
@@ -27,7 +28,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         void OnChangeToggle(ChangeEvent<bool> evt)
         {
             //m_Slot.owner.owner.owner.RegisterCompleteObjectUndo("Toggle Change");
-            propertyNode.Value = evt.newValue;
+            onValueChanged?.Invoke(evt.newValue);
             //m_Slot.owner.Dirty(ModificationScope.Node);
         }
     }

@@ -1,5 +1,6 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Saving;
+using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph;
@@ -16,7 +17,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
     {
         private Dictionary<string, BlackboardRow> propertyRows;
         private BlackboardSection section;
-        private BlackboardSaveData blackboardData;
 
         public List<IDialogueProperty> Properties { get; set; }
         public Blackboard Blackboard { get; private set; }
@@ -53,8 +53,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
         public void Rebuild(BlackboardSaveData saveData)
         {
-            blackboardData = saveData;
-
             foreach (DialoguePropertySaveData propertySaveData in saveData.dialoguePropertiesSaveData)
             {
                 IDialogueProperty property = propertySaveData.propertyType switch
@@ -66,6 +64,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
                 property.Load(propertySaveData);
                 AddProperty(property);
+                property.UpdateConstantView();
 
                 BlackboardField field = (BlackboardField)propertyRows[property.Id].userData;
 
@@ -182,12 +181,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
 
             BlackboardDraggableField field = new BlackboardDraggableField(
-                (DialogueGraphView)Blackboard.graphView, 
-                property.DisplayName, 
+                (DialogueGraphView)Blackboard.graphView,
+                property.DisplayName,
                 property.PropertyType.ToString()
-            ) { userData = property };
+            )
+            { userData = property };
 
-            BlackboardRow row = new BlackboardRow(field, null);
+            VisualElement expandedAssignValueField = CreateRowExpanded(property);
+            BlackboardRow row = new BlackboardRow(field, expandedAssignValueField);
 
             row.userData = field;
 
@@ -214,6 +215,23 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 //m_Graph.owner.RegisterCompleteObjectUndo("Create Property");
                 field.OpenTextEditor();
             }
+        }
+
+        private VisualElement CreateRowExpanded(IDialogueProperty property)
+        {
+            VisualElement expandedAssignValueField = new VisualElement()
+                .WithFlexGrow()
+                .WithHorizontalGrow();
+
+            Label startValueLabel = new Label() { text = "Start value = " };
+
+            IConstantViewControlCreator constantView = property.ToConstantView();
+            VisualElement constantViewControl = constantView.CreateControl().WithFlexGrow();
+
+            expandedAssignValueField.Add(startValueLabel);
+            expandedAssignValueField.Add(constantViewControl);
+
+            return expandedAssignValueField;
         }
     }
 }

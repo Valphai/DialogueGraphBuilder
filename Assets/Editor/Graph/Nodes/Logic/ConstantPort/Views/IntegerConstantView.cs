@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,7 +9,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         [SerializeField]
         private TextField textField;
 
-        public IntegerConstantView(PropertyNode<int> propertyNode) : base(propertyNode) { }
+        public IntegerConstantView(Action<int> onValueChanged) : base(onValueChanged) { }
 
         public override VisualElement CreateControl()
         {
@@ -28,11 +29,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             if (!int.TryParse(evt.newValue, out int value))
             {
-                textField.value = string.Empty;
+                textField.value = "0";
+                onValueChanged?.Invoke(0);
                 return;
             }
 
-            propertyNode.Value = value;
+            onValueChanged?.Invoke(value);
         }
     }
 }

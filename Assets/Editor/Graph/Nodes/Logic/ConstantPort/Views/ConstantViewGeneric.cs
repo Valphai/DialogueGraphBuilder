@@ -7,11 +7,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     public abstract class ConstantViewGeneric<T> : VisualElement, IConstantViewControlCreator
     {
         [SerializeField]
-        protected PropertyNode<T> propertyNode;
+        protected Action<T> onValueChanged;
 
-        public ConstantViewGeneric(PropertyNode<T> propertyNode)
+        public ConstantViewGeneric(Action<T> onValueChanged)
         {
-            this.propertyNode = propertyNode;
+            this.onValueChanged = onValueChanged;
         }
 
         public abstract VisualElement CreateControl();

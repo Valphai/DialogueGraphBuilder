@@ -1,13 +1,12 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
-using Chocolate4.Edit.Graph.Utilities;
 using System;
 
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 {
     [Serializable]
-    public abstract class DialogueProperty<T> : IDialogueProperty, IHaveId
+    public abstract class DialogueProperty<T> : IDialogueProperty
     {
         public T Value { get; set; }
 
@@ -28,6 +27,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         public abstract PropertyType PropertyType { get; protected set; }
 
         public abstract BaseNode ToConcreteNode();
+        public abstract IConstantViewControlCreator ToConstantView();
+        public abstract void UpdateConstantView();
 
         public virtual DialoguePropertySaveData Save()
         {

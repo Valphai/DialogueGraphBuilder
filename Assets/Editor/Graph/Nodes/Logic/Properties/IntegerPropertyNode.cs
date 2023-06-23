@@ -22,7 +22,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override ConstantPortInput CreateConstantPortInput()
         {
-            constantViewGeneric = new IntegerConstantView(this);
+            constantViewGeneric = new IntegerConstantView((value) => Value = value);
             return new ConstantPortInput(constantViewGeneric);
         }
 
