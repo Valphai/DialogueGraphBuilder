@@ -1,29 +1,41 @@
-using Chocolate4.Dialogue.Edit.Tree;
+﻿using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class SituationNode : BaseNode
+    public abstract class SituationTransferNode : BaseNode
     {
         private PopupField<string> popupField;
 
-        public string NextSituationGuid { get; private set; } = string.Empty;
-        public override string Name { get; set; } = "Situation Node";
-        public override NodeTask NodeTask { get; set; } = NodeTask.Dialogue;
+        public string NextSituationId { get; private set; } = string.Empty;
+        public override NodeTask NodeTask { get; set; } = NodeTask.Transfer;
 
         public override bool CanConnectTo(BaseNode node, Direction direction)
         {
             return true;
         }
 
-        protected override void DrawPorts()
+        public override IDataHolder Save()
         {
-            DrawInputPort();
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new SituationTransferNodeSaveData() { nextSituationId = NextSituationId, nodeSaveData = saveData };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            SituationTransferNodeSaveData situationSaveData = (SituationTransferNodeSaveData)saveData;
+            NextSituationId = situationSaveData.nextSituationId;
+
+            IEnumerable<DialogueTreeItem> situations = DialogueEditorWindow.Window.DialogueTreeView.Situations;
+            popupField.value = situations.First(treeItem => treeItem.guid.Equals(NextSituationId)).displayName;
         }
 
         protected override void DrawTitle()
@@ -46,11 +58,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             IEnumerable<DialogueTreeItem> situations = dialogueTreeView.Situations;
             List<string> situationNames = situations.Select(treeItem => treeItem.displayName).ToList();
-            
+
             popupField = new PopupField<string>(situationNames, 0, selectedSituationName => {
-                NextSituationGuid = situations.First(item => item.displayName == selectedSituationName).guid;
+                NextSituationId = situations.First(item => item.displayName == selectedSituationName).guid;
                 return selectedSituationName;
-            }); 
+            });
 
             return dialogueTreeView;
         }

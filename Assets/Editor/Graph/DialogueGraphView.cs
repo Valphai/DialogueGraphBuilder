@@ -226,7 +226,7 @@ namespace Chocolate4.Edit.Graph
 
                     string childID = portData.otherNodeID;
                     List<BaseNode> connections =
-                        nodes.Where(childNode => childNode.ID == childID).ToList();
+                        nodes.Where(childNode => childNode.Id == childID).ToList();
 
                     Port outputPort = node.outputContainer.Q<Port>(portData.thisPortName);
 

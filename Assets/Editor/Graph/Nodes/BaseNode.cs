@@ -10,11 +10,10 @@ using System.Linq;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public abstract class BaseNode : Node, ISaveable<IDataHolder>
+    public abstract class BaseNode : Node, ISaveable<IDataHolder>, IHaveId
     {
-        public string NextNodeId { get; set; }
-        public string GroupID { get; set; }
-        public string ID { get; set; }
+        public string GroupId { get; set; }
+        public string Id { get; set; }
         public Type NodeType { get; set; }
         public List<PortData> InputPortDataCollection { get; private set; }
         public List<PortData> OutputPortDataCollection { get; private set; }
@@ -25,7 +24,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Initialize(Vector3 startingPosition)
         {
-            ID = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
             InputPortDataCollection = new List<PortData>();
             OutputPortDataCollection = new List<PortData>();
             NodeType = GetType();
@@ -44,10 +43,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             {
                 inputPortDataCollection = InputPortDataCollection,
                 outputPortDataCollection = OutputPortDataCollection,
-                nodeID = ID,
+                nodeId = Id,
                 nodeType = NodeType.ToString(),
                 position = GetPosition().position,
-                groupID = GroupID,
+                groupId = GroupId,
             };
         }
 
@@ -55,8 +54,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             InputPortDataCollection = saveData.NodeData.inputPortDataCollection;
             OutputPortDataCollection = saveData.NodeData.outputPortDataCollection;
-            ID = saveData.NodeData.nodeID;
-            GroupID = saveData.NodeData.groupID;
+            Id = saveData.NodeData.nodeId;
+            GroupId = saveData.NodeData.groupId;
         }
 
         public virtual void Draw()
