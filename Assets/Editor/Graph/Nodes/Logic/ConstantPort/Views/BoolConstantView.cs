@@ -1,18 +1,27 @@
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class BoolConstantView : ConstantViewGeneric<bool>
     {
+        [SerializeField]
+        private Toggle toggleField;
+
         public BoolConstantView(PropertyNode<bool> propertyNode) : base(propertyNode) { }
 
         public override VisualElement CreateControl()
         {
-            Toggle toggleField = new Toggle();
+            toggleField = new Toggle();
             toggleField.RegisterValueChangedCallback(OnChangeToggle);
             Add(toggleField);
 
             return this;
+        }
+
+        public override void UpdateControl(bool value)
+        {
+            toggleField.value = value;
         }
 
         void OnChangeToggle(ChangeEvent<bool> evt)

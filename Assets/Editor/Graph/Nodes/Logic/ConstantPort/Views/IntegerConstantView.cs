@@ -19,6 +19,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             return this;
         }
 
+        public override void UpdateControl(int value)
+        {
+            textField.value = value.ToString();
+        }
+
         private void OnChangeTextField(ChangeEvent<string> evt)
         {
             if (!int.TryParse(evt.newValue, out int value))

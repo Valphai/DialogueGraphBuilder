@@ -5,7 +5,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public interface IPropertyNode
     {
-        string PropertyID { get; }
+        string PropertyId { get; }
         PropertyType PropertyType { get; }
         bool IsBoundToProperty { get; }
 

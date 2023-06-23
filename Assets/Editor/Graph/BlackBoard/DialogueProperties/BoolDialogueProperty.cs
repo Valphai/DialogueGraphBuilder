@@ -19,7 +19,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             BoolPropertyNode node = new BoolPropertyNode()
             {
                 Name = DisplayName,
-                PropertyID = Id,
+                PropertyId = Id,
                 Value = Value
             };
 

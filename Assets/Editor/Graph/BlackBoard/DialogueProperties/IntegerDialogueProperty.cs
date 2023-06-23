@@ -19,7 +19,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             IntegerPropertyNode node = new IntegerPropertyNode()
             {
                 Name = DisplayName,
-                PropertyID = Id,
+                PropertyId = Id,
                 Value = Value
             };
 

@@ -112,7 +112,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
 
             propertyNode = (IPropertyNode)element;
-            string propertyGuid = propertyNode.PropertyID;
+            string propertyGuid = propertyNode.PropertyId;
 
             if (string.IsNullOrEmpty(propertyGuid))
             {

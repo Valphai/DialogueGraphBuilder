@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,5 +15,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         }
 
         public abstract VisualElement CreateControl();
+        public abstract void UpdateControl(T value);
     }
 }

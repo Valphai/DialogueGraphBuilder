@@ -5,6 +5,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class IntegerPropertyNode : PropertyNode<int>
     {
+        private ConstantViewGeneric<int> constantViewGeneric;
+
         public override string Name { get; set; } = "Integer";
         public override PropertyType PropertyType { get; protected set; } = PropertyType.Integer;
 
@@ -20,7 +22,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override ConstantPortInput CreateConstantPortInput()
         {
-            return new ConstantPortInput(new IntegerConstantView(this));
+            constantViewGeneric = new IntegerConstantView(this);
+            return new ConstantPortInput(constantViewGeneric);
+        }
+
+        protected override void UpdateConstantViewGenericControl(int value)
+        {
+            constantViewGeneric.UpdateControl(value);
         }
     }
 }
