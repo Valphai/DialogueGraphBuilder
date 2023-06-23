@@ -1,6 +1,6 @@
 ﻿namespace Chocolate4.Dialogue.Edit.Saving
 {
-    internal interface IRebuildable<T>
+    public interface IRebuildable<T>
     {
         T Save();
         void Rebuild(T saveData);

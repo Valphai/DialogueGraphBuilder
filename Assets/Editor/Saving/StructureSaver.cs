@@ -2,7 +2,6 @@
 using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
-using Chocolate4.Edit.Graph.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
@@ -13,14 +12,6 @@ namespace Chocolate4.Dialogue.Edit.Saving
 {
     public class StructureSaver
     {
-        public static GraphSaveData SaveGraph(List<SituationSaveData> situationToData)
-        {
-            return new GraphSaveData()
-            {
-                situationSaveData = situationToData
-            };
-        }
-
         public static SituationSaveData SaveSituation(
             string situationGuid, UQueryState<GraphElement> graphElements
         )
