@@ -1,5 +1,5 @@
 ﻿using Chocolate4.Dialogue.Edit.Graph.Nodes;
-using Chocolate4.Dialogue.Runtime.Saving;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
@@ -8,7 +8,13 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class NodeUtilities
     {
-        public static List<BaseNode> GetConnections(Port port, PortData portData, Direction requestedPort)
+        public static bool IsPortConnectionAllowed(Port startPort, Port otherPort)
+        {
+            return (startPort.portType == typeof(int) || startPort.portType == typeof(bool)) 
+                && otherPort.portType == typeof(AnyValuePortType);
+        }
+
+        public static List<BaseNode> GetConnections(Port port, Direction requestedPort, Action<Port> actionOnOtherPort = null)
         {
             List<Edge> connections = port.connections.ToList();
 
@@ -17,7 +23,7 @@ namespace Chocolate4.Edit.Graph.Utilities
             foreach (Edge connection in connections)
             {
                 Port otherPort = requestedPort == Direction.Input ? connection.input : connection.output;
-                portData.otherPortName = otherPort.portName;
+                actionOnOtherPort?.Invoke(otherPort);
 
                 connectionsMap.Add(otherPort.node as BaseNode);
             }

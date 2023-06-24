@@ -48,7 +48,8 @@ namespace Chocolate4.Dialogue.Edit.Saving
             {
                 PortData portData = portDataCollection.Find(portData => portData.thisPortName.Equals(port.portName));
 
-                List<BaseNode> connectedNodes = GetConnections(port, portData, requestedPort);
+                List<BaseNode> connectedNodes = 
+                    GetConnections(port, requestedPort, (otherPort) => portData.otherPortName = otherPort.portName);
 
                 if (connectedNodes.IsNullOrEmpty())
                 {

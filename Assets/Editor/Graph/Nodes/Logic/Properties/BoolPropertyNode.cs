@@ -10,16 +10,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override string Name { get; set; } = "Bool";
         public override PropertyType PropertyType { get; protected set; } = PropertyType.Bool;
 
-        public override bool CanConnectTo(BaseNode node, Direction direction)
-        {
-            if (direction == Direction.Output)
-            {
-                return node.NodeTask == NodeTask.Dialogue || node.NodeTask == NodeTask.Logic;
-            }
-
-            return node.NodeTask != NodeTask.Property;
-        }
-
         protected override ConstantPortInput CreateConstantPortInput()
         {
             constantViewGeneric = new BoolConstantView((value) => Value = value);

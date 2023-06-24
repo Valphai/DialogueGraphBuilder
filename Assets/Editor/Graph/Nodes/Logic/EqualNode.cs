@@ -1,4 +1,3 @@
-using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
@@ -17,19 +16,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         private PopupField<string> popupField;
         private EqualityType equalityTypeToUse;
+        private Port inputPort1;
+        private Port inputPort2;
 
-        public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
         public override string Name { get; set; } = "Equality Node";
-
-        public override bool CanConnectTo(BaseNode node, Direction direction)
-        {
-            if (direction == Direction.Output)
-            {
-                return node.NodeTask == NodeTask.Dialogue || node.NodeTask == NodeTask.Logic;
-            }
-
-            return node.NodeTask == NodeTask.Property;
-        }
 
         public override IDataHolder Save()
         {
@@ -42,6 +32,27 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             base.Load(saveData);
             EqualityNodeSaveData equalitySaveData = (EqualityNodeSaveData)saveData;
             equalityTypeToUse = equalitySaveData.equalityEnum;
+        }
+
+        public void UpdatePortTypes(Port connectingPort)
+        {
+            if (connectingPort.direction == Direction.Output)
+            {
+                if (!inputPort1.connected && !inputPort2.connected)
+                {
+                    inputPort1.portType = inputPort2.portType = typeof(AnyValuePortType);
+                }
+                
+                if (NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort1) 
+                    && NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort2)
+                )
+                {
+                    inputPort1.portType = inputPort2.portType = connectingPort.portType;
+                }
+
+                InputPortDataCollection[0].thisPortType = inputPort1.portType.ToString();
+                InputPortDataCollection[1].thisPortType = inputPort2.portType.ToString();
+            }
         }
 
         protected override void DrawTitle()
@@ -62,8 +73,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            Port inputPort1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single);
-            Port inputPort2 = DrawPort(Port2, Direction.Input, Port.Capacity.Single);
+            inputPort1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single, typeof(AnyValuePortType));
+            inputPort2 = DrawPort(Port2, Direction.Input, Port.Capacity.Single, typeof(AnyValuePortType));
 
             inputContainer.Add(inputPort1);
             inputContainer.Add(inputPort2);

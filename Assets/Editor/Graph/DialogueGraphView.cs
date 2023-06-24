@@ -88,7 +88,11 @@ namespace Chocolate4.Edit.Graph
                     return;
                 }
 
-                if (!startNode.CanConnectTo(node, startPort.direction))
+                startNode.UpdateOtherNode(node, startPort);
+
+                if (!NodeUtilities.IsPortConnectionAllowed(startPort, port)
+                    && startPort.portType != port.portType
+                )
                 {
                     return;
                 }

@@ -10,16 +10,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override string Name { get; set; } = "Integer";
         public override PropertyType PropertyType { get; protected set; } = PropertyType.Integer;
 
-        public override bool CanConnectTo(BaseNode node, Direction direction)
-        {
-            if (direction == Direction.Output)
-            {
-                return node.NodeTask == NodeTask.Dialogue || node.NodeTask == NodeTask.Logic;
-            }
-
-            return node.NodeTask != NodeTask.Property;
-        }
-
         protected override ConstantPortInput CreateConstantPortInput()
         {
             constantViewGeneric = new IntegerConstantView((value) => Value = value);

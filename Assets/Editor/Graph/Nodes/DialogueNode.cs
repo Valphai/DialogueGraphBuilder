@@ -1,7 +1,6 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,14 +8,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class DialogueNode : BaseNode
     {
-        public override NodeTask NodeTask { get; set; } = NodeTask.Dialogue;
         public override string Name { get; set; } = "Dialogue Name";
         public string Text { get; set; }
-
-        public override bool CanConnectTo(BaseNode node, Direction direction)
-        {
-            return node.NodeTask == NodeTask.Dialogue || node.NodeTask == NodeTask.Property;
-        }
 
         public override void Initialize(Vector3 startingPosition)
         {

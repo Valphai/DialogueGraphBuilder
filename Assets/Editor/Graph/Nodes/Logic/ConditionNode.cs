@@ -8,17 +8,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     public class ConditionNode : BaseNode
     {
         public override string Name { get; set; } = "Condition";
-        public override NodeTask NodeTask { get; set; } = NodeTask.Logic;
-
-        public override bool CanConnectTo(BaseNode node, Direction direction)
-        {
-            if (direction == Direction.Output)
-            {
-                return node.NodeTask == NodeTask.Dialogue || node.NodeTask == NodeTask.Logic;
-            }
-
-            return node.NodeTask == NodeTask.Dialogue;
-        }
 
         protected override void DrawTitle()
         {
@@ -35,10 +24,16 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
         }
 
+        protected override void DrawInputPort()
+        {
+            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Multi, typeof(bool));
+            inputContainer.Add(inputPort);
+        }
+
         protected override void DrawOutputPort()
         {
-            Port truePort = DrawPort("True", Direction.Output, Port.Capacity.Single);
-            Port falsePort = DrawPort("False", Direction.Output, Port.Capacity.Single);
+            Port truePort = DrawPort("True", Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
+            Port falsePort = DrawPort("False", Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
 
             outputContainer.Add(truePort);
             outputContainer.Add(falsePort);

@@ -14,7 +14,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     {
         protected ConstantPortInput constantPortInput;
 
-        public override NodeTask NodeTask { get; set; } = NodeTask.Property;
         public string PropertyId { get; internal set; }
         public T Value { get; internal set; }
         public bool IsBoundToProperty => !string.IsNullOrEmpty(PropertyId);
@@ -135,8 +134,16 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Single);
+            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Single, typeof(T));
             inputContainer.Add(inputPort);
+            base.DrawInputPort();
+        }
+
+        protected override void DrawOutputPort()
+        {
+            Port outputPort = DrawPort("Output", Direction.Output, Port.Capacity.Single, typeof(T));
+            outputContainer.Add(outputPort);
+            base.DrawOutputPort();
         }
 
         protected override void DrawContent()

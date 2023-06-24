@@ -8,5 +8,6 @@ namespace Chocolate4.Dialogue.Runtime.Saving
         public string otherNodeID;
         public string otherPortName;
         public string thisPortName;
+        public string thisPortType;
     }
 }

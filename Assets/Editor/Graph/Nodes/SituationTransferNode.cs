@@ -15,12 +15,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private PopupField<string> popupField;
 
         public string NextSituationId { get; private set; } = string.Empty;
-        public override NodeTask NodeTask { get; set; } = NodeTask.Transfer;
-
-        public override bool CanConnectTo(BaseNode node, Direction direction)
-        {
-            return true;
-        }
 
         public override IDataHolder Save()
         {

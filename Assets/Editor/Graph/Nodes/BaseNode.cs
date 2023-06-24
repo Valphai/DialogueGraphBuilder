@@ -1,5 +1,6 @@
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -18,24 +19,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public List<PortData> InputPortDataCollection { get; private set; }
         public List<PortData> OutputPortDataCollection { get; private set; }
         public abstract string Name { get; set; }
-        public abstract NodeTask NodeTask { get; set; }
-
-        public abstract bool CanConnectTo(BaseNode node, Direction direction);
-
-        public virtual void Initialize(Vector3 startingPosition)
-        {
-            Id = Guid.NewGuid().ToString();
-            InputPortDataCollection = new List<PortData>();
-            OutputPortDataCollection = new List<PortData>();
-            NodeType = GetType();
-
-            SetPosition(new Rect(startingPosition, Vector2.zero));
-        }
-
-        public virtual void PostInitialize()
-        {
-            CreatePortData();
-        }
 
         public virtual IDataHolder Save()
         {
@@ -56,6 +39,24 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             OutputPortDataCollection = saveData.NodeData.outputPortDataCollection;
             Id = saveData.NodeData.nodeId;
             GroupId = saveData.NodeData.groupId;
+
+            LoadPortTypes(InputPortDataCollection, inputContainer);
+            LoadPortTypes(OutputPortDataCollection, outputContainer);
+        }
+
+        public virtual void Initialize(Vector3 startingPosition)
+        {
+            Id = Guid.NewGuid().ToString();
+            InputPortDataCollection = new List<PortData>();
+            OutputPortDataCollection = new List<PortData>();
+            NodeType = GetType();
+
+            SetPosition(new Rect(startingPosition, Vector2.zero));
+        }
+
+        public virtual void PostInitialize()
+        {
+            CreatePortData();
         }
 
         public virtual void Draw()
@@ -65,6 +66,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             DrawContent();
 
             RefreshExpandedState();
+        }
+
+        public virtual void UpdateOtherNode(BaseNode node, Port connectingPort)
+        {
+            if (node is EqualNode equalNode)
+            {
+                equalNode.UpdatePortTypes(connectingPort);
+            }
         }
 
         protected virtual void DrawTitle()
@@ -105,25 +114,25 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawOutputPort()
         {
-            Port outputPort = DrawPort("Output", Direction.Output, Port.Capacity.Single);
+            Port outputPort = DrawPort("Transition Out", Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
             outputContainer.Add(outputPort);
         }
 
         protected virtual void DrawInputPort()
         {
-            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Multi);
+            Port inputPort = DrawPort("Transition In", Direction.Input, Port.Capacity.Multi, typeof(TransitionPortType));
             inputContainer.Add(inputPort);
         }
 
-        protected Port DrawPort(string name, Direction direction, Port.Capacity capacity)
+        protected virtual Port DrawPort(string name, Direction direction, Port.Capacity capacity, Type type)
         {
-            Port port = InstantiatePort(Orientation.Horizontal, direction, capacity, typeof(bool));
+            Port port = InstantiatePort(Orientation.Horizontal, direction, capacity, type);
             port.portName = port.name = name;
 
             return port;
         }
 
-        protected void CreatePortData()
+        protected virtual void CreatePortData()
         {
             CreatePortData(inputContainer, InputPortDataCollection);
             CreatePortData(outputContainer, OutputPortDataCollection);
@@ -131,11 +140,24 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         private void CreatePortData(VisualElement container, List<PortData> dataCollection)
         {
-            List<Port> inputPorts = container.Children().Where(port => port is Port).Select(port => (Port)port).ToList();
-            foreach (Port port in inputPorts)
+            List<Port> ports = container.Children().Where(port => port is Port).Select(port => (Port)port).ToList();
+            foreach (Port port in ports)
             {
-                PortData portData = new PortData() { thisPortName = port.portName };
+                PortData portData = new PortData() 
+                { 
+                    thisPortName = port.portName,
+                    thisPortType = port.portType.ToString()
+                };
                 dataCollection.Add(portData);
+            }
+        }
+
+        private void LoadPortTypes(List<PortData> portDataCollection, VisualElement portContainer)
+        {
+            List<Port> ports = portContainer.Query<Port>().ToList();
+            for (int i = 0; i < ports.Count; i++)
+            {
+                ports[i].portType = Type.GetType(portDataCollection[i].thisPortType);
             }
         }
     }
