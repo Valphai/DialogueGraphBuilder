@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Edit.Asset;
+using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Asset;
@@ -274,6 +275,11 @@ namespace Chocolate4.Dialogue.Edit
 
         private void SaveButton_clicked()
         {
+            if (DangerLogger.IsEditorInDanger())
+            {
+                return;
+            }
+
             GraphSaveData graphData = GraphView.Save();
             TreeSaveData treeData = DialogueTreeView.Save();
             dialogueAssetManager.Save(graphData, treeData);

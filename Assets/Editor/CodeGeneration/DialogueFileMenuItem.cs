@@ -12,6 +12,17 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
         [MenuItem("Assets/Create/DialogueEditor")]
         public static void MakeDialogueEditorFile()
         {
+            Writer writer = WriteDefaultContent();
+
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject) + "/" + FileName + "." + DialogueImporter.Extension;
+
+            ProjectWindowUtil.CreateAssetWithContent(path, writer.buffer.ToString(), (Texture2D)EditorGUIUtility.Load(DialogueImporter.AssetIcon));
+
+            AssetDatabase.Refresh();
+        }
+
+        public static Writer WriteDefaultContent()
+        {
             Writer writer = new Writer(new StringBuilder());
 
             writer.BeginBlock();
@@ -27,12 +38,7 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
             writer.EndBlock();
 
             writer.EndBlock();
-
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject) + "/" + FileName + "." + DialogueImporter.Extension;
-
-            ProjectWindowUtil.CreateAssetWithContent(path, writer.buffer.ToString(), (Texture2D)EditorGUIUtility.Load(DialogueImporter.AssetIcon));
-
-            AssetDatabase.Refresh();
+            return writer;
         }
     }
 }
