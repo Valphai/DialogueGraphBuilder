@@ -12,6 +12,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using SearchWindow = Chocolate4.Dialogue.Edit.Search.SearchWindow;
 
 namespace Chocolate4.Edit.Graph
 {
@@ -21,14 +22,16 @@ namespace Chocolate4.Edit.Graph
 
         private string activeSituationGuid = string.Empty;
         private BlackboardProvider blackboardProvider;
+        private SearchWindow searchWindow;
 
         public DragSelectablesHandler DragSelectablesHandler { get; private set; }
         internal SituationCache SituationCache { get; private set; }
 
         public void Initialize()
         {
-            deleteSelection = CustomDeleteSelection;
+            deleteSelection = OnDeleteSelection;
             graphViewChanged = OnGraphViewChange;
+            nodeCreationRequest = OnNodeCreationRequest;
 
             ResolveDependencies();
 
@@ -36,6 +39,13 @@ namespace Chocolate4.Edit.Graph
             AddGridBackground();
 
             AddStyles();
+        }
+
+        private void OnNodeCreationRequest(NodeCreationContext ctx)
+        {
+            UnityEditor.Experimental.GraphView.SearchWindow.Open(
+                new SearchWindowContext(ctx.screenMousePosition), searchWindow
+            );
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -46,18 +56,6 @@ namespace Chocolate4.Edit.Graph
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             );
 
-            List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>()
-                .Except(new Type[] { typeof(StartNode), typeof(EndNode) }).ToList();
-
-            string contextElementTitle;
-            foreach (Type nodeType in nodeTypes)
-            {
-                contextElementTitle = nodeType.Name;
-                evt.menu.AppendAction($"Add {contextElementTitle}",
-                    actionEvent => CreateNode(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition), nodeType)
-                );
-            }
-
             if (evt.target is BaseNode)
             {
                 evt.menu.AppendAction("Convert To Property", ConvertToProperty, ConvertToPropertyStatus);
@@ -67,6 +65,8 @@ namespace Chocolate4.Edit.Graph
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             List<Port> compatiblePorts = new List<Port>();
+
+            BaseNode startNode = (BaseNode)startPort.node;
 
             ports.ForEach(port => {
 
@@ -80,7 +80,6 @@ namespace Chocolate4.Edit.Graph
                     return;
                 }
 
-                BaseNode startNode = (BaseNode)startPort.node;
                 BaseNode node = (BaseNode)port.node;
 
                 if (startNode.IsConnectedTo(node))
@@ -88,7 +87,7 @@ namespace Chocolate4.Edit.Graph
                     return;
                 }
 
-                startNode.UpdateOtherNode(node, startPort);
+                node.RefreshNode(startPort);
 
                 if (!NodeUtilities.IsPortConnectionAllowed(startPort, port)
                     && startPort.portType != port.portType
@@ -123,6 +122,29 @@ namespace Chocolate4.Edit.Graph
             {
                 blackboardProvider.Rebuild(blackboardSaveData);
             }
+        }
+
+        public Vector2 GetLocalMousePosition(Vector2 mousePosition)
+        {
+            Vector2 mousePositionWorld = mousePosition;
+            return contentViewContainer.WorldToLocal(mousePositionWorld);
+        }
+
+        public void AddNode(Vector2 startingPosition, BaseNode node)
+        {
+            node.Initialize(startingPosition);
+            node.Draw();
+            node.PostInitialize();
+
+            AddElement(node);
+        }
+
+        public BaseNode CreateNode(Vector2 startingPosition, Type nodeType)
+        {
+            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
+            AddNode(startingPosition, node);
+
+            return node;
         }
 
         internal void DialogueTreeView_OnSituationSelected(string newSituationGuid)
@@ -161,6 +183,9 @@ namespace Chocolate4.Edit.Graph
         {
             SituationCache = new SituationCache(null);
             DragSelectablesHandler = new DragSelectablesHandler();
+
+            searchWindow = ScriptableObject.CreateInstance<SearchWindow>();
+            searchWindow.Initialize(this);
 
             blackboardProvider = new BlackboardProvider(this);
             Add(blackboardProvider.Blackboard);
@@ -294,23 +319,6 @@ namespace Chocolate4.Edit.Graph
             return DropdownMenuAction.Status.Normal;
         }
 
-        private BaseNode CreateNode(Vector2 startingPosition, Type nodeType)
-        {
-            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
-            AddNode(startingPosition, node);
-
-            return node;
-        }
-
-        public void AddNode(Vector2 startingPosition, BaseNode node)
-        {
-            node.Initialize(startingPosition);
-            node.Draw();
-            node.PostInitialize();
-
-            AddElement(node);
-        }
-
         private Group CreateGroup(Vector2 startingPosition)
         {
             Group group = new Group() {
@@ -352,12 +360,6 @@ namespace Chocolate4.Edit.Graph
             styleSheets.Add(nodeStyleSheet);
         }
 
-        private Vector2 GetLocalMousePosition(Vector2 mousePosition)
-        {
-            Vector2 mousePositionWorld = mousePosition;
-            return contentViewContainer.WorldToLocal(mousePositionWorld);
-        }
-
         private GraphViewChange OnGraphViewChange(GraphViewChange change)
         {
             if (change.elementsToRemove.IsNullOrEmpty())
@@ -377,7 +379,7 @@ namespace Chocolate4.Edit.Graph
             return change;
         }
 
-        private void CustomDeleteSelection(string operationName, AskUser askUser)
+        private void OnDeleteSelection(string operationName, AskUser askUser)
         {
             HashSet<GraphElement> toRemove = new HashSet<GraphElement>();
             foreach (ISelectable selectable in selection)
