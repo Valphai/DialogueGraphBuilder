@@ -9,5 +9,14 @@ namespace Chocolate4.Runtime.Utilities
         public const string ConditionNode = "ConditionNode";
         public const string EqualNode = "EqualNode";
         public const string OperatorNode = "OperatorNode";
+
+        public const string TransferOut = "Out";
+        public const string TransferIn = "In";
+
+        public const string PropertyInput = "Input";
+        public const string PropertyOutput = "Output";
+        
+        public const string ConditionOutputTrue = "True";
+        public const string ConditionOutputFalse = "False";
     } 
 }

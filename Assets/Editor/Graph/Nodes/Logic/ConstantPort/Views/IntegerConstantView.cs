@@ -6,6 +6,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class IntegerConstantView : ConstantViewGeneric<int>
     {
+        private const string Zero = "0";
         [SerializeField]
         private TextField textField;
 
@@ -13,7 +14,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public override VisualElement CreateControl()
         {
-            textField = new TextField();
+            textField = new TextField() { value = Zero };
             textField.RegisterValueChangedCallback(OnChangeTextField);
             Add(textField);
 
@@ -29,7 +30,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             if (!int.TryParse(evt.newValue, out int value))
             {
-                textField.value = "0";
+                textField.value = Zero;
                 onValueChanged?.Invoke(0);
                 return;
             }

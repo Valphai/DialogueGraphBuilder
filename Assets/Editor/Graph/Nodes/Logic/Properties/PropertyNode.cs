@@ -3,6 +3,7 @@ using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Runtime.Utilities;
 using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -111,14 +112,29 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             UpdateLabel();
         }
 
-        protected virtual void HideInputField()
+        public void HideInputField()
         {
             constantPortInput.style.visibility = Visibility.Hidden;
         }
         
-        protected virtual void DisplayInputField()
+        public void DisplayInputField()
         {
             constantPortInput.style.visibility = Visibility.Visible;
+        }
+
+        public void HideTransitionPorts()
+        {
+            Port inputPort = inputContainer.Q<Port>(NodeConstants.TransferIn);
+            Port outputPort = outputContainer.Q<Port>(NodeConstants.TransferOut);
+
+            inputPort.RemoveFromHierarchy();
+            outputPort.RemoveFromHierarchy();
+        }
+
+        public void DisplayTransitionPorts()
+        {
+            base.DrawInputPort();
+            base.DrawOutputPort();
         }
 
         protected override void DrawTitle()
@@ -134,16 +150,26 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Single, typeof(T));
+            Port inputPort = DrawPort(NodeConstants.PropertyInput, Direction.Input, Port.Capacity.Single, typeof(T));
             inputContainer.Add(inputPort);
+
             base.DrawInputPort();
         }
 
         protected override void DrawOutputPort()
         {
-            Port outputPort = DrawPort("Output", Direction.Output, Port.Capacity.Single, typeof(T));
+            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(T));
             outputContainer.Add(outputPort);
+
             base.DrawOutputPort();
+        }
+
+        protected override Port DrawPort(string name, Direction direction, Port.Capacity capacity, Type type)
+        {
+            SanitizedPort port = SanitizedPort.Create<Edge>(Orientation.Horizontal, direction, capacity, type);
+            port.portName = port.name = name;
+
+            return port;
         }
 
         protected override void DrawContent()

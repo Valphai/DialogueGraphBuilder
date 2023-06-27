@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace UnityEditor.Experimental.GraphView
@@ -21,6 +22,20 @@ namespace UnityEditor.Experimental.GraphView
         {
             return port.connections.Any(edge => edge.output?.node == node)
                 || port.connections.Any(edge => edge.input?.node == node);
+        }
+
+        public static bool IsConnectedToAny(this Port port)
+        {
+            return port.direction == Direction.Input
+                ? port.connections.Any(edge => edge.input != null)
+                : port.connections.Any(edge => edge.output != null);
+        }
+
+        public static IEnumerable<Port> ConnectedPorts(this Port port)
+        {
+            return port.direction == Direction.Input
+                ? port.connections.Where(edge => edge.output != null).Select(edge => edge.output)
+                : port.connections.Where(edge => edge.input != null).Select(edge => edge.input);
         }
     }
 }

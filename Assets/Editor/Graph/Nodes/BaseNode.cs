@@ -1,6 +1,5 @@
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,12 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
+using Chocolate4.Runtime.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public abstract class BaseNode : Node, ISaveable<IDataHolder>, IHaveId
+    public abstract class BaseNode : Node, ISaveable<IDataHolder>, IHaveId, IDangerCauser
     {
         public string GroupId { get; set; }
         public string Id { get; set; }
@@ -19,6 +20,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public List<PortData> InputPortDataCollection { get; private set; }
         public List<PortData> OutputPortDataCollection { get; private set; }
         public abstract string Name { get; set; }
+        public bool IsMarkedDangerous { get; set; }
 
         public virtual IDataHolder Save()
         {
@@ -68,12 +70,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             RefreshExpandedState();
         }
 
-        public virtual void UpdateOtherNode(BaseNode node, Port connectingPort)
+        public virtual void RefreshNode(Port startPort)
         {
-            if (node is EqualNode equalNode)
-            {
-                equalNode.UpdatePortTypes(connectingPort);
-            }
+
         }
 
         protected virtual void DrawTitle()
@@ -114,13 +113,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawOutputPort()
         {
-            Port outputPort = DrawPort("Transition Out", Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
+            Port outputPort = DrawPort(NodeConstants.TransferOut, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
             outputContainer.Add(outputPort);
         }
 
         protected virtual void DrawInputPort()
         {
-            Port inputPort = DrawPort("Transition In", Direction.Input, Port.Capacity.Multi, typeof(TransitionPortType));
+            Port inputPort = DrawPort(NodeConstants.TransferIn, Direction.Input, Port.Capacity.Multi, typeof(TransitionPortType));
             inputContainer.Add(inputPort);
         }
 

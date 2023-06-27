@@ -11,5 +11,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         void UnbindFromProperty();
         void BindToProperty(IDialogueProperty property);
+
+        void HideInputField();
+        void DisplayInputField();
+
+        void HideTransitionPorts();
+        void DisplayTransitionPorts();
     }
 }

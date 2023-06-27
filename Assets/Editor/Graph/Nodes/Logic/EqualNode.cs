@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
+using NodeConstants = Chocolate4.Runtime.Utilities.NodeConstants;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
@@ -34,25 +35,29 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             equalityTypeToUse = equalitySaveData.equalityEnum;
         }
 
-        public void UpdatePortTypes(Port connectingPort)
+        public override void RefreshNode(Port connectingPort)
         {
-            if (connectingPort.direction == Direction.Output)
-            {
-                if (!inputPort1.connected && !inputPort2.connected)
-                {
-                    inputPort1.portType = inputPort2.portType = typeof(AnyValuePortType);
-                }
-                
-                if (NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort1) 
-                    && NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort2)
-                )
-                {
-                    inputPort1.portType = inputPort2.portType = connectingPort.portType;
-                }
+            base.RefreshNode(connectingPort);
 
-                InputPortDataCollection[0].thisPortType = inputPort1.portType.ToString();
-                InputPortDataCollection[1].thisPortType = inputPort2.portType.ToString();
+            if (connectingPort.direction != Direction.Output)
+            {
+                return;
             }
+
+            if (!inputPort1.connected && !inputPort2.connected)
+            {
+                inputPort1.portType = inputPort2.portType = typeof(AnyValuePortType);
+            }
+
+            if (NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort1)
+                && NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort2)
+            )
+            {
+                inputPort1.portType = inputPort2.portType = connectingPort.portType;
+            }
+
+            InputPortDataCollection[0].thisPortType = inputPort1.portType.ToString();
+            InputPortDataCollection[1].thisPortType = inputPort2.portType.ToString();
         }
 
         protected override void DrawTitle()
@@ -78,6 +83,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             inputContainer.Add(inputPort1);
             inputContainer.Add(inputPort2);
+        }
+
+        protected override void DrawOutputPort()
+        {
+            Port outputPort = DrawPort(NodeConstants.TransferOut, Direction.Output, Port.Capacity.Single, typeof(bool));
+            outputContainer.Add(outputPort);
         }
 
         private void CreatePopup()

@@ -6,8 +6,10 @@ namespace Chocolate4.Edit.Graph.Utilities
     {
         public const string TextFieldHiddenUSS = "base-node__textfield__hidden";
 
+        public static Color ErrorColor { get; private set; } = new Color(255f / 255f, 0f / 255f, 0f / 255f);
         public static Color PropertyColor { get; private set; } = new Color(118f / 255f, 82f / 255f, 140f / 255f);
-        public static Color LogicColor { get; private set; } = new Color(82f / 255f, 140f / 255f, 82f / 255f);
+        public static Color LogicColor { get; private set; } = new Color(44f / 255f, 110f / 255f, 173f / 255f);
+        public static Color EventColorColor { get; private set; } = new Color(82f / 255f, 140f / 255f, 82f / 255f);
         public static Color StoryColor { get; private set; } = new Color(132f / 255f, 54f / 255f, 58f / 255f);
         public static Color TransferColor { get; private set; } = new Color(22f / 255f, 22f / 255f, 22f / 255f);
         public static Color DefaultDarkColor { get; private set; } = new Color(59f / 255f, 59f / 255f, 59f / 255f);
