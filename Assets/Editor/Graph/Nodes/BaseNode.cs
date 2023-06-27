@@ -70,11 +70,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             RefreshExpandedState();
         }
 
-        public virtual void RefreshNode(Port startPort)
-        {
-
-        }
-
         protected virtual void DrawTitle()
         {
             TextField textField = new TextField() { value = Name};

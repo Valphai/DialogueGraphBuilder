@@ -30,11 +30,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             equalityTypeToUse = equalitySaveData.equalityEnum;
         }
 
-        public override void RefreshNode(Port connectingPort)
-        {
-            base.RefreshNode(connectingPort);
-        }
-
         protected override void DrawTitle()
         {
             Label Label = new Label() { text = Name };
