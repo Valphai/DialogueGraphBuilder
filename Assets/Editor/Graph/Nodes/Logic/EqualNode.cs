@@ -12,13 +12,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class EqualNode : BaseNode
     {
-        private const string Port1 = "Input 1";
-        private const string Port2 = "Input 2";
-
         private PopupField<string> popupField;
         private EqualityType equalityTypeToUse;
-        private Port inputPort1;
-        private Port inputPort2;
 
         public override string Name { get; set; } = "Equality Node";
 
@@ -38,26 +33,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override void RefreshNode(Port connectingPort)
         {
             base.RefreshNode(connectingPort);
-
-            if (connectingPort.direction != Direction.Output)
-            {
-                return;
-            }
-
-            if (!inputPort1.connected && !inputPort2.connected)
-            {
-                inputPort1.portType = inputPort2.portType = typeof(AnyValuePortType);
-            }
-
-            if (NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort1)
-                && NodeUtilities.IsPortConnectionAllowed(connectingPort, inputPort2)
-            )
-            {
-                inputPort1.portType = inputPort2.portType = connectingPort.portType;
-            }
-
-            InputPortDataCollection[0].thisPortType = inputPort1.portType.ToString();
-            InputPortDataCollection[1].thisPortType = inputPort2.portType.ToString();
         }
 
         protected override void DrawTitle()
@@ -78,8 +53,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            inputPort1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single, typeof(AnyValuePortType));
-            inputPort2 = DrawPort(Port2, Direction.Input, Port.Capacity.Single, typeof(AnyValuePortType));
+            Port inputPort1 = DrawDynamicPort(NodeConstants.Input1, Direction.Input, Port.Capacity.Single, typeof(AnyValuePortType));
+            Port inputPort2 = DrawDynamicPort(NodeConstants.Input2, Direction.Input, Port.Capacity.Single, typeof(AnyValuePortType));
 
             inputContainer.Add(inputPort1);
             inputContainer.Add(inputPort2);
@@ -87,8 +62,16 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawOutputPort()
         {
-            Port outputPort = DrawPort(NodeConstants.TransferOut, Direction.Output, Port.Capacity.Single, typeof(bool));
+            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(bool));
             outputContainer.Add(outputPort);
+        }
+
+        protected DynamicPort DrawDynamicPort(string name, Direction direction, Port.Capacity capacity, Type type)
+        {
+            DynamicPort port = DynamicPort.Create<Edge>(Orientation.Horizontal, direction, capacity, type);
+            port.portName = port.name = name;
+
+            return port;
         }
 
         private void CreatePopup()

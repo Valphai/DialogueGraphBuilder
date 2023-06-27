@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Chocolate4.Dialogue.Edit.CodeGeneration
 {
-    internal struct Writer
+    public struct Writer
     {
         private const int SpacesPerIndentLevel = 4;
 

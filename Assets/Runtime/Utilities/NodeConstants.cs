@@ -18,5 +18,8 @@ namespace Chocolate4.Runtime.Utilities
         
         public const string ConditionOutputTrue = "True";
         public const string ConditionOutputFalse = "False";
+
+        public const string Input1 = "Input 1";
+        public const string Input2 = "Input 2";
     } 
 }

@@ -1,5 +1,6 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Runtime.Utilities;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
@@ -26,14 +27,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            Port inputPort = DrawPort("Input", Direction.Input, Port.Capacity.Multi, typeof(bool));
+            Port inputPort = DrawPort(NodeConstants.PropertyInput, Direction.Input, Port.Capacity.Multi, typeof(bool));
             inputContainer.Add(inputPort);
         }
 
         protected override void DrawOutputPort()
         {
-            Port truePort = DrawPort("True", Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
-            Port falsePort = DrawPort("False", Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
+            Port truePort = DrawPort(NodeConstants.ConditionOutputTrue, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
+            Port falsePort = DrawPort(NodeConstants.ConditionOutputFalse, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
 
             outputContainer.Add(truePort);
             outputContainer.Add(falsePort);

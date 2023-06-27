@@ -53,6 +53,7 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
                 if (connectedNodes.IsNullOrEmpty())
                 {
+                    portData.otherNodeID = portData.otherPortName = string.Empty;
                     continue;
                 }
 

@@ -1,8 +1,7 @@
-using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Runtime.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +12,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class OperatorNode : BaseNode//, ILogicEvaluate
     {
-        private const string Port1 = "Input 1";
-        private const string Port2 = "Input 2";
-
-        private Port inputPort1;
-        private Port inputPort2;
         private PopupField<string> popupField;
         private OperatorType operatorToUse;
 
@@ -38,14 +32,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawOutputPort()
         {
-            Port outputPort = DrawPort("Output", Direction.Output, Port.Capacity.Single, typeof(int));
+            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(int));
             outputContainer.Add(outputPort);
         }
 
         protected override void DrawInputPort()
         {
-            inputPort1 = DrawPort(Port1, Direction.Input, Port.Capacity.Single, typeof(int));
-            inputPort2 = DrawPort(Port2, Direction.Input, Port.Capacity.Single, typeof(int));
+            Port inputPort1 = DrawPort(NodeConstants.Input1, Direction.Input, Port.Capacity.Single, typeof(int));
+            Port inputPort2 = DrawPort(NodeConstants.Input2, Direction.Input, Port.Capacity.Single, typeof(int));
 
             inputContainer.Add(inputPort1);
             inputContainer.Add(inputPort2);

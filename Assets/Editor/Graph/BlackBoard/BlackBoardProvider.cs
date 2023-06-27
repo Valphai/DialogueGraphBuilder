@@ -53,6 +53,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
         public void Rebuild(BlackboardSaveData saveData)
         {
+            if (saveData.dialoguePropertiesSaveData.IsNullOrEmpty())
+            {
+                return;
+            }
+
             foreach (DialoguePropertySaveData propertySaveData in saveData.dialoguePropertiesSaveData)
             {
                 IDialogueProperty property = propertySaveData.propertyType switch
