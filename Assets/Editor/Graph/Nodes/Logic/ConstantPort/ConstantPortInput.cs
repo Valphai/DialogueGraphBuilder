@@ -46,6 +46,15 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             container.Add(connector);
             Add(container);
+
+            style.position = Position.Absolute;
+            BringToFront();
+            this.WithMarginLeft(UIStyles.ConstantPortInputMarginLeft)
+                .WithWidth(UIStyles.ConstantPortInputMinWidth)
+                .WithMinHeight(UIStyles.ConstantPortInputMinHeight)
+                .WithHorizontalGrow()
+                .WithMarginTop(0f)
+                .WithBackgroundColor(UIStyles.DefaultDarkColor);
         }
     }
 }

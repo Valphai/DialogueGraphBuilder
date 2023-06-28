@@ -29,6 +29,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             Port inputPort = DrawPort(NodeConstants.PropertyInput, Direction.Input, Port.Capacity.Multi, typeof(bool));
             inputContainer.Add(inputPort);
+
+            base.DrawInputPort();
         }
 
         protected override void DrawOutputPort()

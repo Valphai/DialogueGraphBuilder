@@ -7,8 +7,10 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public class DynamicPort : Port
     {
-        private EqualNode equalNode;
-        private Port neighbouringInputPort;
+        public Action onDisconnect;
+        public Action<Edge> onConnect;
+
+        public IConstantViewPort ConstantViewPortInstance { get; private set; }
 
         public DynamicPort(
             Orientation portOrientation, Direction portDirection,
@@ -34,26 +36,41 @@ namespace Chocolate4.Edit.Graph.Utilities
         {
             base.Connect(edge);
 
-            if (equalNode == null)
-            {
-                equalNode = (EqualNode)node;
-                neighbouringInputPort = equalNode.inputContainer.Query<Port>().Where(port => port != this).First();
-            }
-
-            portType = neighbouringInputPort.portType = edge.output.portType;
-
-            equalNode.InputPortDataCollection[0].thisPortType = portType.ToString();
-            equalNode.InputPortDataCollection[1].thisPortType = neighbouringInputPort.portType.ToString();
+            onConnect?.Invoke(edge);
         }
 
         public override void Disconnect(Edge edge)
         {
             base.Disconnect(edge);
+            onDisconnect?.Invoke();
+        }
 
-            if (!connected && !neighbouringInputPort.connected)
+        public void DrawConstantView()
+        {
+            if (connected)
             {
-                portType = neighbouringInputPort.portType = typeof(AnyValuePortType);
+                return;
             }
+
+            if (portType == typeof(AnyValuePortType))
+            {
+                return;
+            }
+
+            ConstantViewPortInstance = (IConstantViewPort)Activator.CreateInstance(portType);
+            ConstantPortInput constantPortInput = ConstantViewPortInstance.GetConstantPortInput();
+            Add(constantPortInput);
+        }
+
+        public void HideConstantView()
+        {
+            if (ConstantViewPortInstance == null)
+            {
+                return;
+            }
+
+            ConstantPortInput constantPortInput = ConstantViewPortInstance.GetConstantPortInput();
+            constantPortInput.RemoveFromHierarchy();
         }
     }
 }

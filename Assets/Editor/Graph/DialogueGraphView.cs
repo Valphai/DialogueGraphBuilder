@@ -384,7 +384,7 @@ namespace Chocolate4.Edit.Graph
 
         private void OnDeleteSelection(string operationName, AskUser askUser)
         {
-            HashSet<GraphElement> toRemove = new HashSet<GraphElement>();
+            HashSet<GraphElement> cannotRemove = new HashSet<GraphElement>();
             foreach (ISelectable selectable in selection)
             {
                 if (selectable is not GraphElement)
@@ -394,14 +394,17 @@ namespace Chocolate4.Edit.Graph
 
                 if (selectable is StartNode or EndNode)
                 {
-                    continue;
+                    cannotRemove.Add(selectable as GraphElement);
                 }
+            }
 
-                toRemove.Add(selectable as GraphElement);
+            foreach (GraphElement element in cannotRemove)
+            {
+                selection.Remove(element);
             }
 
             //graph.owner.RegisterCompleteObjectUndo(operationName);
-            DeleteElements(toRemove);
+            DeleteSelection();
         }
 
         private void AddStartingNodes()

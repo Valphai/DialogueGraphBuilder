@@ -22,6 +22,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public abstract string Name { get; set; }
         public bool IsMarkedDangerous { get; set; }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         public virtual IDataHolder Save()
         {
             return new NodeSaveData()
@@ -72,7 +77,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawTitle()
         {
-            TextField textField = new TextField() { value = Name};
+            TextField textField = new TextField() { value = Name };
 
             textField.AddToClassList(UIStyles.TextFieldHiddenUSS);
 

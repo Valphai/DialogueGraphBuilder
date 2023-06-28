@@ -10,6 +10,8 @@ namespace Chocolate4.Runtime.Utilities
         public const string EqualNode = "EqualNode";
         public const string OperatorNode = "OperatorNode";
 
+        public const string ExtraTransferOut = "Extra Out";
+
         public const string TransferOut = "Out";
         public const string TransferIn = "In";
 

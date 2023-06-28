@@ -10,7 +10,7 @@ namespace Chocolate4.Edit.Graph.Utilities
     {
         public static bool IsPortConnectionAllowed(Port startPort, Port otherPort)
         {
-            return (startPort.portType == typeof(int) || startPort.portType == typeof(bool)) 
+            return (startPort.portType == typeof(IntegerPortType) || startPort.portType == typeof(BoolPortType)) 
                 && otherPort.portType == typeof(AnyValuePortType);
         }
 

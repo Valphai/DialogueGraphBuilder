@@ -6,21 +6,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class OperatorNode : BaseNode//, ILogicEvaluate
     {
+        private List<DynamicPort> dynamicPorts;
         private PopupField<string> popupField;
         private OperatorType operatorToUse;
 
-        public override string Name { get; set; } = "Operator";
+        public override string Name { get; set; } = "Operator Node";
 
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return new OperatorNodeSaveData() { operatorEnum = operatorToUse, nodeSaveData = saveData };
+            return new OperatorNodeSaveData() 
+            { 
+                operatorEnum = operatorToUse, 
+                nodeSaveData = saveData, 
+            };
         }
 
         public override void Load(IDataHolder saveData)
@@ -30,19 +36,41 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             operatorToUse = operatorSaveData.operatorEnum;
         }
 
+        public override void Initialize(Vector3 startingPosition)
+        {
+            base.Initialize(startingPosition);
+
+            dynamicPorts = new List<DynamicPort>();
+
+            VisualElement element = this.Q<VisualElement>("node-border");
+            element?.WithOverflow();
+        }
+
+        public override void PostInitialize()
+        {
+            base.PostInitialize();
+            dynamicPorts.AddRange(
+                inputContainer.Query<DynamicPort>().ToList()
+            );
+
+            PortUtilities.SetDynamicPortsSameType(dynamicPorts);
+        }
+
         protected override void DrawOutputPort()
         {
-            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(int));
+            Port outputPort = DrawPort(NodeConstants.TransferOut, Direction.Output, Port.Capacity.Single, typeof(ExtraOperationPortType));
             outputContainer.Add(outputPort);
         }
 
         protected override void DrawInputPort()
         {
-            Port inputPort1 = DrawPort(NodeConstants.Input1, Direction.Input, Port.Capacity.Single, typeof(int));
-            Port inputPort2 = DrawPort(NodeConstants.Input2, Direction.Input, Port.Capacity.Single, typeof(int));
+            Port inputPort1 = PortUtilities.DrawDynamicPort(NodeConstants.Input1, Direction.Input, Port.Capacity.Single, typeof(IntegerPortType));
+            Port inputPort2 = PortUtilities.DrawDynamicPort(NodeConstants.Input2, Direction.Input, Port.Capacity.Single, typeof(IntegerPortType));
+            Port inputPort3 = DrawPort(NodeConstants.TransferIn, Direction.Input, Port.Capacity.Single, typeof(ExtraOperationPortType));
 
             inputContainer.Add(inputPort1);
             inputContainer.Add(inputPort2);
+            inputContainer.Add(inputPort3);
         }
 
         protected override void DrawTitle()

@@ -1,6 +1,8 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Runtime.Utilities;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,6 +30,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             base.Load(saveData);
             DialogueNodeSaveData dialogueSaveData = (DialogueNodeSaveData)saveData;
             Text = dialogueSaveData.text;
+        }
+
+        protected override void DrawOutputPort()
+        {
+            base.DrawOutputPort();
+
+            Port outputPort = DrawPort(NodeConstants.ExtraTransferOut, Direction.Output, Port.Capacity.Single, typeof(ExtraOperationPortType));
+            outputContainer.Add(outputPort);
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)

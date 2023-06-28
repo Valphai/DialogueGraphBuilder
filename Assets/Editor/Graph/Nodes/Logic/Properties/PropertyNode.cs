@@ -13,12 +13,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public abstract class PropertyNode<T> : BaseNode, IPropertyNode
     {
-        protected ConstantPortInput constantPortInput;
-
         public string PropertyId { get; internal set; }
         public T Value { get; internal set; }
         public bool IsBoundToProperty => !string.IsNullOrEmpty(PropertyId);
         public abstract PropertyType PropertyType { get; protected set; }
+        protected abstract Type OutputPortType { get; }
 
         protected abstract ConstantPortInput CreateConstantPortInput();
         protected abstract void UpdateConstantViewGenericControl(T value);
@@ -56,24 +55,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             base.Initialize(startingPosition);
 
-            if (!IsBoundToProperty)
-            {
-                Name = PropertyType.ToString(); 
-            }
-
             VisualElement element = this.Q<VisualElement>("node-border");
-            if (element != null)
-            {
-                element.WithOverflow();
-            }
+            element?.WithOverflow();
         }
 
         public override void PostInitialize()
         {
             base.PostInitialize();
-
-            constantPortInput = CreateConstantPortInput();
-            constantPortInput.style.position = Position.Absolute;
             
             if (!IsBoundToProperty)
             {
@@ -83,16 +71,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             {
                 HideInputField();
             }
-            
-            constantPortInput.BringToFront();
-            constantPortInput
-                .WithMarginLeft(UIStyles.ConstantPortInputMarginLeft)
-                .WithWidth(UIStyles.ConstantPortInputMinWidth)
-                .WithMinHeight(UIStyles.ConstantPortInputMinHeight)
-                .WithHorizontalGrow()
-                .WithMarginTop(0f)
-                .WithBackgroundColor(UIStyles.DefaultDarkColor);
 
+            ConstantPortInput constantPortInput = CreateConstantPortInput();
             inputContainer.Add(constantPortInput);
         }
 
@@ -114,27 +94,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public void HideInputField()
         {
-            constantPortInput.style.visibility = Visibility.Hidden;
+            inputContainer.style.display = DisplayStyle.None;
         }
         
         public void DisplayInputField()
         {
-            constantPortInput.style.visibility = Visibility.Visible;
-        }
-
-        public void HideTransitionPorts()
-        {
-            Port inputPort = inputContainer.Q<Port>(NodeConstants.TransferIn);
-            Port outputPort = outputContainer.Q<Port>(NodeConstants.TransferOut);
-
-            inputPort.RemoveFromHierarchy();
-            outputPort.RemoveFromHierarchy();
-        }
-
-        public void DisplayTransitionPorts()
-        {
-            base.DrawInputPort();
-            base.DrawOutputPort();
+            inputContainer.style.display = DisplayStyle.Flex;
         }
 
         protected override void DrawTitle()
@@ -150,26 +115,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
-            Port inputPort = DrawPort(NodeConstants.PropertyInput, Direction.Input, Port.Capacity.Single, typeof(T));
+            Port inputPort = DrawPort(NodeConstants.PropertyInput, Direction.Input, Port.Capacity.Single, typeof(NonePortType));
             inputContainer.Add(inputPort);
-
-            base.DrawInputPort();
         }
 
         protected override void DrawOutputPort()
         {
-            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(T));
+            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, OutputPortType);
             outputContainer.Add(outputPort);
-
-            base.DrawOutputPort();
-        }
-
-        protected override Port DrawPort(string name, Direction direction, Port.Capacity capacity, Type type)
-        {
-            SanitizedPort port = SanitizedPort.Create<Edge>(Orientation.Horizontal, direction, capacity, type);
-            port.portName = port.name = name;
-
-            return port;
         }
 
         protected override void DrawContent()

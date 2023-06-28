@@ -1,5 +1,6 @@
 using Chocolate4.Dialogue.Runtime.Utilities;
-using UnityEditor.Experimental.GraphView;
+using Chocolate4.Edit.Graph.Utilities;
+using System;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
@@ -7,8 +8,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     {
         private ConstantViewGeneric<bool> constantViewGeneric;
 
-        public override string Name { get; set; } = "Bool";
+        public override string Name { get; set; } = "Bool Node";
         public override PropertyType PropertyType { get; protected set; } = PropertyType.Bool;
+        protected override Type OutputPortType => typeof(BoolPortType);
 
         protected override ConstantPortInput CreateConstantPortInput()
         {
