@@ -15,11 +15,12 @@ namespace Chocolate4.Dialogue.Runtime.Saving
         public List<OperatorNodeSaveData> operatorNodeData;
         public List<EqualityNodeSaveData> equalityNodeData;
         public List<SituationTransferNodeSaveData> situationTransferNodeData;
+        public List<SetNodeSaveData> setNodeData;
         //public List<GroupSaveData> groupData;
 
         public string Id => situationId;
 
-        public SituationSaveData(string situationGuid, List<IDataHolder> dataHolders)
+        public SituationSaveData(string situationId, List<IDataHolder> dataHolders)
         {
             nodeData = new List<NodeSaveData>();
             dialogueNodeData = new List<DialogueNodeSaveData>();
@@ -27,8 +28,9 @@ namespace Chocolate4.Dialogue.Runtime.Saving
             operatorNodeData = new List<OperatorNodeSaveData>();
             equalityNodeData = new List<EqualityNodeSaveData>();
             situationTransferNodeData = new List<SituationTransferNodeSaveData>();
+            setNodeData = new List<SetNodeSaveData>();
 
-            this.situationId = situationGuid;
+            this.situationId = situationId;
             //this.groupData = groupData;
 
             if (dataHolders.IsNullOrEmpty())

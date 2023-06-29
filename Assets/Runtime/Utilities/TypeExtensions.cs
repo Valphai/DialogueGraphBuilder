@@ -12,7 +12,7 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
             return AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(assembly => assembly.GetTypes())
                             .Where(type => typeof(T).IsAssignableFrom(type))
-                            .Where(type => !type.IsInterface && !type.IsAbstract).ToList();
+                            .Where(type => !type.IsInterface && !type.IsAbstract);
         }
 
         public static void DistributeListElementsToFieldsOfImplementingTypes<T, S>(List<T> listWithDifferentTypes, S instanceWithFields)

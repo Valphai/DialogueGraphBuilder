@@ -3,7 +3,6 @@ using Chocolate4.Edit.Graph.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static UnityEngine.UI.GridLayoutGroup;
 
 namespace UnityEditor.Experimental.GraphView
 {
@@ -26,7 +25,7 @@ namespace UnityEditor.Experimental.GraphView
             {
                 for (int i = 0; i < dynamicPorts.Count; i++)
                 {
-                    dynamicPorts[i].HideConstantView();
+                    dynamicPorts[i].TryHideConstantView();
                 }
             }
 
@@ -36,7 +35,7 @@ namespace UnityEditor.Experimental.GraphView
                 DynamicPort port = dynamicPorts[i];
 
                 port.portType = newPortType;
-                port.DrawConstantView();
+                port.TryDisplayConstantView();
                 owner.InputPortDataCollection[i].thisPortType = port.portType.ToString();
             }
         }
@@ -48,22 +47,22 @@ namespace UnityEditor.Experimental.GraphView
             {
                 return;
             }
-
+            
             for (int i = 0; i < dynamicPorts.Count; i++)
             {
+                dynamicPorts[i].TryHideConstantView();
                 dynamicPorts[i].portType = defaultPortType;
-                dynamicPorts[i].HideConstantView();
             }
         }
 
         public static void OnConnectSameType(DynamicPort connectingPort)
         {
-            connectingPort.HideConstantView();
+            connectingPort.TryHideConstantView();
         }
 
         public static void OnDisconnectSameType(DynamicPort connectedPort)
         {
-            connectedPort.DrawConstantView();
+            connectedPort.TryDisplayConstantView();
         }
 
         public static void SetDynamicPortsSameType(List<DynamicPort> dynamicPorts)
@@ -72,7 +71,7 @@ namespace UnityEditor.Experimental.GraphView
             {
                 if (!port.connected)
                 {
-                    port.DrawConstantView();
+                    port.TryDisplayConstantView();
                 }
 
                 port.onDisconnect = () => OnDisconnectSameType(port);

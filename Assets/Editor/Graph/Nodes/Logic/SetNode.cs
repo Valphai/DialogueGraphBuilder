@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
@@ -11,27 +12,32 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class SetNode : BaseNode
     {
-        private List<DynamicPort> dynamicPorts;
+        private List<DynamicPort> dynamicPorts = new List<DynamicPort>();
 
+        public ConstantViewDrawer ConstantViewDrawer { get; protected set; }
         public override string Name { get; set; } = "Set Node";
 
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return saveData;
-            //return new OperatorNodeSaveData() { operatorEnum = operatorToUse, nodeSaveData = saveData };
+
+            List<string> savedConstantViewValues = ConstantViewDrawer.Save();
+            return new SetNodeSaveData() { constantViewValues = savedConstantViewValues, nodeSaveData = saveData };
         }
 
         public override void Load(IDataHolder saveData)
         {
             base.Load(saveData);
-            //OperatorNodeSaveData operatorSaveData = (OperatorNodeSaveData)saveData;
+            SetNodeSaveData setSaveData = (SetNodeSaveData)saveData;
+
+            ConstantViewDrawer.Load(setSaveData.constantViewValues);
         }
 
         public override void Initialize(Vector3 startingPosition)
         {
             base.Initialize(startingPosition);
-            dynamicPorts = new List<DynamicPort>();
+
+            ConstantViewDrawer = new ConstantViewDrawer();
 
             VisualElement element = this.Q<VisualElement>("node-border");
             element?.WithOverflow();
@@ -43,6 +49,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             dynamicPorts.AddRange(
                 inputContainer.Query<DynamicPort>().ToList()
+            );
+
+            dynamicPorts.ForEach(port => 
+                ConstantViewDrawer.ConstantViews.AddRange(ConstantViewUtilities.CreatePossibleConstantViews(port))
             );
 
             PortUtilities.SetDynamicPorts(dynamicPorts, typeof(AnyValuePortType));

@@ -9,8 +9,7 @@ namespace Chocolate4.Edit.Graph.Utilities
     {
         public Action onDisconnect;
         public Action<Edge> onConnect;
-
-        public IConstantViewPort ConstantViewPortInstance { get; private set; }
+        private bool isConstantViewDrawn;
 
         public DynamicPort(
             Orientation portOrientation, Direction portDirection,
@@ -35,7 +34,6 @@ namespace Chocolate4.Edit.Graph.Utilities
         public override void Connect(Edge edge)
         {
             base.Connect(edge);
-
             onConnect?.Invoke(edge);
         }
 
@@ -45,8 +43,13 @@ namespace Chocolate4.Edit.Graph.Utilities
             onDisconnect?.Invoke();
         }
 
-        public void DrawConstantView()
+        public void TryDisplayConstantView()
         {
+            if (isConstantViewDrawn)
+            {
+                return;
+            }
+
             if (connected)
             {
                 return;
@@ -57,20 +60,19 @@ namespace Chocolate4.Edit.Graph.Utilities
                 return;
             }
 
-            ConstantViewPortInstance = (IConstantViewPort)Activator.CreateInstance(portType);
-            ConstantPortInput constantPortInput = ConstantViewPortInstance.GetConstantPortInput();
-            Add(constantPortInput);
+            isConstantViewDrawn = true;
+            ((IConstantViewDraw)node).ConstantViewDrawer.DisplayConstantView(this);
         }
 
-        public void HideConstantView()
+        public void TryHideConstantView()
         {
-            if (ConstantViewPortInstance == null)
+            if (!isConstantViewDrawn)
             {
                 return;
             }
 
-            ConstantPortInput constantPortInput = ConstantViewPortInstance.GetConstantPortInput();
-            constantPortInput.RemoveFromHierarchy();
+            isConstantViewDrawn = false;
+            ((IConstantViewDraw)node).ConstantViewDrawer.HideConstantView(this);
         }
     }
 }
