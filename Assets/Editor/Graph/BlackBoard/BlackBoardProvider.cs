@@ -43,6 +43,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
         public BlackboardSaveData Save()
         {
             List<DialoguePropertySaveData> saveData = new List<DialoguePropertySaveData>();
+
             foreach (IDialogueProperty property in Properties)
             {
                 saveData.Add(property.Save());
@@ -86,6 +87,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
 
             row.RemoveFromHierarchy();
+            Properties.Remove(deletedProperty);
 
             Blackboard.graphView.graphElements.ForEach(element => {
 
