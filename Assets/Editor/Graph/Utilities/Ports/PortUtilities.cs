@@ -21,12 +21,9 @@ namespace UnityEditor.Experimental.GraphView
             BaseNode owner = (BaseNode)connectingPort.node;
 
             Type newPortType = connectingPort.direction == Direction.Input ? edge.output.portType : edge.input.portType;
-            if (newPortType != connectingPort.portType)
+            for (int i = 0; i < dynamicPorts.Count; i++)
             {
-                for (int i = 0; i < dynamicPorts.Count; i++)
-                {
-                    dynamicPorts[i].TryHideConstantView();
-                }
+                dynamicPorts[i].TryHideConstantView();
             }
 
             connectingPort.portType = newPortType;
@@ -45,6 +42,11 @@ namespace UnityEditor.Experimental.GraphView
             bool noneAreConnected = dynamicPorts.All(neighbour => !neighbour.connected);
             if (!noneAreConnected)
             {
+                for (int i = 0; i < dynamicPorts.Count; i++)
+                {
+                    dynamicPorts[i].TryDisplayConstantView();
+                }
+
                 return;
             }
             

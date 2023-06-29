@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
@@ -11,18 +12,25 @@ using NodeConstants = Chocolate4.Runtime.Utilities.NodeConstants;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class EqualNode : BaseNode
+    public class EqualNode : BaseNode, IConstantViewDraw
     {
         private PopupField<string> popupField;
         private EqualityType equalityTypeToUse;
-        private List<DynamicPort> dynamicPorts;
+        private List<DynamicPort> dynamicPorts = new List<DynamicPort>();
 
+        public ConstantViewDrawer ConstantViewDrawer { get; protected set; }
         public override string Name { get; set; } = "Equality Node";
 
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return new EqualityNodeSaveData() { equalityEnum = equalityTypeToUse, nodeSaveData = saveData };
+            List<string> savedConstantViewValues = ConstantViewDrawer.Save();
+            return new EqualityNodeSaveData() 
+            { 
+                equalityEnum = equalityTypeToUse, 
+                nodeSaveData = saveData,
+                constantViewValues = savedConstantViewValues
+            };
         }
 
         public override void Load(IDataHolder saveData)
@@ -30,12 +38,15 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             base.Load(saveData);
             EqualityNodeSaveData equalitySaveData = (EqualityNodeSaveData)saveData;
             equalityTypeToUse = equalitySaveData.equalityEnum;
+
+            ConstantViewDrawer.Load(equalitySaveData.constantViewValues);
         }
 
         public override void Initialize(Vector3 startingPosition)
         {
             base.Initialize(startingPosition);
-            dynamicPorts = new List<DynamicPort>();
+
+            ConstantViewDrawer = new ConstantViewDrawer();
 
             VisualElement element = this.Q<VisualElement>("node-border");
             element?.WithOverflow();
@@ -44,8 +55,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override void PostInitialize()
         {
             base.PostInitialize();
+
             dynamicPorts.AddRange(
                 inputContainer.Query<DynamicPort>().ToList()
+            );
+
+            dynamicPorts.ForEach(port =>
+                ConstantViewDrawer.ConstantViews.AddRange(ConstantViewUtilities.CreatePossibleConstantViews(port))
             );
 
             PortUtilities.SetDynamicPorts(dynamicPorts, typeof(AnyValuePortType));
@@ -78,7 +94,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawOutputPort()
         {
-            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(bool));
+            Port outputPort = DrawPort(NodeConstants.PropertyOutput, Direction.Output, Port.Capacity.Single, typeof(BoolPortType));
             outputContainer.Add(outputPort);
         }
 

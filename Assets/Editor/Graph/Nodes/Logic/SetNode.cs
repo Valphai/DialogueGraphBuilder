@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class SetNode : BaseNode
+    public class SetNode : BaseNode, IConstantViewDraw
     {
         private List<DynamicPort> dynamicPorts = new List<DynamicPort>();
 
