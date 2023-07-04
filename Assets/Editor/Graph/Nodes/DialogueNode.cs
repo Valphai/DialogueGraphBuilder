@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class DialogueNode : BaseNode
+    public class DialogueNode : BaseNode, ITextHolder
     {
         private TextField textField;
 
