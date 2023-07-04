@@ -26,7 +26,7 @@ namespace Chocolate4.Dialogue.Edit.Search
         public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
         {
             List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>()
-                .Except(new Type[] { typeof(StartNode), typeof(EndNode) }).ToList();
+                .Except(new Type[] { typeof(StartNode), typeof(EndNode), typeof(EventPropertyNode) }).ToList();
 
             string contextElementTitle;
             List<SearchTreeEntry> dialogueTreeEntries = new List<SearchTreeEntry>();
@@ -34,7 +34,7 @@ namespace Chocolate4.Dialogue.Edit.Search
             {
 
                 contextElementTitle = nodeType.Name;
-                SearchTreeEntry entry = new SearchTreeEntry(new GUIContent($"Add {contextElementTitle}", indentIcon))
+                SearchTreeEntry entry = new SearchTreeEntry(new GUIContent(contextElementTitle.ToString(), indentIcon))
                 {
                     level = 2,
                     userData = nodeType
@@ -52,8 +52,6 @@ namespace Chocolate4.Dialogue.Edit.Search
                     level = 2,
                     userData = new Group()
                 },
-                new SearchTreeGroupEntry(new GUIContent("Simple Logic"), 1),
-
             };
 
             searchTreeEntries.AddRange(dialogueTreeEntries);
