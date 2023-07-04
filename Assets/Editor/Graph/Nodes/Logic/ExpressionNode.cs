@@ -1,14 +1,12 @@
-﻿using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
-using Chocolate4.Runtime.Utilities;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
-    public class ConditionNode : BaseNode
+    public class ExpressionNode : BaseNode
     {
-        public override string Name { get; set; } = "Condition Node";
+        public override string Name { get; set; } = "Expression Node";
         public string Text { get; set; }
 
         protected override void DrawTitle()
@@ -28,15 +26,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 .WithMaxWidth(UIStyles.MaxWidth)
                 .WithTextField(Text, evt => Text = evt.newValue)
                 .WithMinHeight(UIStyles.SmallTextFieldHeight);
-        }
-
-        protected override void DrawOutputPort()
-        {
-            Port truePort = DrawPort(NodeConstants.ConditionOutputTrue, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
-            Port falsePort = DrawPort(NodeConstants.ConditionOutputFalse, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
-
-            outputContainer.Add(truePort);
-            outputContainer.Add(falsePort);
         }
     }
 }

@@ -85,8 +85,8 @@ namespace Chocolate4.Dialogue.Edit.Asset
             //}
 
 
-            // Refresh editors.
-            //Debug.Log("Refresh");
+            // TryRegenerate editors.
+            //Debug.Log("TryRegenerate");
             //DialogueEditorWindow.RefreshAllOnAssetReimport();
         }
     }

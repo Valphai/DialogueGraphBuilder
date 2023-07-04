@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Asset;
+using Chocolate4.Dialogue.Edit.CodeGeneration;
 
 namespace Chocolate4.Dialogue.Edit.Asset
 {
@@ -52,11 +53,15 @@ namespace Chocolate4.Dialogue.Edit.Asset
             string assetJson = ImportedAsset.ToJson();
             string existingJson = File.ReadAllText(Path);
 
-            if (assetJson != existingJson)
+            if (assetJson == existingJson)
             {
-                File.WriteAllText(Path, assetJson);
-                AssetDatabase.ImportAsset(Path);
+                return;
             }
+
+            File.WriteAllText(Path, assetJson);
+            AssetDatabase.ImportAsset(Path);
+            
+            DialogueMasterCollectionGenerator.TryRegenerate(ImportedAsset.graphSaveData.blackboardSaveData);
         }
     }
 }

@@ -12,10 +12,7 @@ namespace Chocolate4.Dialogue.Runtime.Saving
         public List<NodeSaveData> nodeData;
         public List<DialogueNodeSaveData> dialogueNodeData;
         public List<PropertyNodeSaveData> propertyNodeSaveData;
-        public List<OperatorNodeSaveData> operatorNodeData;
-        public List<EqualityNodeSaveData> equalityNodeData;
         public List<SituationTransferNodeSaveData> situationTransferNodeData;
-        public List<SetNodeSaveData> setNodeData;
         //public List<GroupSaveData> groupData;
 
         public string Id => situationId;
@@ -25,10 +22,7 @@ namespace Chocolate4.Dialogue.Runtime.Saving
             nodeData = new List<NodeSaveData>();
             dialogueNodeData = new List<DialogueNodeSaveData>();
             propertyNodeSaveData = new List<PropertyNodeSaveData>();
-            operatorNodeData = new List<OperatorNodeSaveData>();
-            equalityNodeData = new List<EqualityNodeSaveData>();
             situationTransferNodeData = new List<SituationTransferNodeSaveData>();
-            setNodeData = new List<SetNodeSaveData>();
 
             this.situationId = situationId;
             //this.groupData = groupData;

@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
@@ -65,12 +66,16 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 {
                     PropertyType.Bool => new BoolDialogueProperty(),
                     PropertyType.Integer => new IntegerDialogueProperty(),
+                    PropertyType.Event => new EventDialogueProperty(),
                     _ => throw new NotImplementedException()
                 };
 
                 property.Load(propertySaveData);
                 AddProperty(property);
-                property.UpdateConstantView();
+                if (property is IExpandableDialogueProperty expandableProperty)
+                {
+                    expandableProperty.UpdateConstantView();
+                }
 
                 BlackboardField field = (BlackboardField)propertyRows[property.Id].userData;
 
@@ -98,7 +103,83 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
                 propertyRows.Remove(deletedProperty.Id);
                 propertyNode.UnbindFromProperty();
+
+                DangerLogger.MarkNodeDangerous(
+                    "Deleted event property created an empty event node! Remove the node or convert it back to property.",
+                    (BaseNode)propertyNode, () => !((IDangerCauser)propertyNode).IsMarkedDangerous || propertyNode.IsBoundToProperty
+                );
             });
+        }
+
+        public void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
+        {
+            if (propertyRows.ContainsKey(property.Id))
+            {
+                return;
+            }
+
+            if (create)
+            {
+                //property.DisplayName = m_Graph.SanitizePropertyName(property.DisplayName);
+            }
+
+            BlackboardField field;
+
+            if (property is IDraggableProperty draggableProperty)
+            {
+                field = new BlackboardDraggableField(
+                    (DialogueGraphView)Blackboard.graphView,
+                    property.DisplayName,
+                    property.PropertyType.ToString()
+                )
+                { userData = draggableProperty };
+            }
+            else
+            {
+                field = new BlackboardField(
+                    null,
+                    property.DisplayName,
+                    property.PropertyType.ToString()
+                );
+            }
+
+
+            BlackboardRow row;
+            if (property is IExpandableDialogueProperty expandableProperty)
+            {
+                VisualElement expandedAssignValueField = CreateRowExpanded(expandableProperty);
+                row = new BlackboardRow(field, expandedAssignValueField);
+            }
+            else
+            {
+                row = new BlackboardRow(field, null);
+            }
+
+            row.userData = field;
+
+            if (index < 0)
+            {
+                index = propertyRows.Count;
+            }
+
+            if (index == propertyRows.Count)
+            {
+                section.Add(row);
+            }
+            else
+            {
+                section.Insert(index, row);
+            }
+
+            propertyRows[property.Id] = row;
+
+            Properties.Add(property);
+            if (create)
+            {
+                row.expanded = true;
+                //m_Graph.owner.RegisterCompleteObjectUndo("Create Property");
+                field.OpenTextEditor();
+            }
         }
 
         internal void UpdatePropertyBinds()
@@ -107,30 +188,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             {
                 UpdateNodesWith(property);
             }
-        }
-
-        private bool ElementIsDialogueProperty(GraphElement element, IDialogueProperty property, out IPropertyNode propertyNode)
-        {
-            propertyNode = null;
-            if (element is not IPropertyNode)
-            {
-                return false;
-            }
-
-            propertyNode = (IPropertyNode)element;
-            string propertyGuid = propertyNode.PropertyId;
-
-            if (string.IsNullOrEmpty(propertyGuid))
-            {
-                return false;
-            }
-
-            if (propertyGuid != property.Id)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private void MoveItemRequested(Blackboard arg1, int arg2, VisualElement arg3)
@@ -143,6 +200,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             var gm = new GenericMenu();
             gm.AddItem(new GUIContent("Integer"), false, () => AddProperty(new IntegerDialogueProperty(), true));
             gm.AddItem(new GUIContent("Bool"), false, () => AddProperty(new BoolDialogueProperty(), true));
+            gm.AddItem(new GUIContent("Event"), false, () => AddProperty(new EventDialogueProperty(), true));
             gm.ShowAsContext();
         }
 
@@ -175,56 +233,31 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             });
         }
 
-        public void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
+        private bool ElementIsDialogueProperty(GraphElement element, IDialogueProperty property, out IPropertyNode propertyNode)
         {
-            if (propertyRows.ContainsKey(property.Id))
+            propertyNode = null;
+            if (element is not IPropertyNode)
             {
-                return;
+                return false;
             }
 
-            if (create)
+            propertyNode = (IPropertyNode)element;
+            string propertyId = propertyNode.PropertyId;
+
+            if (string.IsNullOrEmpty(propertyId))
             {
-                //property.DisplayName = m_Graph.SanitizePropertyName(property.DisplayName);
+                return false;
             }
 
-            BlackboardDraggableField field = new BlackboardDraggableField(
-                (DialogueGraphView)Blackboard.graphView,
-                property.DisplayName,
-                property.PropertyType.ToString()
-            )
-            { userData = property };
-
-            VisualElement expandedAssignValueField = CreateRowExpanded(property);
-            BlackboardRow row = new BlackboardRow(field, expandedAssignValueField);
-
-            row.userData = field;
-
-            if (index < 0)
+            if (propertyId != property.Id)
             {
-                index = propertyRows.Count;
+                return false;
             }
 
-            if (index == propertyRows.Count)
-            {
-                section.Add(row);
-            }
-            else
-            {
-                section.Insert(index, row);
-            }
-
-            propertyRows[property.Id] = row;
-
-            Properties.Add(property);
-            if (create)
-            {
-                row.expanded = true;
-                //m_Graph.owner.RegisterCompleteObjectUndo("Create Property");
-                field.OpenTextEditor();
-            }
+            return true;
         }
 
-        private VisualElement CreateRowExpanded(IDialogueProperty property)
+        private VisualElement CreateRowExpanded(IExpandableDialogueProperty property)
         {
             VisualElement expandedAssignValueField = new VisualElement()
                 .WithFlexGrow()

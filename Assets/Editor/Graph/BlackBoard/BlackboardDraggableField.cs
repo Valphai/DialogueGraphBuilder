@@ -5,9 +5,9 @@ using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 {
-	class BlackboardDraggableField : BlackboardField
-	{
-        [SerializeField] 
+    class BlackboardDraggableField : BlackboardField
+    {
+        [SerializeField]
         private DialogueGraphView dialogueGraphView;
 
         public BlackboardDraggableField(DialogueGraphView dialogueGraphView, string text, string typeText) : base(null, text, typeText)
@@ -18,7 +18,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
         private void DragHandler(DragLeaveEvent evt)
         {
-            dialogueGraphView.DragSelectablesHandler.RegisterSelectedProperty(userData as IDialogueProperty);
+            dialogueGraphView.DragSelectablesHandler.RegisterSelectedProperty(userData as IDraggableProperty);
         }
     }
 }

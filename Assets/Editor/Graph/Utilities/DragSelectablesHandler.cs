@@ -6,9 +6,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
     public class DragSelectablesHandler
     {
         [field: SerializeField]
-        public IDialogueProperty SelectedProperty { get; private set; }
+        public IDraggableProperty SelectedProperty { get; private set; }
 
-        public void RegisterSelectedProperty(IDialogueProperty selectedProperty)
+        public void RegisterSelectedProperty(IDraggableProperty selectedProperty)
         {
             SelectedProperty = selectedProperty;
         }
@@ -17,5 +17,5 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
         {
             SelectedProperty = null;
         }
-    } 
+    }
 }

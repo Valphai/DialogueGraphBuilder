@@ -8,12 +8,6 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class NodeUtilities
     {
-        public static bool IsPortConnectionAllowed(Port startPort, Port otherPort)
-        {
-            return (startPort.portType == typeof(IntegerPortType) || startPort.portType == typeof(BoolPortType)) 
-                && otherPort.portType == typeof(AnyValuePortType);
-        }
-
         public static List<BaseNode> GetConnections(Port port, Direction requestedPort, Action<Port> actionOnOtherPort = null)
         {
             List<Edge> connections = port.connections.ToList();

@@ -136,8 +136,10 @@ namespace Chocolate4.Dialogue.Edit.Tree
             Label renamableLabel = displayNameLabel as Label;
             renamableLabel.text = item.displayName;
 
+            string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
+
             element.AddContextualMenu("Rename", _ =>
-                VisualElementBuilder.Rename(renamableLabel, this, finishedText => {
+                VisualElementBuilder.Rename(renamableLabel, existingNames, finishedText => {
                     item.displayName = finishedText;
                     OnTreeItemRenamed?.Invoke(item.guid);
                 })

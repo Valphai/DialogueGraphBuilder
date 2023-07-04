@@ -40,10 +40,25 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             element.Add(button);
             return button;
         }
+        
+        public static Foldout WithFoldout(this VisualElement element, string text)
+        {
+            Foldout foldout = new Foldout() { text = text };
+
+            element.Add(foldout);
+            return foldout;
+        }
 
         public static VisualElement WithPropertyStyle(this VisualElement element)
         {
             element.WithBackgroundColor(UIStyles.PropertyColor);
+            element.WithBaseNodeStyle();
+            return element;
+        }
+        
+        public static VisualElement WithEventStyle(this VisualElement element)
+        {
+            element.WithBackgroundColor(UIStyles.EventColor);
             element.WithBaseNodeStyle();
             return element;
         }
@@ -221,7 +236,9 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             return element;
         }
 
-        public static void Rename(Label renamableLabel, DialogueTreeView treeView, Action<string> onFinishText=null)
+        public static void Rename(
+            Label renamableLabel, string[] existingNames, Action<string> onFinishText=null
+        )
         {
             renamableLabel.text = string.Empty;
 
@@ -231,13 +248,36 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             textField.Focus();
 
             textField.RegisterCallback<FocusOutEvent>(evt => {
-
-                string[] existingNames = treeView.DialogueTreeItems.Select(item => item.displayName).ToArray();
                 renamableLabel.text = ObjectNames.GetUniqueName(existingNames, textField.text);
 
                 onFinishText?.Invoke(renamableLabel.text);
                 renamableLabel.Remove(textField);
             });
+        }
+
+        public static TextField WithTextField(
+            this VisualElement element,
+            string startText, Action<ChangeEvent<string>> onInputChanged
+        )
+        {
+            TextField textField = new TextField()
+            {
+                value = startText,
+                multiline = true,
+                
+            };
+            textField.RegisterValueChangedCallback(evt => onInputChanged?.Invoke(evt));
+
+            textField.WithVerticalGrow()
+                .WithFlexGrow();
+
+            textField.Q<TextElement>()
+                .WithMaxWidth(UIStyles.MaxWidth)
+                .WithExpandableHeight();
+
+
+            element.Add(textField);
+            return textField;
         }
     }
 }
