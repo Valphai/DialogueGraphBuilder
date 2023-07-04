@@ -2,26 +2,18 @@ namespace Chocolate4.Runtime.Utilities
 {
     public class NodeConstants
     {
-        public const string PropertyNode = "PropertyNode";
-        public const string StartNode = "StartNode";
-        public const string EndNode = "EndNode";
-        public const string ToSituationNode = "ToSituationNode";
-        public const string ConditionNode = "ConditionNode";
-        public const string EqualNode = "EqualNode";
-        public const string OperatorNode = "OperatorNode";
-
-        public const string ExtraTransferOut = "Extra Out";
+        public const string StartNode = nameof(StartNode);
+        public const string EndNode = nameof(EndNode);
+        public const string ChoiceNode = nameof(ChoiceNode);
+        public const string DialogueNode = nameof(DialogueNode);
+        public const string ToSituationNode = nameof(ToSituationNode);
+        public const string ConditionNode = nameof(ConditionNode);
+        public const string ExpressionNode = nameof(ExpressionNode);
 
         public const string TransferOut = "Out";
         public const string TransferIn = "In";
-
-        public const string PropertyInput = "Input";
-        public const string PropertyOutput = "Output";
         
         public const string ConditionOutputTrue = "True";
         public const string ConditionOutputFalse = "False";
-
-        public const string Input1 = "Input 1";
-        public const string Input2 = "Input 2";
     } 
 }

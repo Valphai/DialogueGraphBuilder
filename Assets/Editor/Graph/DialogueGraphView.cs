@@ -1,6 +1,7 @@
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
@@ -55,11 +56,6 @@ namespace Chocolate4.Edit.Graph
             evt.menu.AppendAction($"Add Group",
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
             );
-
-            if (evt.target is BaseNode)
-            {
-                evt.menu.AppendAction("Convert To Property", ConvertToProperty, ConvertToPropertyStatus);
-            }
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -84,13 +80,6 @@ namespace Chocolate4.Edit.Graph
 
                 if (startNode.IsConnectedTo(node))
                 {
-                    return;
-                }
-
-                if (NodeUtilities.IsPortConnectionAllowed(startPort, port)
-                    || NodeUtilities.IsPortConnectionAllowed(port, startPort))
-                {
-                    compatiblePorts.Add(port);
                     return;
                 }
 
@@ -196,7 +185,7 @@ namespace Chocolate4.Edit.Graph
 
         private void CacheActiveSituation()
         {
-            SituationSaveData situationSaveData = 
+            SituationSaveData situationSaveData =
                 StructureSaver.SaveSituation(activeSituationGuid, graphElements);
 
             SituationCache.TryCache(situationSaveData);
@@ -295,36 +284,10 @@ namespace Chocolate4.Edit.Graph
             this.AddManipulator(new DragAndDropManipulator(this));
         }
 
-        private void ConvertToProperty(DropdownMenuAction arg)
-        {
-            List<IPropertyNode> selectedPropertyNodes = selection.OfType<IPropertyNode>().ToList();
-            List<Type> propertyTypes = TypeExtensions.GetTypes<IDialogueProperty>().ToList();
-
-            foreach (IPropertyNode propertyNode in selectedPropertyNodes)
-            {
-                Type typeToMake = 
-                    propertyTypes.First(type => type.ToString().Contains(propertyNode.PropertyType.ToString()));
-
-                IDialogueProperty property = (IDialogueProperty)Activator.CreateInstance(typeToMake);
-
-                blackboardProvider.AddProperty(property, true);
-                propertyNode.BindToProperty(property);
-            }
-        }
-
-        private DropdownMenuAction.Status ConvertToPropertyStatus(DropdownMenuAction arg)
-        {
-            if (selection.OfType<IPropertyNode>().Any(node => node.IsBoundToProperty))
-            {
-                return DropdownMenuAction.Status.Hidden;
-            }
-
-            return DropdownMenuAction.Status.Normal;
-        }
-
         private Group CreateGroup(Vector2 startingPosition)
         {
-            Group group = new Group() {
+            Group group = new Group()
+            {
                 title = DefaultGroupName
             };
 
@@ -401,6 +364,14 @@ namespace Chocolate4.Edit.Graph
             foreach (GraphElement element in cannotRemove)
             {
                 selection.Remove(element);
+            }
+
+            foreach (GraphElement element in selection)
+            {
+                if (element is IDangerCauser dangerCauser)
+                {
+                    dangerCauser.IsMarkedDangerous = false;
+                }
             }
 
             //graph.owner.RegisterCompleteObjectUndo(operationName);

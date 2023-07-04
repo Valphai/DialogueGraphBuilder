@@ -118,6 +118,18 @@ namespace Chocolate4.Dialogue.Edit
             return window;
         }
 
+        public void TrySave()
+        {
+            if (DangerLogger.IsEditorInDanger())
+            {
+                return;
+            }
+
+            GraphSaveData graphData = GraphView.Save();
+            TreeSaveData treeData = DialogueTreeView.Save();
+            dialogueAssetManager.Save(graphData, treeData);
+        }
+
         private void SetAsset(DialogueEditorAsset asset, int instanceId)
         {
             if (asset == null)
@@ -264,25 +276,13 @@ namespace Chocolate4.Dialogue.Edit
 
             saveButton = new Button() {
                 text = "Save"
-            }.WithOnClick(SaveButton_clicked);
+            }.WithOnClick(TrySave);
             saveButton.WithMaxWidth(GraphConstants.SaveButtonWidth);
 
             toolbar.Add(searchField);
             toolbar.Add(saveButton);
 
             rightPanel.Add(toolbar);
-        }
-
-        private void SaveButton_clicked()
-        {
-            if (DangerLogger.IsEditorInDanger())
-            {
-                return;
-            }
-
-            GraphSaveData graphData = GraphView.Save();
-            TreeSaveData treeData = DialogueTreeView.Save();
-            dialogueAssetManager.Save(graphData, treeData);
         }
 
         private void AddListView()

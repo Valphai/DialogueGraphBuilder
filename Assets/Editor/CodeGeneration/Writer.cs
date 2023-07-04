@@ -20,11 +20,25 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
             buffer.Append("{" + extra + "\n");
             indentLevel++;
         }
-
+        
         public void EndBlock(string extra = "")
         {
             indentLevel--;
             buffer.Append("}" + extra +"\n");
+        }
+
+        public void BeginBlockWithIndent(string extra = "")
+        {
+            WriteIndent();
+            buffer.Append("{" + extra + "\n");
+            indentLevel++;
+        }
+
+        public void EndBlockWithIndent(string extra = "")
+        {
+            indentLevel--;
+            WriteIndent();
+            buffer.Append("}" + extra + "\n");
         }
 
         public void WriteLine()
