@@ -102,5 +102,27 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
 
             return result;
         }
+
+        public static List<T> GetListOfTypeFrom<T, S>(S instanceWithFields)
+        {
+            FieldInfo[] fields = typeof(S).GetFields();
+            foreach (FieldInfo field in fields)
+            {
+                if (!field.FieldType.IsGenericType)
+                {
+                    continue;
+                }
+
+                Type genericArgument = field.FieldType.GetGenericArguments().First();
+                if (genericArgument == null)
+                {
+                    continue;
+                }
+
+                return (List<T>)field.GetValue(instanceWithFields);
+            }
+
+            return null;
+        }
     }
 }
