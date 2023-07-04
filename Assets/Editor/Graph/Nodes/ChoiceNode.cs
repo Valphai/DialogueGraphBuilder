@@ -3,6 +3,7 @@ using Chocolate4.Dialogue.Runtime.Nodes;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
@@ -21,14 +22,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return new ChoiceNodeSaveData() { choices = choices, nodeSaveData = saveData };
+            return new ChoiceNodeSaveData() { choices = choices.ToList(), nodeSaveData = saveData };
         }
 
         public override void Load(IDataHolder saveData)
         {
             base.Load(saveData);
             ChoiceNodeSaveData choicesSaveData = (ChoiceNodeSaveData)saveData;
-            choices = choicesSaveData.choices;
+            choices = choicesSaveData.choices.ToList();
 
             foreach (DialogueChoice choice in choices)
             {
@@ -95,6 +96,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             buttonedPortsContainer.Remove(container);
             extraContentContainer.Remove(extraContentFoldout);
             choices.Remove(choice);
+
+            CreatePortData(outputContainer, OutputPortDataCollection);
         }
     }
 }

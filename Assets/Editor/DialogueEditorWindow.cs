@@ -55,11 +55,9 @@ namespace Chocolate4.Dialogue.Edit
                 else if (selectedColumnIndex == GraphConstants.EntityViewIndex)
                 {
                     SelectEntityView();
-
                 }
             }
         }
-
 
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
