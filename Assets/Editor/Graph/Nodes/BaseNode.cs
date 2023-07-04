@@ -137,9 +137,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             CreatePortData(outputContainer, OutputPortDataCollection);
         }
 
-        private void CreatePortData(VisualElement container, List<PortData> dataCollection)
+        protected void CreatePortData(VisualElement container, List<PortData> dataCollection)
         {
-            List<Port> ports = container.Children().Where(port => port is Port).Select(port => (Port)port).ToList();
+            dataCollection.Clear();
+
+            List<Port> ports = container.Query<Port>().ToList();
             foreach (Port port in ports)
             {
                 PortData portData = new PortData() 

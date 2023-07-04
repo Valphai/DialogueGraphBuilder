@@ -1,8 +1,9 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Nodes;
+using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -17,9 +18,22 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public override string Name { get; set; } = "Choice Node";
 
-        public override void Initialize(Vector3 startingPosition)
+        public override IDataHolder Save()
         {
-            base.Initialize(startingPosition);
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new ChoiceNodeSaveData() { choices = choices, nodeSaveData = saveData };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            ChoiceNodeSaveData choicesSaveData = (ChoiceNodeSaveData)saveData;
+            choices = choicesSaveData.choices;
+
+            foreach (DialogueChoice choice in choices)
+            {
+                AddChoicePort(choice);
+            }
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)
@@ -48,17 +62,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             outputContainer.Add(addButtonContainer);
             outputContainer.Add(buttonedPortsContainer);
-
-            foreach (DialogueChoice choice in choices)
-            {
-                AddChoicePort(choice);
-            }
         }
 
         private void AddChoicePort(DialogueChoice choice)
         {
             VisualElement container = new VisualElement()
-                .WithFlexGrow()
                 .WithHorizontalGrow();
             
             Port outputPort = DrawPort(choice.name, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
@@ -76,6 +84,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             container.Add(outputPort);
             buttonedPortsContainer.Add(container);
 
+            CreatePortData(outputContainer, OutputPortDataCollection);
         }
 
         private void RemoveChoicePort(
@@ -87,11 +96,5 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             extraContentContainer.Remove(extraContentFoldout);
             choices.Remove(choice);
         }
-    }
-
-    public class DialogueChoice
-    {
-        public string name;
-        public string text;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
 using Chocolate4.Runtime.Utilities;
 using UnityEditor.Experimental.GraphView;
@@ -8,8 +9,25 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class ConditionNode : BaseNode
     {
+        private TextField textField;
+
         public override string Name { get; set; } = "Condition Node";
         public string Text { get; set; }
+
+        public override IDataHolder Save()
+        {
+            NodeSaveData saveData = (NodeSaveData)base.Save();
+            return new TextNodeSaveData() { text = Text, nodeSaveData = saveData };
+        }
+
+        public override void Load(IDataHolder saveData)
+        {
+            base.Load(saveData);
+            TextNodeSaveData textSaveData = (TextNodeSaveData)saveData;
+            Text = textSaveData.text;
+
+            textField.value = Text;
+        }
 
         protected override void DrawTitle()
         {
@@ -24,10 +42,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void AddExtraContent(VisualElement contentContainer)
         {
-            contentContainer
+            textField = contentContainer
                 .WithMaxWidth(UIStyles.MaxWidth)
-                .WithTextField(Text, evt => Text = evt.newValue)
-                .WithMinHeight(UIStyles.SmallTextFieldHeight);
+                .WithTextField(Text, evt => Text = evt.newValue);
+
+            textField.WithMinHeight(UIStyles.SmallTextFieldHeight);
         }
 
         protected override void DrawOutputPort()
