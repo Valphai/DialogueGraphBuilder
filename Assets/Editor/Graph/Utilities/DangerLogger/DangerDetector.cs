@@ -37,7 +37,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
                 }
 
                 int semicolonCount = newText.Count(c => c == ';');
-                int semicolonExpressions = newText.Split(';').Length;
+                int semicolonExpressions = newText.Split(';').Length - 1;
                 if (semicolonCount != semicolonExpressions)
                 {
                     DangerLogger.MarkNodeDangerous($"Invalid expression detected in {dangerCauser}. All expressions must end with \";\".", dangerCauser,
