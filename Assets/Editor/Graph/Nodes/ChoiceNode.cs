@@ -2,10 +2,13 @@
 using Chocolate4.Dialogue.Runtime.Nodes;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Runtime.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
+using System;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
@@ -14,8 +17,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private List<DialogueChoice> choices = new List<DialogueChoice>();
         private VisualElement buttonedPortsContainer;
         private VisualElement extraContentContainer;
-
-        private int ChoicesCount => choices.Count;
 
         public override string Name { get; set; } = "Choice Node";
 
@@ -53,7 +54,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             addButtonContainer
                 .WithButton("+")
                 .WithOnClick(() => {
-                    DialogueChoice choice = new DialogueChoice() { name = $"Choice {ChoicesCount + 1}" };
+                    string[] existingNames = choices.Select(choice => choice.name).ToArray();
+                    string uniqueName = ObjectNames.GetUniqueName(existingNames, NodeConstants.ChoiceOut);
+
+                    DialogueChoice choice = new DialogueChoice() { name = uniqueName };
                     AddChoicePort(choice);
                     choices.Add(choice);
                 }
@@ -67,23 +71,27 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         private void AddChoicePort(DialogueChoice choice)
         {
+            int childCount = extraContentContainer.childCount;
+            int choiceIndex = Math.Min(choice.ChoiceIndex, childCount);
+
             VisualElement container = new VisualElement()
                 .WithHorizontalGrow();
-            
-            Port outputPort = DrawPort(choice.name, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
 
-            Foldout extraContentFoldout = extraContentContainer.WithFoldout(choice.name);
-            TextField extraContentTextField = extraContentContainer
-                    .WithTextField(choice.text, evt => choice.text = evt.newValue);
-            
-            extraContentFoldout.Add(extraContentTextField);
+            Port outputPort = DrawPort(choice.name, Direction.Output, Port.Capacity.Single, typeof(TransitionPortType));
+            outputPort.WithFlexGrow();
+
+            Foldout extraContentFoldout = new Foldout() { text = choice.name };
+            TextField extraContentTextField = extraContentFoldout
+                .WithTextField(choice.text, evt => choice.text = evt.newValue);
+
+            extraContentContainer.Insert(choiceIndex, extraContentFoldout);
 
             container
                 .WithButton("-")
                 .WithOnClick(() => RemoveChoicePort(choice, container, extraContentFoldout));
 
             container.Add(outputPort);
-            buttonedPortsContainer.Add(container);
+            buttonedPortsContainer.Insert(choiceIndex, container);
 
             CreatePortData(outputContainer, OutputPortDataCollection);
         }
@@ -91,7 +99,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         private void RemoveChoicePort(
             DialogueChoice choice, VisualElement container, 
             VisualElement extraContentFoldout
-            )
+        )
         {
             buttonedPortsContainer.Remove(container);
             extraContentContainer.Remove(extraContentFoldout);
