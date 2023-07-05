@@ -29,12 +29,15 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
             IDataHolder SaveNode(BaseNode node)
             {
-                List<Port> outputPorts = node.outputContainer.Children().OfType<Port>().ToList();
-                List<Port> inputPorts = node.inputContainer.Children().OfType<Port>().ToList();
+                List<Port> outputPorts = node.outputContainer.Query<Port>().ToList();
+                List<Port> inputPorts = node.inputContainer.Query<Port>().ToList();
 
                 if (!outputPorts.IsNullOrEmpty())
                 {
                     SaveConnections(node.OutputPortDataCollection, outputPorts, Direction.Input);
+                }
+                if (!inputPorts.IsNullOrEmpty())
+                {
                     SaveConnections(node.InputPortDataCollection, inputPorts, Direction.Output);
                 }
 
@@ -108,7 +111,7 @@ namespace Chocolate4.Dialogue.Edit.Saving
             {
                 foreach (int childId in childrenIds)
                 {
-                    childrenGuids.Add(treeView.GetItemDataForId<DialogueTreeItem>(childId).guid);
+                    childrenGuids.Add(treeView.GetItemDataForId<DialogueTreeItem>(childId).id);
                 }
             }
 

@@ -304,7 +304,7 @@ namespace Chocolate4.Dialogue.Edit
                         TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Group
                     );
 
-                    GraphView.SituationCache.TryCache(new SituationSaveData(item.guid, null));
+                    GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null));
                 }
             ).WithMinWidth(GraphConstants.InsertButtonWidth);
 

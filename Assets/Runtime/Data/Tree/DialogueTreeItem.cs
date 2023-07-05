@@ -6,12 +6,12 @@ namespace Chocolate4.Dialogue.Edit.Tree
     public class DialogueTreeItem
     {
         public string displayName;
-        public string guid;
+        public string id;
         public string prefix; // TODO: make an icon for this
 
         public DialogueTreeItem(string name, string prefix)
         {
-            guid = Guid.NewGuid().ToString();
+            id = Guid.NewGuid().ToString();
             displayName = name;
             this.prefix = prefix;
         }

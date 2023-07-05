@@ -36,7 +36,7 @@ namespace Chocolate4.Dialogue.Edit.Tree.Utilities
             for (int i = 0; i < count; i++)
             {
                 string childGuid = treeItemSaveData.childrenGuids[i];
-                TreeItemSaveData childItemSaveData = treeSaveData.treeItemData.Find(itemData => itemData.rootItem.guid == childGuid);
+                TreeItemSaveData childItemSaveData = treeSaveData.treeItemData.Find(itemData => itemData.rootItem.id == childGuid);
                 DialogueTreeItem childItem = childItemSaveData.rootItem;
 
                 children.Add(new TreeViewItemData<DialogueTreeItem>(nextId + i, childItem, GetChildren(treeSaveData, childItemSaveData, childStartingId)));

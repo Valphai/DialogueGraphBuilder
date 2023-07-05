@@ -140,7 +140,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                     null,
                     property.DisplayName,
                     property.PropertyType.ToString()
-                );
+                )
+                { userData = property };
             }
 
 
@@ -212,7 +213,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             if (!string.IsNullOrEmpty(newText) && newText != property.DisplayName)
             {
                 //m_Graph.owner.RegisterCompleteObjectUndo("Edit Property Name");
-                //newText = m_Graph.SanitizePropertyName(newText, property.guid);
+                //newText = m_Graph.SanitizePropertyName(newText, property.id);
                 property.DisplayName = newText;
                 field.text = newText;
                 UpdateNodesWith(property);

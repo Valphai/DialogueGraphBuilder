@@ -14,8 +14,8 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
 		{
             string path = FilePathConstants.dialogueMasterCollectionPath;
 
-            int lastIndex = path.LastIndexOf("Assets");
-            string pathRelativeToProjectFolder = FilePathConstants.dialogueMasterCollectionPath.Substring(lastIndex);
+            string pathRelativeToProjectFolder = 
+                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, path);
 
             Writer writer = new Writer(new StringBuilder());
 

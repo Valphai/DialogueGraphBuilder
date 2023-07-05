@@ -92,7 +92,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
                 return;
             }
 
-            OnTreeItemRemoved?.Invoke(item.guid);
+            OnTreeItemRemoved?.Invoke(item.id);
         }
 
         public DialogueTreeItem AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int index = -1, string guidOverride = "")
@@ -107,10 +107,10 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
             if (!guidOverride.Equals(string.Empty))
             {
-                treeItem.guid = guidOverride;
+                treeItem.id = guidOverride;
             }
 
-            OnTreeItemAdded?.Invoke(treeItem.guid);
+            OnTreeItemAdded?.Invoke(treeItem.id);
             return treeItem;
         }
 
@@ -141,7 +141,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
             element.AddContextualMenu("Rename", _ =>
                 VisualElementBuilder.Rename(renamableLabel, existingNames, finishedText => {
                     item.displayName = finishedText;
-                    OnTreeItemRenamed?.Invoke(item.guid);
+                    OnTreeItemRenamed?.Invoke(item.id);
                 })
             );
 
@@ -216,7 +216,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
             if (sampleItem.prefix == TreeGroups.Situation.GetString(TreeItemType.Group))
             {
-                OnSituationSelected?.Invoke(sampleItem.guid);
+                OnSituationSelected?.Invoke(sampleItem.id);
             }
         }
 
@@ -227,7 +227,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
             {
                 DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(i);
 
-                if (item.guid.Equals(situationGuid))
+                if (item.id.Equals(situationGuid))
                 {
                     return;
                 }

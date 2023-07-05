@@ -92,8 +92,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             container.Add(outputPort);
             buttonedPortsContainer.Insert(choiceIndex, container);
-
-            CreatePortData(outputContainer, OutputPortDataCollection);
         }
 
         private void RemoveChoicePort(
@@ -104,8 +102,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             buttonedPortsContainer.Remove(container);
             extraContentContainer.Remove(extraContentFoldout);
             choices.Remove(choice);
-
-            CreatePortData(outputContainer, OutputPortDataCollection);
         }
     }
 }

@@ -17,17 +17,17 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return new SituationTransferNodeSaveData() { nextSituationId = NextSituationId, nodeSaveData = saveData };
+            return new SituationTransferNodeSaveData() { otherSituationId = NextSituationId, nodeSaveData = saveData };
         }
 
         public override void Load(IDataHolder saveData)
         {
             base.Load(saveData);
             SituationTransferNodeSaveData situationSaveData = (SituationTransferNodeSaveData)saveData;
-            NextSituationId = situationSaveData.nextSituationId;
+            NextSituationId = situationSaveData.otherSituationId;
 
             IEnumerable<DialogueTreeItem> situations = DialogueEditorWindow.Window.DialogueTreeView.Situations;
-            popupField.value = situations.First(treeItem => treeItem.guid.Equals(NextSituationId)).displayName;
+            popupField.value = situations.First(treeItem => treeItem.id.Equals(NextSituationId)).displayName;
         }
 
         protected override void DrawTitle()
@@ -52,7 +52,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             List<string> situationNames = situations.Select(treeItem => treeItem.displayName).ToList();
 
             popupField = new PopupField<string>(situationNames, 0, selectedSituationName => {
-                NextSituationId = situations.First(item => item.displayName == selectedSituationName).guid;
+                NextSituationId = situations.First(item => item.displayName == selectedSituationName).id;
                 return selectedSituationName;
             });
 

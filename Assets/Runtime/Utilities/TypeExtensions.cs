@@ -105,6 +105,7 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
 
         public static List<T> GetListOfTypeFrom<T, S>(S instanceWithFields)
         {
+            Type type = typeof(T);
             FieldInfo[] fields = typeof(S).GetFields();
             foreach (FieldInfo field in fields)
             {
@@ -114,7 +115,7 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
                 }
 
                 Type genericArgument = field.FieldType.GetGenericArguments().First();
-                if (genericArgument == null)
+                if (genericArgument != type)
                 {
                     continue;
                 }
