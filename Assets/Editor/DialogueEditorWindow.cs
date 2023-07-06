@@ -4,6 +4,7 @@ using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph;
 using Chocolate4.Edit.Graph.Utilities;
 using System;
@@ -63,7 +64,7 @@ namespace Chocolate4.Dialogue.Edit
         public static bool OnOpenAsset(int instanceId, int line)
         {
             var path = AssetDatabase.GetAssetPath(instanceId);
-            if (!path.EndsWith(DialogueImporter.Extension, StringComparison.InvariantCultureIgnoreCase))
+            if (!path.EndsWith(FilePathConstants.Extension, StringComparison.InvariantCultureIgnoreCase))
                 return false;
 
             //string mapToSelect = null;

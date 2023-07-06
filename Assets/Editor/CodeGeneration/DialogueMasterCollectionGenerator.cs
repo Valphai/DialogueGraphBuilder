@@ -10,32 +10,48 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
 {
     public static class DialogueMasterCollectionGenerator
 	{
-        public static void TryRegenerate(BlackboardSaveData blackboardSaveData)
-		{
-            string path = FilePathConstants.dialogueMasterCollectionPath;
+        public static void TryRegenerate(
+            string fileName, string oldFileName,
+            BlackboardSaveData blackboardSaveData
+        )
+        {
+            string collectionName = FilePathConstants.GetCollectionName(fileName);
+            string oldCollectionName = FilePathConstants.GetCollectionName(oldFileName);
 
-            string pathRelativeToProjectFolder = 
+            string oldPath = FilePathConstants.GetCollectionPath(oldCollectionName);
+            if (!string.IsNullOrEmpty(oldPath) && !collectionName.Equals(oldCollectionName))
+            {
+                File.Delete(oldPath);
+                AssetDatabase.Refresh();
+            }
+
+            string path = FilePathConstants.GetCollectionPath(collectionName);
+
+            string pathRelativeToProjectFolder =
                 FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, path);
+
 
             Writer writer = new Writer(new StringBuilder());
 
             writer.WriteLine("using System;");
             writer.WriteLine();
-            writer.WriteLine("namespace Chocolate4.Dialogue.Runtime");
+            writer.WriteLine("namespace Chocolate4.Dialogue.Runtime.Master.Collections");
             writer.BeginBlockWithIndent();
-            writer.WriteLine("public class DialogueMasterCollection");
+            writer.WriteLine($"public class {collectionName} : IDialogueMasterCollection");
             writer.BeginBlockWithIndent();
+            writer.WriteLine($"public Type CollectionType => typeof({collectionName});");
 
             writer.WriteLine("#region Variables");
 
-            List<DialoguePropertySaveData> dialoguePropertiesSaveData = 
+            List<DialoguePropertySaveData> dialoguePropertiesSaveData =
                 blackboardSaveData.dialoguePropertiesSaveData;
 
-            List<DialoguePropertySaveData> valuesData = 
+            List<DialoguePropertySaveData> valuesData =
                 dialoguePropertiesSaveData.Where(prop => prop.propertyType != PropertyType.Event).ToList();
             foreach (DialoguePropertySaveData property in valuesData)
             {
                 writer.WriteLine($"public {property.propertyType.GetPropertyString()} {property.displayName} {{ get; set; }} = {property.value.ToLower()};");
+                writer.WriteLine();
             }
 
             writer.WriteLine("#endregion");
@@ -48,21 +64,27 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
                 writer.WriteLine($"public {property.propertyType.GetPropertyString()} {property.displayName};");
             }
 
+            writer.WriteLine();
+
+            foreach (DialoguePropertySaveData property in eventsData)
+            {
+                writer.WriteLine($"private void Invoke{property.displayName}() => {property.displayName}?.Invoke();");
+                writer.WriteLine();
+            }
+
             writer.WriteLine("#endregion");
 
             writer.EndBlockWithIndent();
             writer.EndBlockWithIndent();
 
-            string existingFile = File.ReadAllText(path);
             string generatedFile = writer.buffer.ToString();
-
-            if (existingFile == generatedFile)
+            if (FilePathConstants.FileIsDuplicate(pathRelativeToProjectFolder, generatedFile))
             {
                 return;
             }
 
-            File.WriteAllText(path, generatedFile);
+            File.WriteAllText(pathRelativeToProjectFolder, generatedFile);
             AssetDatabase.ImportAsset(pathRelativeToProjectFolder);
         }
-	} 
+    } 
 }

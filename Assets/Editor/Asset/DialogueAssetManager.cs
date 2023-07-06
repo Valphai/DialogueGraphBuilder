@@ -7,6 +7,8 @@ using UnityEngine;
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Edit.CodeGeneration;
+using System.Linq;
+using Chocolate4.Dialogue.Runtime.Utilities;
 
 namespace Chocolate4.Dialogue.Edit.Asset
 {
@@ -47,21 +49,29 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
             Store(graphData, treeData);
 
+            string oldFileName = ImportedAsset.fileName;
+
+            ImportedAsset.fileName = System.IO.Path.GetFileName(Path).Replace("." + FilePathConstants.Extension, string.Empty);
             ImportedAsset.graphSaveData = dataRebuilder.dataContainer.GraphData;
             ImportedAsset.treeSaveData = dataRebuilder.dataContainer.TreeData;
 
-            string assetJson = ImportedAsset.ToJson();
-            string existingJson = File.ReadAllText(Path);
+            TrySaveAssetToFile();
 
-            if (assetJson == existingJson)
+            DialogueMasterCollectionGenerator.TryRegenerate(
+                ImportedAsset.fileName, oldFileName, ImportedAsset.graphSaveData.blackboardSaveData
+            );
+        }
+
+        private void TrySaveAssetToFile()
+        {
+            string assetJson = ImportedAsset.ToJson();
+            if (FilePathConstants.FileIsDuplicate(Path, assetJson))
             {
                 return;
             }
 
             File.WriteAllText(Path, assetJson);
             AssetDatabase.ImportAsset(Path);
-            
-            DialogueMasterCollectionGenerator.TryRegenerate(ImportedAsset.graphSaveData.blackboardSaveData);
         }
     }
 }

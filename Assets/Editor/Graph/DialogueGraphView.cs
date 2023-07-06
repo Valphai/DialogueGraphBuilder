@@ -222,7 +222,7 @@ namespace Chocolate4.Edit.Graph
             }
 
             List<BaseNode> nodes = new List<BaseNode>();
-            List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>().ToList();
+            List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>(FilePathConstants.Chocolate4).ToList();
             foreach (IDataHolder dataHolder in dataHolders)
             {
                 Type matchedType = nodeTypes.First(type => type.ToString().Contains(dataHolder.NodeData.nodeType));

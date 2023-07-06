@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Runtime.Asset;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
 using System.IO;
 using UnityEditor;
@@ -7,11 +8,10 @@ using UnityEngine;
 
 namespace Chocolate4.Dialogue.Edit.Asset
 {
-    [ScriptedImporter(Version, Extension)]
+    [ScriptedImporter(Version, FilePathConstants.Extension)]
     public class DialogueImporter : ScriptedImporter
     {
         public const string AssetIcon = "Icons/Kok.png";
-        public const string Extension = "chocolatedialogue";
         private const int Version = 1;
 
         public override void OnImportAsset(AssetImportContext ctx)

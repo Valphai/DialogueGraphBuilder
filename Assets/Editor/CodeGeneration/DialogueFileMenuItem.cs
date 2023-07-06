@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Edit.Asset;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
         {
             Writer writer = WriteDefaultContent();
 
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject) + "/" + FileName + "." + DialogueImporter.Extension;
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject) + FilePathConstants.DirSep + FileName + "." + FilePathConstants.Extension;
 
             ProjectWindowUtil.CreateAssetWithContent(path, writer.buffer.ToString(), (Texture2D)EditorGUIUtility.Load(DialogueImporter.AssetIcon));
 
