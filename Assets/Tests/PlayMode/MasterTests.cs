@@ -1,6 +1,9 @@
 using Chocolate4.Dialogue.Runtime;
+using Chocolate4.Dialogue.Runtime.Master.Collections;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Tests.Utilities;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Chocolate4.Dialogue.Tests.PlayMode
 {
@@ -13,6 +16,7 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         private const string Test4 = "Test (4)";
         private const string Test5 = "Test (5)";
         private const string Test6 = "Test (6)";
+        private const string Test7 = "Test (7)";
 
         private DialogueMaster dialogueMaster;
 
@@ -49,15 +53,37 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
             Assert.IsTrue(nextInfo.IsDialogueNode);
             Assert.IsTrue(!nextInfo.DialogueText.Equals(string.Empty));
         }
-        
+
+        [Test]
+        public void Event_Node_Raises_Event()
+        {
+            dialogueMaster.StartSituation(Test7);
+
+            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
+
+            List<int> receivedEvents = new List<int>();
+            collection.MyEvent += Collection_MyEvent;
+
+            void Collection_MyEvent()
+            {
+                receivedEvents.Add(1);
+                collection.MyEvent -= Collection_MyEvent;
+            }
+
+            DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
+            Assert.IsTrue(!receivedEvents.IsNullOrEmpty());
+        }
+
+
         [Test]
         [TestCase(0)]
         [TestCase(1)]
         public void Condition_Node_Evaluates_Correctly(int value)
         {
             dialogueMaster.StartSituation(Test3);
+            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
 
-            dialogueMaster.Collection.MyInt = value;
+            collection.MyInt = value;
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
             if (value == 1)
@@ -75,9 +101,10 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         {
             dialogueMaster.StartSituation(Test4);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
+            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
 
-            Assert.IsTrue(dialogueMaster.Collection.MyBool == false);
-            Assert.IsTrue(dialogueMaster.Collection.MyInt == 3);
+            Assert.IsTrue(collection.MyBool == false);
+            Assert.IsTrue(collection.MyInt == 3);
         }
         
         [Test]

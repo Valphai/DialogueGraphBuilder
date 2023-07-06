@@ -1,4 +1,5 @@
 {
+    "collectionName": "TestCasesDialogueEditor",
     "graphSaveData": {
         "situationSaveData": [
             {
@@ -562,6 +563,82 @@
                     }
                 ],
                 "choiceNodeData": []
+            },
+            {
+                "situationId": "fe6e6bef-83a7-4cec-a614-99124e52a6e0",
+                "nodeData": [
+                    {
+                        "nodeId": "b29986ad-4329-4530-9730-781210221bd1",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.StartNode",
+                        "position": {
+                            "x": 253.0,
+                            "y": 312.0
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [],
+                        "outputPortDataCollection": [
+                            {
+                                "otherNodeID": "21edbaa6-8e3e-4650-822b-ed4c1d5febcd",
+                                "otherPortName": "In",
+                                "thisPortName": "Out",
+                                "thisPortType": "Chocolate4.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ]
+                    },
+                    {
+                        "nodeId": "4f82f0de-5d03-4c29-b582-78b3be58e09d",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 653.0,
+                            "y": 312.0
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "21edbaa6-8e3e-4650-822b-ed4c1d5febcd",
+                                "otherPortName": "Out",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    }
+                ],
+                "textNodeData": [],
+                "propertyNodeSaveData": [
+                    {
+                        "propertyID": "b0c1b32d-673b-4ddb-bfd0-764ac244846b",
+                        "propertyType": 2,
+                        "value": "",
+                        "nodeSaveData": {
+                            "nodeId": "21edbaa6-8e3e-4650-822b-ed4c1d5febcd",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EventPropertyNode",
+                            "position": {
+                                "x": 430.0,
+                                "y": 313.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "b29986ad-4329-4530-9730-781210221bd1",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "4f82f0de-5d03-4c29-b582-78b3be58e09d",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "situationTransferNodeData": [],
+                "choiceNodeData": []
             }
         ],
         "blackboardSaveData": {
@@ -648,6 +725,15 @@
                 "rootItem": {
                     "displayName": "Test (6)",
                     "id": "f5f6341f-f8af-44b0-9a34-00c7acbaa34d",
+                    "prefix": "S"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "Test (7)",
+                    "id": "fe6e6bef-83a7-4cec-a614-99124e52a6e0",
                     "prefix": "S"
                 },
                 "childrenGuids": []

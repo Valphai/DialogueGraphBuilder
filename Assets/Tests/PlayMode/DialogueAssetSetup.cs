@@ -31,6 +31,8 @@ namespace Chocolate4.Dialogue.Tests.Utilities
 
             dialogueAssetField.SetValue(dialogueMaster, asset);
 
+            dialogueMaster.Initialize();
+
             return dialogueMaster;
         }
 

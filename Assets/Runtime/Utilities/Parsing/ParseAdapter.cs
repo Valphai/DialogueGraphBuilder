@@ -1,5 +1,5 @@
 using B83.LogicExpressionParser;
-using Chocolate4.Dialogue.Runtime;
+using Chocolate4.Dialogue.Runtime.Master.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,11 @@ namespace Chocolate4.Runtime.Utilities.Parsing
 	public class ParseAdapter
 	{
         private Parser parser;
-        private DialogueMasterCollection collection;
-        private Type collectionType = typeof(DialogueMasterCollection);
+        private IDialogueMasterCollection collection;
 
-        public ParseAdapter(DialogueMasterCollection collection)
+        private Type CollectionType => collection.CollectionType;
+
+        public ParseAdapter(IDialogueMasterCollection collection)
         {
             parser = new Parser();
 
@@ -80,7 +81,7 @@ namespace Chocolate4.Runtime.Utilities.Parsing
 
         private void SetVariables()
         {
-            MemberInfo[] members = collectionType.GetMembers();
+            MemberInfo[] members = CollectionType.GetMembers();
 
             for (int i = 0; i < members.Length; i++)
             {
@@ -101,20 +102,20 @@ namespace Chocolate4.Runtime.Utilities.Parsing
             if (propertyInfo.PropertyType == typeof(int))
             {
                 parser.ExpressionContext[name].Set(
-                    () => (int)Convert.ChangeType(collectionType.GetProperty(name).GetValue(collection), typeof(int))
+                    () => (int)Convert.ChangeType(CollectionType.GetProperty(name).GetValue(collection), typeof(int))
                 );
             }
             else if (propertyInfo.PropertyType == typeof(bool))
             {
                 parser.ExpressionContext[name].Set(
-                    () => (bool)Convert.ChangeType(collectionType.GetProperty(name).GetValue(collection), typeof(bool))
+                    () => (bool)Convert.ChangeType(CollectionType.GetProperty(name).GetValue(collection), typeof(bool))
                 );
             }
         }
 
         private void SetCollectionVariable(string propertyName, string expression, IParseOperator parseOperator)
         {
-            PropertyInfo propertyInfo = collectionType.GetProperty(propertyName);
+            PropertyInfo propertyInfo = CollectionType.GetProperty(propertyName);
             if (propertyInfo.PropertyType == typeof(int))
             {
                 ParseInt(propertyName, expression, parseOperator, propertyInfo);

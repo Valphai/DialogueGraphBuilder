@@ -6,6 +6,7 @@ namespace Chocolate4.Dialogue.Runtime.Asset
 {
     public class DialogueEditorAsset : ScriptableObject
     {
+        public string fileName;
         public GraphSaveData graphSaveData;
         public TreeSaveData treeSaveData;
 
@@ -19,7 +20,7 @@ namespace Chocolate4.Dialogue.Runtime.Asset
 
         public string ToJson()
         {
-            var fileJson = new JsonSaveData(graphSaveData, treeSaveData);
+            var fileJson = new JsonSaveData(fileName, graphSaveData, treeSaveData);
             return JsonUtility.ToJson(fileJson, true);
         }
     }

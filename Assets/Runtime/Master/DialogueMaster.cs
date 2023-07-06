@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Runtime.Asset;
+using Chocolate4.Dialogue.Runtime.Master.Collections;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Runtime.Utilities;
@@ -6,6 +7,7 @@ using Chocolate4.Runtime.Utilities.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace Chocolate4.Dialogue.Runtime
@@ -15,6 +17,8 @@ namespace Chocolate4.Dialogue.Runtime
     {
         [SerializeField] 
         private DialogueEditorAsset dialogueAsset;
+        [SerializeField]
+        private bool autoInitialize;
 
         private IDataHolder currentNode;
         private SituationSaveData currentSituation;
@@ -24,14 +28,16 @@ namespace Chocolate4.Dialogue.Runtime
         private ParseAdapter parseAdapter;
 
         /// <summary>Collection of variables and events defined in the editor.</summary>
-        public DialogueMasterCollection Collection { get; private set; }
+        public IDialogueMasterCollection Collection { get; private set; }
 
         public string CurrentSituationName => FindSituationName(currentSituation);
 
         private void Awake()
         {
-            Initialize();
-            hasInitialized = true;
+            if (autoInitialize)
+            {
+                Initialize();
+            }
         }
 
         /// <summary>
@@ -86,7 +92,8 @@ namespace Chocolate4.Dialogue.Runtime
             currentNode = NextNode();
             while (currentNode.IsNodeOfType(
                 NodeConstants.ConditionNode, NodeConstants.ExpressionNode, 
-                NodeConstants.FromSituationNode, NodeConstants.ToSituationNode)
+                NodeConstants.FromSituationNode, NodeConstants.ToSituationNode,
+                NodeConstants.EventPropertyNode)
             )
             {
                 currentNode = NextNode();
@@ -118,10 +125,24 @@ namespace Chocolate4.Dialogue.Runtime
             selectedChoice = index;
         }
 
-        private void Initialize()
+        public void Initialize()
         {
-            Collection = new DialogueMasterCollection();
+            Collection = CreateCollection();
             parseAdapter = new ParseAdapter(Collection);
+
+            hasInitialized = true;
+        }
+
+        private IDialogueMasterCollection CreateCollection()
+        {
+            List<Type> collectionTypes = 
+                TypeExtensions.GetTypes<IDialogueMasterCollection>(FilePathConstants.Chocolate4).ToList();
+
+            string collectionName = FilePathConstants.GetCollectionName(dialogueAsset.fileName);
+            Type assetMatchedCollectionType  = 
+                collectionTypes.Find(type => type.Name.Equals(collectionName));
+
+            return (IDialogueMasterCollection)Activator.CreateInstance(assetMatchedCollectionType);
         }
 
         private IDataHolder NextNode()
@@ -139,47 +160,80 @@ namespace Chocolate4.Dialogue.Runtime
             }
             else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.ChoiceNode))
             {
-                int count = outputPortDataCollection.Count;
-                if (count == 1)
-                {
-                    return FindNode(outputPortDataCollection.First().otherNodeID);
-                }
-
-                if (selectedChoice > count)
-                {
-                    Debug.LogError($"Selected choice index {selectedChoice} was greater than number of choices {count}! Aborting.");
-                    return null;
-                }
-
-                return FindNode(outputPortDataCollection[selectedChoice].otherNodeID);
+                return HandleChoiceNode(outputPortDataCollection);
             }
             else if (NodeUtilities.IsNodeOfType(nodeType,  NodeConstants.ConditionNode))
             {
-                if (parseAdapter.EvaluateConditions(((TextNodeSaveData)currentNode).text))
-                {
-                    return FindNode(outputPortDataCollection.First().otherNodeID);
-                }
-
-                return FindNode(outputPortDataCollection.Last().otherNodeID);
+                return HandleConditionNode(outputPortDataCollection);
             }
             else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.ExpressionNode))
             {
-                parseAdapter.EvaluateSetExpressions(((TextNodeSaveData)currentNode).text);
-
-                return FindNode(outputPortDataCollection.First().otherNodeID);
+                return HandleExpressionNode(outputPortDataCollection);
             }
             else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.ToSituationNode))
             {
-                string currentSituationId = currentSituation.Id;
-                string nextSituation = FindSituationName(((SituationTransferNodeSaveData)currentNode).otherSituationId);
-                StartSituation(nextSituation);
-
-                return FindNode<SituationTransferNodeSaveData>(node => node.otherSituationId.Equals(currentSituationId));
+                return HandleToSituationNode();
             }
             else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.EventPropertyNode))
+            {
+                return HandleEventPropertyNode(outputPortDataCollection);
+            }
 
             Debug.LogError($"Encountered unsupported node {currentNode}! This node is null.");
             return null;
+        }
+
+        private IDataHolder HandleEventPropertyNode(List<PortData> outputPortDataCollection)
+        {
+            string eventName = FindPropertyNameById(((PropertyNodeSaveData)currentNode).propertyID);
+            Collection.CollectionType.GetMethod(
+                $"Invoke{eventName}", BindingFlags.NonPublic | BindingFlags.Instance
+            ).Invoke(Collection, null);
+
+            return FindNode(outputPortDataCollection.First().otherNodeID);
+        }
+
+        private IDataHolder HandleToSituationNode()
+        {
+            string currentSituationId = currentSituation.Id;
+            string nextSituation = FindSituationName(((SituationTransferNodeSaveData)currentNode).otherSituationId);
+            StartSituation(nextSituation);
+
+            return FindNode<SituationTransferNodeSaveData>(node => node.otherSituationId.Equals(currentSituationId));
+        }
+
+        private IDataHolder HandleExpressionNode(List<PortData> outputPortDataCollection)
+        {
+            parseAdapter.EvaluateSetExpressions(((TextNodeSaveData)currentNode).text);
+
+            return FindNode(outputPortDataCollection.First().otherNodeID);
+        }
+
+        private IDataHolder HandleConditionNode(List<PortData> outputPortDataCollection)
+        {
+            if (parseAdapter.EvaluateConditions(((TextNodeSaveData)currentNode).text))
+            {
+                return FindNode(outputPortDataCollection.First().otherNodeID);
+            }
+
+            return FindNode(outputPortDataCollection.Last().otherNodeID);
+        }
+
+        private IDataHolder HandleChoiceNode(List<PortData> outputPortDataCollection)
+        {
+            int count = outputPortDataCollection.Count;
+            if (count == 1)
+            {
+                return FindNode(outputPortDataCollection.First().otherNodeID);
+            }
+
+            if (selectedChoice > count)
+            {
+                Debug.LogError($"Selected choice index {selectedChoice} was greater than number of choices {count}! Aborting.");
+                return null;
+            }
+
+            return FindNode(outputPortDataCollection[selectedChoice].otherNodeID);
         }
 
         private IDataHolder FindNode<T>(Predicate<T> match) where T : IDataHolder
@@ -200,6 +254,12 @@ namespace Chocolate4.Dialogue.Runtime
             }
 
             return allNodes.Find(node => node.NodeData.nodeId == id);
+        }
+
+        private string FindPropertyNameById(string id)
+        {
+            return dialogueAsset.graphSaveData.blackboardSaveData.
+                dialoguePropertiesSaveData.Find(property => property.id.Equals(id)).displayName;
         }
 
         private SituationSaveData FindSituationByName(string situationName)
