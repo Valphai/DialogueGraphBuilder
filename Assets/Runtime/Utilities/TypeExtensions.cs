@@ -7,17 +7,18 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
 {
     public static class TypeExtensions
     {
-        public static IEnumerable<Type> GetTypes<T>()
+        public static IEnumerable<Type> GetTypes<T>(string partOfAssembliesName)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
-                            .SelectMany(assembly => assembly.GetTypes())
-                            .Where(type => typeof(T).IsAssignableFrom(type))
-                            .Where(type => !type.IsInterface && !type.IsAbstract);
+                .Where(assembly => assembly.FullName.Contains(partOfAssembliesName))
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(T).IsAssignableFrom(type))
+                .Where(type => !type.IsInterface && !type.IsAbstract);
         }
 
         public static void DistributeListElementsToFieldsOfImplementingTypes<T, S>(List<T> listWithDifferentTypes, S instanceWithFields)
         {
-            List<Type> implementingTypes = GetTypes<T>().ToList();
+            List<Type> implementingTypes = GetTypes<T>(FilePathConstants.Chocolate4).ToList();
             Type genericListType = typeof(List<>);
 
             Dictionary<T, Type> elementToType = new Dictionary<T, Type>();
@@ -73,7 +74,7 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
         public static List<T> MergeFieldListsIntoOneImplementingType<T, S>(S instanceWithFields)
         {
             List<T> result = new List<T>();
-            List<Type> implementingTypes = GetTypes<T>().ToList();
+            List<Type> implementingTypes = GetTypes<T>(FilePathConstants.Chocolate4).ToList();
 
             FieldInfo[] fields = typeof(S).GetFields();
             foreach (FieldInfo field in fields)
