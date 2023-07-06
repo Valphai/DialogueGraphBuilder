@@ -31,7 +31,6 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
             List<DialoguePropertySaveData> dialoguePropertiesSaveData = 
                 blackboardSaveData.dialoguePropertiesSaveData;
 
-
             List<DialoguePropertySaveData> valuesData = 
                 dialoguePropertiesSaveData.Where(prop => prop.propertyType != PropertyType.Event).ToList();
             foreach (DialoguePropertySaveData property in valuesData)

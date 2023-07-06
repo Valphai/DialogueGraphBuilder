@@ -1,4 +1,3 @@
-using B83.LogicExpressionParser;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
@@ -128,14 +127,17 @@ namespace Chocolate4.Dialogue.Runtime
         private IDataHolder NextNode()
         {
             List<PortData> outputPortDataCollection = currentNode.NodeData.outputPortDataCollection;
-            if (currentNode.IsNodeOfType(
+
+            string nodeType = currentNode.GetNodeType();
+
+            if (NodeUtilities.IsNodeOfType(nodeType,
                 NodeConstants.StartNode, 
                 NodeConstants.DialogueNode, NodeConstants.FromSituationNode)
             )
             {
                 return FindNode(outputPortDataCollection.First().otherNodeID);
             }
-            else if (currentNode.IsNodeOfType(NodeConstants.ChoiceNode))
+            else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.ChoiceNode))
             {
                 int count = outputPortDataCollection.Count;
                 if (count == 1)
@@ -151,7 +153,7 @@ namespace Chocolate4.Dialogue.Runtime
 
                 return FindNode(outputPortDataCollection[selectedChoice].otherNodeID);
             }
-            else if (currentNode.IsNodeOfType(NodeConstants.ConditionNode))
+            else if (NodeUtilities.IsNodeOfType(nodeType,  NodeConstants.ConditionNode))
             {
                 if (parseAdapter.EvaluateConditions(((TextNodeSaveData)currentNode).text))
                 {
@@ -160,13 +162,13 @@ namespace Chocolate4.Dialogue.Runtime
 
                 return FindNode(outputPortDataCollection.Last().otherNodeID);
             }
-            else if (currentNode.IsNodeOfType(NodeConstants.ExpressionNode))
+            else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.ExpressionNode))
             {
                 parseAdapter.EvaluateSetExpressions(((TextNodeSaveData)currentNode).text);
 
                 return FindNode(outputPortDataCollection.First().otherNodeID);
             }
-            else if (currentNode.IsNodeOfType(NodeConstants.ToSituationNode))
+            else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.ToSituationNode))
             {
                 string currentSituationId = currentSituation.Id;
                 string nextSituation = FindSituationName(((SituationTransferNodeSaveData)currentNode).otherSituationId);
@@ -174,6 +176,7 @@ namespace Chocolate4.Dialogue.Runtime
 
                 return FindNode<SituationTransferNodeSaveData>(node => node.otherSituationId.Equals(currentSituationId));
             }
+            else if (NodeUtilities.IsNodeOfType(nodeType, NodeConstants.EventPropertyNode))
 
             Debug.LogError($"Encountered unsupported node {currentNode}! This node is null.");
             return null;

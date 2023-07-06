@@ -12,14 +12,26 @@ namespace Chocolate4.Runtime.Utilities
             return dataHolder.NodeData.nodeType.Split('.').Last();
         }
         
+        public static bool IsNodeOfType(string nodeType, string type)
+        {
+            return nodeType.Equals(type);
+        }
+
         public static bool IsNodeOfType(this IDataHolder dataHolder, string type)
         {
-            return dataHolder.GetNodeType().Equals(type);
+            string nodeType = dataHolder.GetNodeType();
+            return IsNodeOfType(nodeType, type);
         }
         
+        public static bool IsNodeOfType(string nodeType, params string[] types)
+        {
+            return types.Any(type => IsNodeOfType(nodeType, type));
+        }
+
         public static bool IsNodeOfType(this IDataHolder dataHolder, params string[] types)
         {
-            return types.Any(type => dataHolder.IsNodeOfType(type));
+            string nodeType = dataHolder.GetNodeType();
+            return IsNodeOfType(nodeType, types);
         }
 
         public static List<IDataHolder> GetParents(this IDataHolder dataHolder, Func<string, IDataHolder> findNode)

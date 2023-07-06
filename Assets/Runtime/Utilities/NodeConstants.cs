@@ -1,6 +1,6 @@
 namespace Chocolate4.Runtime.Utilities
 {
-    public class NodeConstants
+    public static class NodeConstants
     {
         public const string StartNode = nameof(StartNode);
         public const string EndNode = nameof(EndNode);
@@ -10,6 +10,7 @@ namespace Chocolate4.Runtime.Utilities
         public const string ToSituationNode = nameof(ToSituationNode);
         public const string ConditionNode = nameof(ConditionNode);
         public const string ExpressionNode = nameof(ExpressionNode);
+        public const string EventPropertyNode = nameof(EventPropertyNode);
 
         public const string TransferOut = "Out";
         public const string TransferIn = "In";
