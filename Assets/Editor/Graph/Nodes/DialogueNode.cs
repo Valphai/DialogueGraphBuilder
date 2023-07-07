@@ -32,7 +32,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             textField = contentContainer
                 .WithMinHeight(UIStyles.MaxHeight)
                 .WithMaxWidth(UIStyles.MaxWidth)
-                .WithTextField(Text, evt => Text = evt.newValue);
+                .WithNodeTextField(Text, evt => Text = evt.newValue);
         }
     }
 }

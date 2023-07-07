@@ -43,7 +43,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             textField = contentContainer
                 .WithMaxWidth(UIStyles.MaxWidth)
-                .WithTextField(Text, evt => DangerDetector.SanitizeExpression(this, evt.newValue));
+                .WithNodeTextField(Text, evt => DangerDetector.SanitizeExpression(this, evt.newValue));
 
             textField.WithMinHeight(UIStyles.SmallTextFieldHeight);
         }

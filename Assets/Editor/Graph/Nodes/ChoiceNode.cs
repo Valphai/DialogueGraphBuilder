@@ -82,7 +82,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             Foldout extraContentFoldout = new Foldout() { text = choice.name };
             TextField extraContentTextField = extraContentFoldout
-                .WithTextField(choice.text, evt => choice.text = evt.newValue);
+                .WithNodeTextField(choice.text, evt => choice.text = evt.newValue);
 
             extraContentContainer.Insert(choiceIndex, extraContentFoldout);
 

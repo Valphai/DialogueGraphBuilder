@@ -163,6 +163,28 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             element.style.marginLeft = margin;
             return element;
         }
+        
+        public static VisualElement WithMarginRight(this VisualElement element, float margin)
+        {
+            element.style.marginRight = margin;
+            return element;
+        }
+        
+        public static VisualElement WithMarginBot(this VisualElement element, float margin)
+        {
+            element.style.marginBottom = margin;
+            return element;
+        }
+        
+        public static VisualElement WithMargin(this VisualElement element, float margin)
+        {
+            element
+                .WithMarginBot(margin)
+                .WithMarginTop(margin)
+                .WithMarginRight(margin)
+                .WithMarginLeft(margin);
+            return element;
+        }
 
         public static VisualElement WithHorizontalGrow(this VisualElement element)
         {
@@ -256,17 +278,27 @@ namespace Chocolate4.Dialogue.Edit.Utilities
         }
 
         public static TextField WithTextField(
-            this VisualElement element,
-            string startText, Action<ChangeEvent<string>> onInputChanged
+            this VisualElement element, string startText,
+            Action<ChangeEvent<string>> onInputChanged, bool multiline = true
         )
         {
             TextField textField = new TextField()
             {
                 value = startText,
-                multiline = true,
-                
+                multiline = multiline,
+
             };
             textField.RegisterValueChangedCallback(evt => onInputChanged?.Invoke(evt));
+
+            element.Add(textField);
+            return textField;
+        }
+        public static TextField WithNodeTextField(
+            this VisualElement element, string startText, 
+            Action<ChangeEvent<string>> onInputChanged, bool multiline = true
+        )
+        {
+            TextField textField = element.WithTextField(startText, onInputChanged, multiline);
 
             textField.WithVerticalGrow()
                 .WithFlexGrow();
@@ -276,7 +308,6 @@ namespace Chocolate4.Dialogue.Edit.Utilities
                 .WithExpandableHeight();
 
 
-            element.Add(textField);
             return textField;
         }
     }
