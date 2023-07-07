@@ -5,9 +5,12 @@ using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using Chocolate4.Edit.Entities;
 using Chocolate4.Edit.Graph;
 using Chocolate4.Edit.Graph.Utilities;
 using System;
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.UIElements;
@@ -23,15 +26,16 @@ namespace Chocolate4.Dialogue.Edit
         [SerializeField] 
         private bool hasInitialized;
 
-        //private ListView leftListView;
         private TwoPaneSplitView splitView;
-        private VisualElement rightPanel;
-        private VisualElement rightPanelSituationsContent;
-        private VisualElement rightPanelEntitiesContent;
+        private VisualElement mainSplitView;
+        private VisualElement subTwoPanelView;
+        private VisualElement subPanelSituationsContent;
+        private VisualElement subPanelEntitiesContent;
+
         private Button saveButton;
         private DialogueAssetManager dialogueAssetManager;
 
-        public VisualElement EntitiesView { get; private set; }
+        public DialogueEntitiesView EntitiesView { get; private set; }
         public DialogueGraphView GraphView { get; private set; }
         public DialogueTreeView DialogueTreeView { get; private set; }
 
@@ -49,14 +53,7 @@ namespace Chocolate4.Dialogue.Edit
                 }
 
                 selectedColumnIndex = value;
-                if (selectedColumnIndex == GraphConstants.SituationViewIndex)
-                {
-                    SelectSituationView();
-                }
-                else if (selectedColumnIndex == GraphConstants.EntityViewIndex)
-                {
-                    SelectEntityView();
-                }
+                OpenSelectedView();
             }
         }
 
@@ -117,24 +114,18 @@ namespace Chocolate4.Dialogue.Edit
             return window;
         }
 
-        public void TrySave()
-        {
-            if (DangerLogger.IsEditorInDanger())
-            {
-                return;
-            }
-
-            GraphSaveData graphData = GraphView.Save();
-            TreeSaveData treeData = DialogueTreeView.Save();
-            dialogueAssetManager.Save(graphData, treeData);
-        }
-
         private void SetAsset(DialogueEditorAsset asset, int instanceId)
         {
             if (asset == null)
                 return;
 
-            dialogueAssetManager = new DialogueAssetManager(asset, instanceId);
+            string entityDatabasePath = Directory.GetFiles(
+                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath), "*.asset"
+            ).First(path => path.Contains(EntitiesHolder.DataBase));
+
+            EntitiesHolder entitiesDatabase = AssetDatabase.LoadAssetAtPath<EntitiesHolder>(entityDatabasePath);
+
+            dialogueAssetManager = new DialogueAssetManager(asset, instanceId, entitiesDatabase);
 
             //m_ActionAssetManager = new InputActionAssetManager(asset) { onDirtyChanged = OnDirtyChanged };
             //m_ActionAssetManager.Initialize();
@@ -172,11 +163,25 @@ namespace Chocolate4.Dialogue.Edit
             StoreData();
         }
 
+        private void TrySave()
+        {
+            if (DangerLogger.IsEditorInDanger())
+            {
+                return;
+            }
+
+            GraphSaveData graphData = GraphView.Save();
+            TreeSaveData treeData = DialogueTreeView.Save();
+            EntitiesData entitiesData = EntitiesView.Save();
+            dialogueAssetManager.Save(graphData, treeData, entitiesData);
+        }
+
         private void StoreData()
         {
             TreeSaveData treeSaveData = DialogueTreeView.Save();
             GraphSaveData graphSaveData = GraphView.Save();
-            dialogueAssetManager.Store(graphSaveData, treeSaveData);
+            EntitiesData entitiesData = EntitiesView.Save();
+            dialogueAssetManager.Store(graphSaveData, treeSaveData, entitiesData);
         }
 
         private void Initialize()
@@ -186,6 +191,8 @@ namespace Chocolate4.Dialogue.Edit
             Rebuild();
 
             CreatePanels();
+
+            OpenSelectedView();
         }
 
         private void PostInitialize()
@@ -196,14 +203,19 @@ namespace Chocolate4.Dialogue.Edit
 
         private void CreateElements()
         {
-            EntitiesView = new VisualElement().WithFlexGrow().WithFlexShrink();
+            EntitiesView = new DialogueEntitiesView();
+            EntitiesView.Initialize();
 
-            rightPanel = new VisualElement();
-            rightPanelSituationsContent = new VisualElement().WithFlexGrow().WithFlexShrink();
-            rightPanelEntitiesContent = new VisualElement().WithFlexGrow().WithFlexShrink();
+            EntitiesView.WithFlexGrow().WithFlexShrink();
+
+            mainSplitView = new VisualElement();
+            subTwoPanelView = new VisualElement();
+            subPanelSituationsContent = new VisualElement().WithFlexGrow().WithFlexShrink();
+            subPanelEntitiesContent = new VisualElement().WithFlexGrow().WithFlexShrink();
 
             GraphView = new DialogueGraphView();
             GraphView.Initialize();
+            GraphView.WithFlexGrow();
             DialogueTreeView = new DialogueTreeView();
             DialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
 
@@ -215,7 +227,7 @@ namespace Chocolate4.Dialogue.Edit
 
         private void Rebuild()
         {
-            dialogueAssetManager.Rebuild(DialogueTreeView, GraphView);
+            dialogueAssetManager.Rebuild(DialogueTreeView, GraphView, EntitiesView);
         }
 
         private void CreatePanels()
@@ -226,6 +238,7 @@ namespace Chocolate4.Dialogue.Edit
             AddToolbar();
             AddHeaderColumns();
             AddGraphHeaderButtons();
+            AddEntitiesHeaderButtons();
             AddTreeView();
             AddListView();
         }
@@ -234,8 +247,11 @@ namespace Chocolate4.Dialogue.Edit
         {
             splitView = new TwoPaneSplitView(1, GraphConstants.TreeViewWindowWidth, TwoPaneSplitViewOrientation.Horizontal);
 
-            splitView.Add(GraphView);
-            splitView.Add(rightPanel);
+            splitView.Add(mainSplitView);
+            splitView.Add(subTwoPanelView);
+
+            mainSplitView.Add(GraphView);
+            mainSplitView.Add(EntitiesView);
 
             rootVisualElement.Add(splitView);
         }
@@ -251,17 +267,17 @@ namespace Chocolate4.Dialogue.Edit
                 EditorGUILayout.EndHorizontal();
             });
 
-            rightPanel.Add(container);
+            subTwoPanelView.Add(container);
 
-            rightPanel.Add(rightPanelSituationsContent);
-            rightPanel.Add(rightPanelEntitiesContent);
+            subTwoPanelView.Add(subPanelSituationsContent);
+            subTwoPanelView.Add(subPanelEntitiesContent);
 
             SelectSituationView();
         }
 
         private void AddTreeView()
         {
-            rightPanelSituationsContent.Add(DialogueTreeView.TreeView);
+            subPanelSituationsContent.Add(DialogueTreeView.TreeView);
         }
 
         private void AddToolbar()
@@ -281,18 +297,27 @@ namespace Chocolate4.Dialogue.Edit
             toolbar.Add(searchField);
             toolbar.Add(saveButton);
 
-            rightPanel.Add(toolbar);
+            subTwoPanelView.Add(toolbar);
         }
 
         private void AddListView()
         {
-            //leftListView = new ListView();
+            subPanelEntitiesContent.Add(EntitiesView.ListView);
+        }
 
-            //leftPanel.makeItem = () => new Label();
-            //leftPanel.bindItem = (item, index) => { (item as Label).text = factory.Npcs[index].characterName; };
-            //leftPanel.itemsSource = (System.Collections.IList)factory.Npcs;
+        private void AddEntitiesHeaderButtons()
+        {
+            VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
 
-            //leftPanel.Add(leftListView);
+            Button addButton = buttonsContainer.WithButton("Add Entity").WithOnClick(
+                () => EntitiesView.AddEntity()
+            );
+
+            addButton
+                .WithFlexGrow()
+                .WithMinWidth(GraphConstants.InsertButtonWidth);
+
+            subPanelEntitiesContent.Add(buttonsContainer);
         }
 
         private void AddGraphHeaderButtons()
@@ -321,38 +346,53 @@ namespace Chocolate4.Dialogue.Edit
                 )
             ).WithMinWidth(GraphConstants.InsertButtonWidth);
 
-            rightPanelSituationsContent.Add(buttonsContainer);
+            subPanelSituationsContent.Add(buttonsContainer);
         }
 
         private void SelectEntityView()
         {
-            if (splitView.contentContainer.Contains(GraphView))
-            {
-                splitView.contentContainer.Remove(GraphView);
-            }
-            splitView.contentContainer.Insert(0, EntitiesView);
-
-            GraphView.style.display = DisplayStyle.None;
-            rightPanelSituationsContent.style.display = DisplayStyle.None;
-
-            EntitiesView.style.display = DisplayStyle.Flex;
-            rightPanelEntitiesContent.style.display = DisplayStyle.Flex;
+            SelectSplitPanelView(
+                EntitiesView, subPanelEntitiesContent,
+                GraphView, subPanelSituationsContent
+            );
         }
 
         private void SelectSituationView()
         {
+            SelectSplitPanelView(
+                GraphView, subPanelSituationsContent,
+                EntitiesView, subPanelEntitiesContent
+            );
+        }
 
-            if (splitView.contentContainer.Contains(EntitiesView))
+        private void SelectSplitPanelView(
+            VisualElement view, VisualElement subPanel,
+            VisualElement otherView, VisualElement otherSubPanel
+        )
+        {
+            if (mainSplitView.Contains(otherView))
             {
-                splitView.contentContainer.Remove(EntitiesView); 
+                mainSplitView.Remove(otherView);
             }
-            splitView.contentContainer.Insert(0, GraphView);
+            mainSplitView.Insert(0, view);
 
-            GraphView.style.display = DisplayStyle.Flex;
-            rightPanelSituationsContent.style.display = DisplayStyle.Flex;
+            view.style.display = DisplayStyle.Flex;
+            subPanel.style.display = DisplayStyle.Flex;
 
-            EntitiesView.style.display = DisplayStyle.None;
-            rightPanelEntitiesContent.style.display = DisplayStyle.None;
+            otherView.style.display = DisplayStyle.None;
+            otherSubPanel.style.display = DisplayStyle.None;
+        }
+
+        private void OpenSelectedView()
+        {
+            if (selectedColumnIndex == GraphConstants.SituationViewIndex)
+            {
+                SelectSituationView();
+            }
+            else if (selectedColumnIndex == GraphConstants.EntityViewIndex)
+            {
+                SelectEntityView();
+            }
         }
     }
 }

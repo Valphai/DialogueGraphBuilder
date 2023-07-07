@@ -1,5 +1,6 @@
 ﻿using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Entities;
 using Chocolate4.Edit.Graph;
 
 namespace Chocolate4.Dialogue.Edit.Saving
@@ -14,15 +15,16 @@ namespace Chocolate4.Dialogue.Edit.Saving
             dataContainer = new DataContainer();
         }
 
-        internal void Rebuild(DialogueTreeView treeView, DialogueGraphView graphView)
+        internal void Rebuild(DialogueTreeView treeView, DialogueGraphView graphView, DialogueEntitiesView entitiesView)
         {
             treeView.Rebuild(dataContainer.TreeData);
             graphView.Rebuild(dataContainer.GraphData);
+            entitiesView.Rebuild(dataContainer.EntitiesData);
         }
 
-        internal void Store(GraphSaveData graphData, TreeSaveData treeData)
+        internal void Store(GraphSaveData graphData, TreeSaveData treeData, EntitiesData entitiesData)
         {
-            dataContainer.Store(graphData, treeData);
+            dataContainer.Store(graphData, treeData, entitiesData);
         }
     }
 }
