@@ -49,8 +49,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
         public void Rebuild(TreeSaveData treeSaveData)
         {
-            TreeView = new TreeView();
-            TreeView.reorderable = true;
+            TreeView = new TreeView() { reorderable = true };
 
             var items = new List<TreeViewItemData<DialogueTreeItem>>();
 

@@ -11,7 +11,8 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
         public const string Collection = "Collection";
         public const string Extension = "chocolatedialogue";
 
-        public static string testCasesAssetPath = Application.dataPath + DirSep + "Tests/PlayMode/Cases/TestCasesDialogueEditor." + Extension;
+        public static string testCasesAssetPath = $"{Application.dataPath}{DirSep}{AssetFolder}{DirSep}Tests{DirSep}PlayMode{DirSep}Cases{DirSep}TestCasesDialogueEditor.{Extension}";
+        public static string dialogueEntitiesPath = $"{Application.dataPath}{DirSep}{AssetFolder}{DirSep}Runtime{DirSep}Entities{DirSep}";
 
         public static char DirSep => Path.DirectorySeparatorChar;
 

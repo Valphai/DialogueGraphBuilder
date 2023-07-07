@@ -13,7 +13,7 @@ namespace Chocolate4.Edit.Graph.Utilities
         public static Color StoryColor { get; private set; } = new Color(132f / 255f, 54f / 255f, 58f / 255f);
         public static Color TransferColor { get; private set; } = new Color(22f / 255f, 22f / 255f, 22f / 255f);
         public static Color DefaultDarkColor { get; private set; } = new Color(59f / 255f, 59f / 255f, 59f / 255f);
-        public static Color DefaultDarkerColor { get; private set; } = new Color(33f / 255f, 35f / 255f, 37f / 255f);
+        public static Color DefaultDarkerColor { get; private set; } = new Color(40f / 255f, 40f / 255f, 40f / 255f);
         public static Color DefaultLightColor { get; private set; } = new Color(180f / 255f, 180f / 255f, 180f / 255f);
 
         public const float FontSize = 14f;
