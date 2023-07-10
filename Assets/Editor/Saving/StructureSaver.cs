@@ -45,6 +45,24 @@ namespace Chocolate4.Dialogue.Edit.Saving
             return node.Save();
         }
 
+        public static TreeSaveData SaveTree(TreeView treeView)
+        {
+            List<KeyValuePair<int, List<int>>> deepestChildIds = GetNodesByDepth(treeView);
+
+            List<TreeItemSaveData> resultData = new List<TreeItemSaveData>();
+            TreeSaveData result = new TreeSaveData(resultData);
+
+            foreach (var deepestChildId in deepestChildIds)
+            {
+                int parentId = deepestChildId.Key;
+                TreeItemSaveData childSaveData = SaveChild(treeView, parentId);
+
+                resultData.Add(childSaveData);
+            }
+
+            return result;
+        }
+
         private static void SaveConnections(List<PortData> portDataCollection, List<Port> ports, Direction requestedPort)
         {
             foreach (Port port in ports)
@@ -62,24 +80,6 @@ namespace Chocolate4.Dialogue.Edit.Saving
 
                 connectedNodes.ForEach(child => portData.otherNodeID = child.Id);
             }
-        }
-
-        public static TreeSaveData SaveTree(TreeView treeView)
-        {
-            List<KeyValuePair<int, List<int>>> deepestChildIds = GetNodesByDepth(treeView);
-
-            List<TreeItemSaveData> resultData = new List<TreeItemSaveData>();
-            TreeSaveData result = new TreeSaveData(resultData);
-
-            foreach (var deepestChildId in deepestChildIds)
-            {
-                int parentId = deepestChildId.Key;
-                TreeItemSaveData childSaveData = SaveChild(treeView, parentId);
-
-                resultData.Add(childSaveData);
-            }
-
-            return result;
         }
 
         private static List<KeyValuePair<int, List<int>>> GetNodesByDepth(TreeView treeView)

@@ -4,6 +4,7 @@ using Chocolate4.Edit.Entities.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -33,6 +34,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             Text = dialogueNodeSaveData.text;
             textField.value = Text;
+        }
+
+        public override void PostInitialize()
+        {
+            base.PostInitialize();
+            SelectEntity(speaker);
         }
 
         protected override void DrawTitle()
