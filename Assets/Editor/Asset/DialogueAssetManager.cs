@@ -71,7 +71,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
             string oldFileName = ImportedAsset.fileName;
 
-            ImportedAsset.fileName = System.IO.Path.GetFileName(Path).Replace("." + FilePathConstants.Extension, string.Empty);
+            ImportedAsset.fileName = System.IO.Path.GetFileNameWithoutExtension(Path);
             ImportedAsset.graphSaveData = dataRebuilder.dataContainer.GraphData;
             ImportedAsset.treeSaveData = dataRebuilder.dataContainer.TreeData;
 

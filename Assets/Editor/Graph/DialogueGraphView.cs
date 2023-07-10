@@ -397,7 +397,7 @@ namespace Chocolate4.Edit.Graph
 
             Vector2 center = GetLocalMousePosition(DialogueEditorWindow.Window.rootVisualElement.contentRect.center);
             nodes.ForEach(node => {
-                Vector2 position = new Vector2(node.style.left.value.value, node.style.top.value.value);
+                Vector2 position = node.GetPosition();
                 node.SetPosition(new Rect(position + center, Vector2.zero));
             });
 

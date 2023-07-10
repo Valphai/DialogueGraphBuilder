@@ -35,7 +35,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 outputPortDataCollection = OutputPortDataCollection,
                 nodeId = Id,
                 nodeType = NodeType.ToString(),
-                position = GetPosition().position,
+                position = GetPosition(),
                 groupId = GroupId,
             };
         }
@@ -75,22 +75,21 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             RefreshExpandedState();
         }
 
+        public new Vector2 GetPosition()
+        {
+            return new Vector2(style.left.value.value, style.top.value.value);
+        }
+
         protected virtual void DrawTitle()
         {
             Label titleLabel = titleContainer.Q<Label>();
             titleLabel.text = Name;
-            //TextField textField = new TextField() { value = Name };
 
-            //textField.AddToClassList(UIStyles.TextFieldHiddenUSS);
-
-            //textField.Q<TextElement>()
             titleLabel
                 .WithFontSize(UIStyles.FontSize)
                 .WithMaxWidth(UIStyles.MaxWidth)
                 .WithHorizontalGrow()
                 .WithExpandableHeight();
-
-            //titleContainer.Insert(0, textField);
             titleContainer.WithStoryStyle();
         }
 
