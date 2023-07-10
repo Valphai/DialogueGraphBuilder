@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Search
 {
@@ -61,9 +62,14 @@ namespace Chocolate4.Dialogue.Edit.Search
 
         public bool OnSelectEntry(SearchTreeEntry SearchTreeEntry, SearchWindowContext context)
         {
+            Vector2 windowMousePosition = 
+                VisualElementExtensions.ChangeCoordinatesTo(DialogueEditorWindow.Window.rootVisualElement, 
+                    DialogueEditorWindow.Window.rootVisualElement.parent, 
+                    context.screenMousePosition - DialogueEditorWindow.Window.position.position
+                );
+
             dialogueGraphView.CreateNode(
-                dialogueGraphView.GetLocalMousePosition(context.screenMousePosition), 
-                (Type)SearchTreeEntry.userData
+                dialogueGraphView.GetLocalMousePosition(windowMousePosition), (Type)SearchTreeEntry.userData
             );
             return true;
         }

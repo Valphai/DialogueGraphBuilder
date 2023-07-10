@@ -68,7 +68,7 @@ namespace Chocolate4.Edit.Entities
         private void HandlePreviewImage(PropertyField propertyField)
         {
             VisualElement previewContainer = new VisualElement()
-                                    .WithHorizontalGrow();
+                .WithHorizontalGrow();
 
             propertyField.WithFlexGrow();
             propertyField.style.alignSelf = Align.FlexEnd;
@@ -93,12 +93,6 @@ namespace Chocolate4.Edit.Entities
 
         private void OnPreviewSourceValueChanged(SerializedPropertyChangeEvent evt)
         {
-            UnityEngine.Object newValue = evt.changedProperty.objectReferenceValue;
-            if (newValue == null)
-            {
-                return;
-            }
-
             previewImage.image = EntitiesUtilities.GetEntityImage(currentEntity);
             onValueChanged?.Invoke(currentEntity);
         }
