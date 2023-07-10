@@ -95,6 +95,8 @@ namespace Chocolate4.Edit.Graph
             CacheActiveSituation();
             return new GraphSaveData()
             {
+                graphViewPosition = contentViewContainer.transform.position,
+                graphViewZoom = contentViewContainer.transform.scale,
                 situationSaveData = SituationCache.Cache.ToList(),
                 blackboardSaveData = blackboardProvider.Save()
             };
@@ -102,6 +104,9 @@ namespace Chocolate4.Edit.Graph
 
         public void Rebuild(GraphSaveData graphSaveData)
         {
+            contentViewContainer.transform.position = graphSaveData.graphViewPosition;
+            contentViewContainer.transform.scale = graphSaveData.graphViewZoom;
+
             DeleteElements(graphElements);
             RebuildGraph(graphSaveData);
 

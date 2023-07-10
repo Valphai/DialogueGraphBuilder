@@ -10,7 +10,6 @@ using Chocolate4.Dialogue.Edit.CodeGeneration;
 using System.Linq;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Entities;
-using System;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Edit.Entities.Utilities;
 using System.Collections.Generic;
@@ -24,7 +23,6 @@ namespace Chocolate4.Dialogue.Edit.Asset
         private int instanceId;
         [SerializeField]
         private EntitiesHolder entitiesDatabase;
-
 
         private DataRebuilder dataRebuilder;
 

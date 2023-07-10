@@ -74,6 +74,8 @@ namespace Chocolate4.Dialogue.Edit.Tree
             }
 
             CreateTreeView();
+
+            TreeView.SetSelection(treeSaveData.selectedIndex);
         }
 
         public TreeSaveData Save()
