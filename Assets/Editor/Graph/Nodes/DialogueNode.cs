@@ -54,18 +54,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         private void SelectEntity(DialogueEntity selectedEntity)
         {
-            if (selectedEntity == null)
-            {
-                speaker = null;
-                //entityPortrait.image = //default;
-                entityLabel.text = string.Empty;
-
-                return;
-            }
-
             speaker = selectedEntity;
             entityPortrait.image = EntitiesUtilities.GetEntityImage(speaker);
-            entityLabel.text = speaker.entityName;
+            entityLabel.text = speaker == null ? string.Empty : speaker.entityName;
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)

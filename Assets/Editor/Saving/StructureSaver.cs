@@ -26,23 +26,23 @@ namespace Chocolate4.Dialogue.Edit.Saving
             });
 
             return new SituationSaveData(situationGuid, nodeSaveDatas);
+        }
 
-            IDataHolder SaveNode(BaseNode node)
+        public static IDataHolder SaveNode(BaseNode node)
+        {
+            List<Port> outputPorts = node.outputContainer.Query<Port>().ToList();
+            List<Port> inputPorts = node.inputContainer.Query<Port>().ToList();
+
+            if (!outputPorts.IsNullOrEmpty())
             {
-                List<Port> outputPorts = node.outputContainer.Query<Port>().ToList();
-                List<Port> inputPorts = node.inputContainer.Query<Port>().ToList();
-
-                if (!outputPorts.IsNullOrEmpty())
-                {
-                    SaveConnections(node.OutputPortDataCollection, outputPorts, Direction.Input);
-                }
-                if (!inputPorts.IsNullOrEmpty())
-                {
-                    SaveConnections(node.InputPortDataCollection, inputPorts, Direction.Output);
-                }
-
-                return node.Save();
+                SaveConnections(node.OutputPortDataCollection, outputPorts, Direction.Input);
             }
+            if (!inputPorts.IsNullOrEmpty())
+            {
+                SaveConnections(node.InputPortDataCollection, inputPorts, Direction.Output);
+            }
+
+            return node.Save();
         }
 
         private static void SaveConnections(List<PortData> portDataCollection, List<Port> ports, Direction requestedPort)

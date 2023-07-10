@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Edit;
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
@@ -33,6 +34,8 @@ namespace Chocolate4.Edit.Graph
             deleteSelection = OnDeleteSelection;
             graphViewChanged = OnGraphViewChange;
             nodeCreationRequest = OnNodeCreationRequest;
+            serializeGraphElements += CutCopyOperation;
+            unserializeAndPaste += PasteOperation;
 
             ResolveDependencies();
 
@@ -40,13 +43,6 @@ namespace Chocolate4.Edit.Graph
             AddGridBackground();
 
             AddStyles();
-        }
-
-        private void OnNodeCreationRequest(NodeCreationContext ctx)
-        {
-            UnityEditor.Experimental.GraphView.SearchWindow.Open(
-                new SearchWindowContext(ctx.screenMousePosition), searchWindow
-            );
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -221,6 +217,12 @@ namespace Chocolate4.Edit.Graph
                 return;
             }
 
+            List<BaseNode> nodes = CreateNodes(dataHolders);
+            RebuildConnections(nodes);
+        }
+
+        private List<BaseNode> CreateNodes(List<IDataHolder> dataHolders)
+        {
             List<BaseNode> nodes = new List<BaseNode>();
             List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>(FilePathConstants.Chocolate4).ToList();
             foreach (IDataHolder dataHolder in dataHolders)
@@ -231,7 +233,7 @@ namespace Chocolate4.Edit.Graph
                 nodes.Add(node);
             }
 
-            RebuildConnections(nodes);
+            return nodes;
         }
 
         private void RebuildConnections(List<BaseNode> nodes)
@@ -376,6 +378,60 @@ namespace Chocolate4.Edit.Graph
 
             //graph.owner.RegisterCompleteObjectUndo(operationName);
             DeleteSelection();
+            ClearSelection();
+        }
+
+        private void PasteOperation(string operationName, string data)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                return;
+            }
+
+            SituationSaveData saveData = JsonUtility.FromJson<SituationSaveData>(data);
+            List<IDataHolder> cache =
+                TypeExtensions.MergeFieldListsIntoOneImplementingType<IDataHolder, SituationSaveData>(saveData);
+
+            List<BaseNode> nodes = CreateNodes(cache);
+            RebuildConnections(nodes);
+
+            Vector2 center = GetLocalMousePosition(DialogueEditorWindow.Window.rootVisualElement.contentRect.center);
+            nodes.ForEach(node => {
+                Vector2 position = new Vector2(node.style.left.value.value, node.style.top.value.value);
+                node.SetPosition(new Rect(position + center, Vector2.zero));
+            });
+
+            ClearSelection();
+            selection.AddRange(nodes);
+        }
+
+        private string CutCopyOperation(IEnumerable<GraphElement> elements)
+        {
+            elements = elements.ToList();
+            List<IDataHolder> copyCache = new List<IDataHolder>();
+
+            foreach (GraphElement element in elements)
+            {
+                if (element is not BaseNode baseNode)
+                {
+                    continue;
+                }
+
+                copyCache.Add(StructureSaver.SaveNode(baseNode));
+            }
+
+            Vector2 center = GetLocalMousePosition(DialogueEditorWindow.Window.rootVisualElement.contentRect.center);
+            copyCache.ForEach(data => data.NodeData.position -= center);
+
+            SituationSaveData situationCache = new SituationSaveData("cache", copyCache);
+            return JsonUtility.ToJson(situationCache);
+        }
+
+        private void OnNodeCreationRequest(NodeCreationContext ctx)
+        {
+            UnityEditor.Experimental.GraphView.SearchWindow.Open(
+                new SearchWindowContext(ctx.screenMousePosition), searchWindow
+            );
         }
 
         private void AddStartingNodes()

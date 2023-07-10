@@ -10,7 +10,7 @@ namespace Chocolate4.Edit.Entities.Utilities
     {
         public static Texture2D GetEntityImage(DialogueEntity entity)
         {
-            return entity.entityImage == null 
+            return entity == null || entity.entityImage == null 
                 ? ((Texture2D)EditorGUIUtility.Load(FilePathConstants.placeholderEntityPath))
                 : entity.entityImage.texture;
         }
