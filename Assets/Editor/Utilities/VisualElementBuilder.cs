@@ -1,6 +1,9 @@
 ﻿using Chocolate4.Dialogue.Edit.Tree;
+using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Entities.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -88,6 +91,17 @@ namespace Chocolate4.Dialogue.Edit.Utilities
         public static VisualElement WithBaseNodeStyle(this VisualElement element)
         {
             element.WithMaxWidth(UIStyles.MaxWidth);
+            return element;
+        }
+
+        public static VisualElement WithVerticalDividerStyle(this VisualElement element, Color backgroundColor)
+        {
+            element.WithWidth(.01f);
+            element.style.borderRightWidth = 1f;
+            element.WithBackgroundColor(backgroundColor);
+            element.style.borderBottomColor = element.style.borderRightColor = 
+                element.style.borderTopColor = element.style.borderLeftColor = backgroundColor;
+
             return element;
         }
 
@@ -210,9 +224,9 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             return element;
         }
         
-        public static VisualElement WithFlexShrink(this VisualElement element)
+        public static VisualElement WithFlexShrink(this VisualElement element, float shrink)
         {
-            element.style.flexShrink = 1f;
+            element.style.flexShrink = shrink;
             return element;
         }
         
@@ -309,6 +323,68 @@ namespace Chocolate4.Dialogue.Edit.Utilities
 
 
             return textField;
+        }
+
+        public static (Label, Image) MakeHeaderWithEntity(
+            VisualElement parentContainer, List<VisualElement> row1Children
+        )
+        {
+            VisualElement titleRowsContainer = new VisualElement()
+                            .WithVerticalGrow()
+                            .WithFlexGrow();
+
+            VisualElement row1 = new VisualElement()
+                .WithHorizontalGrow()
+                .WithFlexGrow();
+            VisualElement row2 = new VisualElement()
+                .WithHorizontalGrow()
+                .WithBackgroundColor(UIStyles.DefaultDarker0Color)
+                .WithFlexGrow();
+            row2.style.justifyContent = Justify.Center;
+            row2.style.borderBottomRightRadius = 3f;
+            row2.style.borderTopRightRadius = 3f;
+            row2.style.borderRightColor = UIStyles.DefaultDarker2Color;
+            row2.style.borderTopColor = UIStyles.DefaultDarker2Color;
+            row2.style.borderRightWidth = .03f;
+            row2.style.borderTopWidth = .01f;
+
+
+            parentContainer.Add(titleRowsContainer);
+            titleRowsContainer.Add(row1);
+            titleRowsContainer.Add(row2);
+
+            row1Children.ForEach(child => row1.Add(child));
+            row1.Q<Label>().WithFontSize(20f);
+
+            Label entityLabel = new Label();
+            entityLabel.style.alignSelf = Align.Center;
+            entityLabel.WithFontSize(20f);
+            row2.Add(entityLabel);
+
+            VisualElement divider = new VisualElement()
+                .WithVerticalDividerStyle(UIStyles.StoryDarkerColor);
+
+            parentContainer.Add(divider);
+
+            VisualElement imageBackground = new VisualElement()
+                .WithBackgroundColor(UIStyles.StoryLighterColor)
+                .WithHorizontalGrow()
+                .WithFlexShrink(0f);
+            imageBackground.style.alignItems = Align.Center;
+
+            Image entityPortrait = new Image();
+            entityPortrait
+                .WithWidth(GraphConstants.NodePortraitWidth - UIStyles.PaddingSmall)
+                .WithHeight(GraphConstants.NodePortraitHeight - UIStyles.PaddingSmall)
+                .WithFlexShrink(0f);
+
+            imageBackground.Add(entityPortrait);
+
+            parentContainer
+                .WithHeight(GraphConstants.NodePortraitHeight + UIStyles.PaddingSmall);
+            parentContainer.Add(imageBackground);
+
+            return (entityLabel, entityPortrait);
         }
     }
 }

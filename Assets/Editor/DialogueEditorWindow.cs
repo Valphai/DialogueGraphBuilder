@@ -206,12 +206,12 @@ namespace Chocolate4.Dialogue.Edit
             EntitiesView = new DialogueEntitiesView();
             EntitiesView.Initialize();
 
-            EntitiesView.WithFlexGrow().WithFlexShrink();
+            EntitiesView.WithFlexGrow().WithFlexShrink(1f);
 
             mainSplitView = new VisualElement();
             subTwoPanelView = new VisualElement();
-            subPanelSituationsContent = new VisualElement().WithFlexGrow().WithFlexShrink();
-            subPanelEntitiesContent = new VisualElement().WithFlexGrow().WithFlexShrink();
+            subPanelSituationsContent = new VisualElement().WithFlexGrow().WithFlexShrink(1f);
+            subPanelEntitiesContent = new VisualElement().WithFlexGrow().WithFlexShrink(1f);
 
             GraphView = new DialogueGraphView();
             GraphView.Initialize();
@@ -286,7 +286,7 @@ namespace Chocolate4.Dialogue.Edit
 
             ToolbarSearchField searchField = new ToolbarSearchField();
             searchField.WithFlexGrow()
-                .WithFlexShrink()
+                .WithFlexShrink(1f)
                 .WithMinWidth(GraphConstants.SaveButtonWidth);
 
             saveButton = new Button() {

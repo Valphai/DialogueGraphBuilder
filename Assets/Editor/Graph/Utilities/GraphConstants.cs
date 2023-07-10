@@ -2,6 +2,9 @@ namespace Chocolate4.Edit.Graph.Utilities
 {
     public static class GraphConstants
     {
+        public const float NodePortraitWidth = 100f;
+        public const float NodePortraitHeight = 100f;
+
         public const float StartingNodesOffset = 200f;
 
         public const float TreeViewWindowWidth = 250f;

@@ -86,14 +86,7 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
             collection.MyInt = value;
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
-            if (value == 1)
-            {
-                Assert.IsTrue(nextInfo.DialogueText.Equals("True"));
-            }
-            else
-            {
-                Assert.IsTrue(nextInfo.DialogueText.Equals("False"));
-            }
+            Assert.IsTrue(nextInfo.DialogueText.Equals(value == 1 ? "True" : "False"));
         }
         
         [Test]

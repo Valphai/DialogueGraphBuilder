@@ -1,4 +1,6 @@
+using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +12,14 @@ namespace Chocolate4.Edit.Entities.Utilities
         {
             return entity.entityImage == null 
                 ? AssetPreview.GetMiniTypeThumbnail(typeof(Sprite)) 
-                : AssetPreview.GetAssetPreview(entity.entityImage);
+                : entity.entityImage.texture;
+        }
+
+        public static string GetEntityName(DialogueEntity entity, string[] existingNames = null)
+        {
+            return string.IsNullOrEmpty(entity.entityName) ? ScriptableObjectUtilities.GetUniqueNameFromPath(
+                FilePathConstants.dialogueEntitiesPath, EntitiesConstants.DefaultEntityName, existingNames
+            ) : entity.entityName;
         }
     }
 }

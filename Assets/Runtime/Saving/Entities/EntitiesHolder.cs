@@ -13,7 +13,7 @@ namespace Chocolate4.Dialogue.Runtime.Saving
         public const string DataBase = "Entities Database";
 
         [SerializeField]
-        private List<DialogueEntity> dataBase;
+        private List<DialogueEntity> dataBase = new List<DialogueEntity>();
 
         public IReadOnlyCollection<DialogueEntity> DialogueEntities => dataBase;
 

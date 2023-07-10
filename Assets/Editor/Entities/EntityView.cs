@@ -2,17 +2,19 @@ using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Entities.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
+using System;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Edit.Entities
 {
     public class EntityView : VisualElement
     {
-        private SerializedObject currentEntity;
+        private DialogueEntity currentEntity;
         private string lastPropPath;
+        private Image previewImage;
+        private Action<DialogueEntity> onValueChanged;
 
         public EntityView()
         {
@@ -24,15 +26,17 @@ namespace Chocolate4.Edit.Entities
                 .WithMarginBot(EntitiesConstants.MarginSmall);
         }
 
-        internal void Display(DialogueEntity entity)
+        internal void Display(DialogueEntity entity, Action<DialogueEntity> onValueChanged)
         {
             Clear();
 
+            this.onValueChanged = onValueChanged;
+            currentEntity = entity;
+
+            SerializedObject serializedEntity = new SerializedObject(entity);
+            SerializedProperty property = serializedEntity.GetIterator();
+
             lastPropPath = string.Empty;
-            currentEntity = new SerializedObject(entity);
-
-            SerializedProperty property = currentEntity.GetIterator();
-
             while (property.Next(enterChildren: true))
             {
                 bool alreadyDrawn = property.propertyPath.Contains(lastPropPath);
@@ -42,7 +46,6 @@ namespace Chocolate4.Edit.Entities
                 }
 
                 lastPropPath = property.propertyPath;
-
                 if (lastPropPath.Contains("m_"))
                 {
                     continue;
@@ -53,26 +56,51 @@ namespace Chocolate4.Edit.Entities
 
                 if (lastPropPath.Contains(nameof(DialogueEntity.entityImage)))
                 {
-                    VisualElement previewContainer = new VisualElement()
-                        .WithHorizontalGrow();
-
-                    propertyField.WithFlexGrow();
-                    propertyField.style.alignSelf = Align.FlexEnd;
-
-                    VisualElement previewImage = new VisualElement()
-                        .WithWidth(EntitiesConstants.ImageWidth)
-                        .WithHeight(EntitiesConstants.ImageHeight)
-                        .WithBackgroundColor(UIStyles.DefaultDarkerColor);
-                    previewImage.style.backgroundImage = EntitiesUtilities.GetEntityImage(entity);
-
-                    previewContainer.Add(propertyField);
-                    previewContainer.Add(previewImage);
-                    Add(previewContainer);
+                    HandlePreviewImage(propertyField);
                     continue;
                 }
 
+                propertyField.RegisterValueChangeCallback(OnSourceValueChanged);
                 Add(propertyField);
             }
+        }
+
+        private void HandlePreviewImage(PropertyField propertyField)
+        {
+            VisualElement previewContainer = new VisualElement()
+                                    .WithHorizontalGrow();
+
+            propertyField.WithFlexGrow();
+            propertyField.style.alignSelf = Align.FlexEnd;
+
+            previewImage = new Image();
+            previewImage
+                .WithWidth(EntitiesConstants.ImageWidth)
+                .WithHeight(EntitiesConstants.ImageHeight)
+                .WithBackgroundColor(UIStyles.DefaultDarkerColor);
+
+            propertyField.RegisterValueChangeCallback(OnPreviewSourceValueChanged);
+
+            previewContainer.Add(propertyField);
+            previewContainer.Add(previewImage);
+            Add(previewContainer);
+        }
+
+        private void OnSourceValueChanged(SerializedPropertyChangeEvent evt)
+        {
+            onValueChanged?.Invoke(currentEntity);
+        }
+
+        private void OnPreviewSourceValueChanged(SerializedPropertyChangeEvent evt)
+        {
+            UnityEngine.Object newValue = evt.changedProperty.objectReferenceValue;
+            if (newValue == null)
+            {
+                return;
+            }
+
+            previewImage.image = EntitiesUtilities.GetEntityImage(currentEntity);
+            onValueChanged?.Invoke(currentEntity);
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
+using Chocolate4.Edit.Entities.Utilities;
 using Chocolate4.Edit.Graph.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -8,6 +11,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
     public class DialogueNode : BaseNode, ITextHolder
     {
         private TextField textField;
+        private DialogueEntity speaker;
+        private Image entityPortrait;
+        private Label entityLabel;
 
         public override string Name { get; set; } = "Dialogue Node";
         public string Text { get; set; }
@@ -15,16 +21,51 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return new TextNodeSaveData() { text = Text, nodeSaveData = saveData };
+            return new DialogueNodeSaveData() { text = Text, speaker = speaker, nodeSaveData = saveData };
         }
 
         public override void Load(IDataHolder saveData)
         {
             base.Load(saveData);
-            TextNodeSaveData textSaveData = (TextNodeSaveData)saveData;
-            Text = textSaveData.text;
+            DialogueNodeSaveData dialogueNodeSaveData = (DialogueNodeSaveData)saveData;
 
+            SelectEntity(dialogueNodeSaveData.speaker);
+
+            Text = dialogueNodeSaveData.text;
             textField.value = Text;
+        }
+
+        protected override void DrawTitle()
+        {
+            base.DrawTitle();
+
+            List<VisualElement> titleChildren = titleContainer.Children().ToList();
+            titleChildren.ForEach(child => titleContainer.Remove(child));
+            (entityLabel, entityPortrait) = VisualElementBuilder.MakeHeaderWithEntity(titleContainer, titleChildren);
+
+            IMGUISelectorMaker selectorMaker = new IMGUISelectorMaker();
+
+            IMGUIContainer imguiContainer = selectorMaker.MakeIMGUISelector<DialogueEntity>((selectedEntity) => {
+                SelectEntity(selectedEntity);
+            });
+
+            entityPortrait.Add(imguiContainer);
+        }
+
+        private void SelectEntity(DialogueEntity selectedEntity)
+        {
+            if (selectedEntity == null)
+            {
+                speaker = null;
+                //entityPortrait.image = //default;
+                entityLabel.text = string.Empty;
+
+                return;
+            }
+
+            speaker = selectedEntity;
+            entityPortrait.image = EntitiesUtilities.GetEntityImage(speaker);
+            entityLabel.text = speaker.entityName;
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)

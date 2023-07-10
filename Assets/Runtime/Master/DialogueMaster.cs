@@ -105,7 +105,8 @@ namespace Chocolate4.Dialogue.Runtime
             }
             else if (currentNode.IsNodeOfType(NodeConstants.DialogueNode))
             {
-                return DialogueNodeInfo.DialogueInfo((currentNode as TextNodeSaveData).text);
+                DialogueNodeSaveData dialogueNodeSaveData = (currentNode as DialogueNodeSaveData);
+                return DialogueNodeInfo.DialogueInfo(dialogueNodeSaveData.text, dialogueNodeSaveData.speaker);
             }
             else if (currentNode.IsNodeOfType(NodeConstants.ChoiceNode))
             {

@@ -4,8 +4,10 @@ using Chocolate4.Edit.Entities.Sidebar;
 using Chocolate4.Edit.Entities.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Chocolate4.Dialogue.Runtime.Utilities;
 
 namespace Chocolate4.Edit.Entities
 {
@@ -23,8 +25,15 @@ namespace Chocolate4.Edit.Entities
 
         public void Rebuild(EntitiesData entitiesData)
         {
-            cachedDialogueEntities = entitiesData.cachedEntities;
+            cachedDialogueEntities = entitiesData.cachedEntities.ToList();
+            
             CreateListView();
+
+            if (!cachedDialogueEntities.IsNullOrEmpty())
+            {
+                ListView.SetSelection(0);
+            }
+
             ListView.Rebuild();
         }
 
@@ -36,8 +45,13 @@ namespace Chocolate4.Edit.Entities
         internal DialogueEntity AddEntity()
         {
             DialogueEntity entity = ScriptableObject.CreateInstance<DialogueEntity>();
-            cachedDialogueEntities.Add(entity);
 
+            string[] existingNames = cachedDialogueEntities.Select(entity => entity.entityName).ToArray();
+            string name = EntitiesUtilities.GetEntityName(entity, existingNames);
+
+            entity.entityName = name;
+
+            cachedDialogueEntities.Add(entity);
             ListView.Rebuild();
             return entity;
         }
@@ -45,7 +59,7 @@ namespace Chocolate4.Edit.Entities
         private void ResolveDependencies()
         {
             cachedDialogueEntities = new List<DialogueEntity>();
-            
+
             entityView = new EntityView();
             contentContainer.Add(entityView);
             entityView.StretchToParentSize();
@@ -54,7 +68,8 @@ namespace Chocolate4.Edit.Entities
         private void CreateListView()
         {
             ListView = new ListView() { reorderable = true, fixedItemHeight = EntitiesConstants.ListViewItemHeight };
-
+            ListView.selectedIndex = 0;
+            
             ListView.itemsSource = cachedDialogueEntities;
             ListView.makeItem = MakeListViewItem;
             ListView.bindItem = (item, index) => BindItem(item, index);
@@ -69,8 +84,9 @@ namespace Chocolate4.Edit.Entities
         private void ListView_selectionChanged(IEnumerable<object> selectedItems)
         {
             DialogueEntity entity = (DialogueEntity)selectedItems.First();
+            
             ListView.Rebuild();
-            entityView.Display(entity);
+            entityView.Display(entity, (updatedEntity) => ListView.RefreshItem(ListView.selectedIndex));
         }
 
         private void BindItem(VisualElement item, int index)
@@ -78,9 +94,7 @@ namespace Chocolate4.Edit.Entities
             ListViewItem listViewItem = item as ListViewItem;
             DialogueEntity entity = cachedDialogueEntities[index];
 
-            Texture2D icon = EntitiesUtilities.GetEntityImage(entity);
-            listViewItem.Initialize(entity.EntityName, icon);
+            listViewItem.Initialize(entity);
         }
-
     }
 }

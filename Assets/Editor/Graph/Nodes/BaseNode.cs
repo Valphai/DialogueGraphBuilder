@@ -77,17 +77,20 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected virtual void DrawTitle()
         {
-            TextField textField = new TextField() { value = Name };
+            Label titleLabel = titleContainer.Q<Label>();
+            titleLabel.text = Name;
+            //TextField textField = new TextField() { value = Name };
 
-            textField.AddToClassList(UIStyles.TextFieldHiddenUSS);
+            //textField.AddToClassList(UIStyles.TextFieldHiddenUSS);
 
-            textField.Q<TextElement>()
+            //textField.Q<TextElement>()
+            titleLabel
                 .WithFontSize(UIStyles.FontSize)
                 .WithMaxWidth(UIStyles.MaxWidth)
                 .WithHorizontalGrow()
                 .WithExpandableHeight();
 
-            titleContainer.Insert(0, textField);
+            //titleContainer.Insert(0, textField);
             titleContainer.WithStoryStyle();
         }
 

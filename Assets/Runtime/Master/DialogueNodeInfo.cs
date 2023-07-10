@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Chocolate4.Dialogue.Runtime.Saving;
+using System.Collections.Generic;
 
 namespace Chocolate4.Dialogue.Runtime
 {
@@ -9,11 +10,21 @@ namespace Chocolate4.Dialogue.Runtime
         public bool IsDialogueNode { get; private set; }
         public string DialogueText { get; private set; }
         public List<string> Choices { get; private set; }
+        public DialogueEntity Speaker { get; private set; }
 
-        public static DialogueNodeInfo SituationEndedInfo() => new DialogueNodeInfo() { SituationEnded = true };
+        public static DialogueNodeInfo SituationEndedInfo() => new DialogueNodeInfo() 
+        { 
+            SituationEnded = true 
+        };
 
-        public static DialogueNodeInfo ChoiceNodeInfo(List<string> choices) => new DialogueNodeInfo() { IsChoiceNode = true, Choices  = choices };
+        public static DialogueNodeInfo ChoiceNodeInfo(List<string> choices) => new DialogueNodeInfo() 
+        { 
+            IsChoiceNode = true, Choices  = choices 
+        };
         
-        public static DialogueNodeInfo DialogueInfo(string text) => new DialogueNodeInfo() { IsDialogueNode = true, DialogueText = text };
+        public static DialogueNodeInfo DialogueInfo(string text, DialogueEntity speaker) => new DialogueNodeInfo() 
+        { 
+            IsDialogueNode = true, DialogueText = text, Speaker = speaker 
+        };
     }
 }

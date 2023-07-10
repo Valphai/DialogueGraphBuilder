@@ -90,7 +90,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
             {
                 ScriptableObjectUtilities.CreateAssetAtPath(entity,
                     FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath),
-                    EntitiesConstants.DefaultEntityName
+                    EntitiesUtilities.GetEntityName(entity)
                 );
             }
 
