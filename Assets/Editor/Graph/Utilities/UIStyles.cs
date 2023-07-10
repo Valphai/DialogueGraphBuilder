@@ -23,6 +23,7 @@ namespace Chocolate4.Edit.Graph.Utilities
         public static Color DefaultLightColor { get; private set; } = new Color(180f / 255f, 180f / 255f, 180f / 255f);
 
         public const float FontSize = 14f;
+        public const float FontSizeBig = 20f;
 
         public const float LogicMarginTop = 10f;
         public const float PaddingSmall = 4f;
@@ -37,5 +38,9 @@ namespace Chocolate4.Edit.Graph.Utilities
         public const float ConstantPortInputMarginLeft = -110f;
         public const float ConstantPortWidth = 8f;
         public const float ConstantPortOffset = 4f;
+
+        public const float EntityHeaderNameRadius = 3f;
+        public const float EntityHeaderNameRadiusSmall = .03f;
+        public const float EntityHeaderNameRadiusTiny = .01f;
     }
 }

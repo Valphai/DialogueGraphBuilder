@@ -330,8 +330,8 @@ namespace Chocolate4.Dialogue.Edit.Utilities
         )
         {
             VisualElement titleRowsContainer = new VisualElement()
-                            .WithVerticalGrow()
-                            .WithFlexGrow();
+                .WithVerticalGrow()
+                .WithFlexGrow();
 
             VisualElement row1 = new VisualElement()
                 .WithHorizontalGrow()
@@ -341,24 +341,21 @@ namespace Chocolate4.Dialogue.Edit.Utilities
                 .WithBackgroundColor(UIStyles.DefaultDarker0Color)
                 .WithFlexGrow();
             row2.style.justifyContent = Justify.Center;
-            row2.style.borderBottomRightRadius = 3f;
-            row2.style.borderTopRightRadius = 3f;
-            row2.style.borderRightColor = UIStyles.DefaultDarker2Color;
-            row2.style.borderTopColor = UIStyles.DefaultDarker2Color;
-            row2.style.borderRightWidth = .03f;
-            row2.style.borderTopWidth = .01f;
-
+            row2.style.borderBottomRightRadius = row2.style.borderTopRightRadius = UIStyles.EntityHeaderNameRadius;
+            row2.style.borderRightColor = row2.style.borderTopColor = UIStyles.DefaultDarker2Color;
+            row2.style.borderRightWidth = UIStyles.EntityHeaderNameRadiusSmall;
+            row2.style.borderTopWidth = UIStyles.EntityHeaderNameRadiusTiny;
 
             parentContainer.Add(titleRowsContainer);
             titleRowsContainer.Add(row1);
             titleRowsContainer.Add(row2);
 
             row1Children.ForEach(child => row1.Add(child));
-            row1.Q<Label>().WithFontSize(20f);
+            row1.Q<Label>().WithFontSize(UIStyles.FontSizeBig);
 
             Label entityLabel = new Label();
             entityLabel.style.alignSelf = Align.Center;
-            entityLabel.WithFontSize(20f);
+            entityLabel.WithFontSize(UIStyles.FontSizeBig);
             row2.Add(entityLabel);
 
             VisualElement divider = new VisualElement()
