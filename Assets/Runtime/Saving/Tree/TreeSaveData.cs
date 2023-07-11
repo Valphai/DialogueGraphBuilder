@@ -5,7 +5,7 @@ namespace Chocolate4.Dialogue.Runtime.Saving
     [System.Serializable]
     public class TreeSaveData
     {
-        public int selectedIndex;
+        public int selectedIndex = 0;
         public List<TreeItemSaveData> treeItemData;
 
         public TreeSaveData(List<TreeItemSaveData> treeItemData)

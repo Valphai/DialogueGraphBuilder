@@ -300,6 +300,8 @@ namespace Chocolate4.Dialogue.Edit
             Button sortButton = buttonsContainer
                 .WithButton(string.Empty);
 
+            sortButton.Add(new Image() { image = EditorGUIUtility.IconContent("TreeEditor.Refresh").image });
+
             sortButton
                 .WithOnClick(onClickSort)
                 .WithMinWidth(GraphConstants.InsertButtonWidth);
@@ -313,13 +315,13 @@ namespace Chocolate4.Dialogue.Edit
         {
             Action onClickAdd = () => {
                 DialogueTreeItem item =
-                    DialogueTreeView.AddTreeItem(TreeGroupsExtensions.DefaultSituationName);
+                    DialogueTreeView.AddTreeItem(TreeViewConstants.DefaultSituationName);
 
                 GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null));
             };
 
             VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
-            VisualElementBuilder.AddHeaderButtons(onClickAdd, TreeGroupsExtensions.DefaultSituationName, buttonsContainer);
+            VisualElementBuilder.AddHeaderButtons(onClickAdd, TreeViewConstants.DefaultSituationName, buttonsContainer);
             subPanelSituationsContent.Add(buttonsContainer);
         }
 

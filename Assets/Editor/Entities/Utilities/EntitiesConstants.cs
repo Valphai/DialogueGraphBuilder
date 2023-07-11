@@ -11,7 +11,5 @@ namespace Chocolate4.Edit.Entities.Utilities
 		
 		public const float IconHeight = 25f;
 		public const float IconWidth = 25f;
-
-		public const float ListViewItemHeight = 30f;
 	}
 }

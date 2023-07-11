@@ -3,11 +3,18 @@ using System;
 using UnityEngine.UIElements;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using UnityEditor;
+using UnityEngine;
 
 namespace Chocolate4.Dialogue.Edit.Tree.Utilities
 {
     public static class TreeUtilities
     {
+        public static Texture2D GetSituationIcon()
+        {
+            return (Texture2D)EditorGUIUtility.Load(FilePathConstants.situationIconPath);
+        }
+
         public static void ForceRefresh(TreeView treeView, Action<IEnumerable<int>> onSelectionChanged)
         {
             treeView.Rebuild();
@@ -23,7 +30,9 @@ namespace Chocolate4.Dialogue.Edit.Tree.Utilities
             });
         }
 
-        public static List<TreeViewItemData<DialogueTreeItem>> GetChildren(TreeSaveData treeSaveData, TreeItemSaveData treeItemSaveData, int nextId)
+        public static List<TreeViewItemData<DialogueTreeItem>> GetChildren(
+            TreeSaveData treeSaveData, TreeItemSaveData treeItemSaveData, int nextId
+        )
         {
             if (treeItemSaveData.childrenGuids.IsNullOrEmpty())
             {

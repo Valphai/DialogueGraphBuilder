@@ -1,6 +1,7 @@
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Edit.Entities.Utilities;
+using Chocolate4.Edit.Graph.Utilities;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Edit.Entities.Sidebar
@@ -15,7 +16,7 @@ namespace Chocolate4.Edit.Entities.Sidebar
             Clear();
 
             this
-                .WithHeight(EntitiesConstants.ListViewItemHeight)
+                .WithHeight(UIStyles.ListViewItemHeight)
                 .WithHorizontalGrow()
                 .WithMarginLeft(EntitiesConstants.MarginSmall);
             style.alignItems = Align.Center;

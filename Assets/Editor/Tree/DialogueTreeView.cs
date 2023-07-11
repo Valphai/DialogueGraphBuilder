@@ -8,11 +8,14 @@ using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Edit.Tree.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Edit.Utilities;
+using Chocolate4.Dialogue.Edit.Search;
+using Chocolate4.Edit.Graph.Utilities;
+using UnityEngine;
 
 namespace Chocolate4.Dialogue.Edit.Tree
 {
     [Serializable]
-    public class DialogueTreeView : IRebuildable<TreeSaveData>
+    public class DialogueTreeView : IRebuildable<TreeSaveData>, ISearchable
     {
         public TreeView TreeView { get; private set; }
 
@@ -34,14 +37,6 @@ namespace Chocolate4.Dialogue.Edit.Tree
             }
         }
 
-        public IEnumerable<DialogueTreeItem> Situations
-        {
-            get
-            {
-                return DialogueTreeItems.Where(item => item.prefix == TreeGroupsExtensions.SituationString);
-            }
-        }
-
         public void Initialize(TreeSaveData treeSaveData)
         {
             Rebuild(treeSaveData);
@@ -59,19 +54,14 @@ namespace Chocolate4.Dialogue.Edit.Tree
             int rootElementCount = rootDatas.Length;
             for (int i = 0; i < rootElementCount; i++)
             {
-                TreeItemSaveData rooitItemSaveData = rootDatas[i];
+                TreeItemSaveData rootItemSaveData = rootDatas[i];
                 items.Add(
-                    new TreeViewItemData<DialogueTreeItem>(i, rooitItemSaveData.rootItem,
-                        TreeUtilities.GetChildren(treeSaveData, rooitItemSaveData, rootElementCount + 1)
+                    new TreeViewItemData<DialogueTreeItem>(i, rootItemSaveData.rootItem,
+                        TreeUtilities.GetChildren(treeSaveData, rootItemSaveData, rootElementCount + i)
                     )
                 );
             }
             TreeView.SetRootItems(items);
-
-            if (!items.IsNullOrEmpty())
-            {
-                TreeView.SetSelection(0);
-            }
 
             CreateTreeView();
 
@@ -85,6 +75,11 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
         public void RemoveTreeItem(DialogueTreeItem item, int index)
         {
+            if (TreeView.GetTreeCount() <= 1)
+            {
+                return;
+            }
+
             TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
 
             int id = TreeView.GetIdForIndex(index);
@@ -96,23 +91,45 @@ namespace Chocolate4.Dialogue.Edit.Tree
             OnTreeItemRemoved?.Invoke(item.id);
         }
 
-        public DialogueTreeItem AddTreeItem(string defaultName, TreeGroups treeGroup, TreeItemType elementType, int index = -1, string guidOverride = "")
+        public DialogueTreeItem AddTreeItem(string defaultName, int index = -1, string idOverride = "")
         {
             int groupID = TreeView.GetIdForIndex(index);
 
             string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
             string name = ObjectNames.GetUniqueName(existingNames, defaultName);
 
-            DialogueTreeItem treeItem = new DialogueTreeItem(name, treeGroup.GetString(elementType));
+            DialogueTreeItem treeItem = new DialogueTreeItem(name);
             AddItemToGroup(treeItem, groupID);
 
-            if (!guidOverride.Equals(string.Empty))
+            if (!idOverride.Equals(string.Empty))
             {
-                treeItem.id = guidOverride;
+                treeItem.id = idOverride;
             }
 
             OnTreeItemAdded?.Invoke(treeItem.id);
             return treeItem;
+        }
+
+        public void Search(string value)
+        {
+        }
+
+        public void GraphView_OnSituationCached(string situationGuid)
+        {
+            int count = TreeView.GetTreeCount();
+            for (int i = 0; i < count; i++)
+            {
+                DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(i);
+
+                if (item.id.Equals(situationGuid))
+                {
+                    return;
+                }
+            }
+
+            AddTreeItem(
+                TreeViewConstants.DefaultSituationName, idOverride:situationGuid
+            );
         }
 
         private void AddItemToGroup(DialogueTreeItem treeItem, int groupID)
@@ -130,14 +147,15 @@ namespace Chocolate4.Dialogue.Edit.Tree
         {
             DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
 
-            VisualElement visualElement = element.ElementAt(0);
-            VisualElement displayNameLabel = element.ElementAt(1);
 
-            (visualElement as Label).text = item.prefix;
-            Label renamableLabel = displayNameLabel as Label;
+            Label renamableLabel = element.ElementAt(element.childCount - 1) as Label;
             renamableLabel.text = item.displayName;
 
             string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
+
+            element.AddContextualMenu("Add Situation", _ => 
+                AddTreeItem(TreeViewConstants.DefaultSituationName, index)
+            );
 
             element.AddContextualMenu("Rename", _ =>
                 VisualElementBuilder.Rename(renamableLabel, existingNames, finishedText => {
@@ -147,54 +165,28 @@ namespace Chocolate4.Dialogue.Edit.Tree
             );
 
             element.AddContextualMenu("Remove", _ => RemoveTreeItem(item, index));
-
-            element.AddContextualMenu("Add Situation", _ => 
-                AddTreeItem(
-                    TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Item, index
-                )
-            );
-                    
-            element.AddContextualMenu("Add Variable", _ => 
-                AddTreeItem(
-                    TreeGroupsExtensions.DefaultVariableName, TreeGroups.Variable, TreeItemType.Item, index
-                )
-            );
-
-            element.AddContextualMenu("Add Variable Group", _ => 
-                AddTreeItem(
-                    TreeGroupsExtensions.DefaultVariableGroupName, TreeGroups.Variable, TreeItemType.Group, index
-                )
-            );
-
-            element.AddContextualMenu("Add Event", _ => 
-                AddTreeItem(
-                    TreeGroupsExtensions.DefaultEventName, TreeGroups.Event, TreeItemType.Item, index
-                )
-            );
-
-            element.AddContextualMenu("Add Event Group", _ => 
-                AddTreeItem(
-                    TreeGroupsExtensions.DefaultEventGroupName, TreeGroups.Event, TreeItemType.Group, index
-                )
-            );
         }
 
         private VisualElement MakeTreeViewItem()
         {
             VisualElement box = new VisualElement().WithHorizontalGrow();
 
-            Label label = new Label();
-            Label textLabel = new Label();
+            Image image = new Image() { image = TreeUtilities.GetSituationIcon() };
+            image.WithMaxWidth(UIStyles.ListViewItemHeight);
+            image.style.justifyContent = Justify.FlexStart;
 
+            Label label = new Label();
+            label.style.unityTextAlign = TextAnchor.MiddleLeft;
+
+            box.Add(image);
             box.Add(label);
-            box.Add(textLabel);
             return box;
         }
 
         private void CreateTreeView()
         {
             TreeView.viewDataKey = "dialogue-tree";
-            TreeView.fixedItemHeight = 20;
+            TreeView.fixedItemHeight = UIStyles.ListViewItemHeight;
 
             TreeView.makeItem = MakeTreeViewItem;
             TreeView.bindItem = BindTreeViewItem;
@@ -215,29 +207,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
                 return;
             }
 
-            if (sampleItem.prefix == TreeGroups.Situation.GetString(TreeItemType.Group))
-            {
-                OnSituationSelected?.Invoke(sampleItem.id);
-            }
-        }
-
-        public void GraphView_OnSituationCached(string situationGuid)
-        {
-            int count = TreeView.GetTreeCount();
-            for (int i = 0; i < count; i++)
-            {
-                DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(i);
-
-                if (item.id.Equals(situationGuid))
-                {
-                    return;
-                }
-            }
-
-            AddTreeItem(
-                TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, 
-                TreeItemType.Item, guidOverride:situationGuid
-            );
+            OnSituationSelected?.Invoke(sampleItem.id);
         }
     }
 }

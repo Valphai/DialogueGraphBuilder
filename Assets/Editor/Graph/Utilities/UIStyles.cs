@@ -42,5 +42,7 @@ namespace Chocolate4.Edit.Graph.Utilities
         public const float EntityHeaderNameRadius = 3f;
         public const float EntityHeaderNameRadiusSmall = .03f;
         public const float EntityHeaderNameRadiusTiny = .01f;
+
+        public const float ListViewItemHeight = 30f;
     }
 }

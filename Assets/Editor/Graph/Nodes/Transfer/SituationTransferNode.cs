@@ -26,7 +26,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             SituationTransferNodeSaveData situationSaveData = (SituationTransferNodeSaveData)saveData;
             NextSituationId = situationSaveData.otherSituationId;
 
-            IEnumerable<DialogueTreeItem> situations = DialogueEditorWindow.Window.DialogueTreeView.Situations;
+            IEnumerable<DialogueTreeItem> situations = DialogueEditorWindow.Window.DialogueTreeView.DialogueTreeItems;
             popupField.value = situations.First(treeItem => treeItem.id.Equals(NextSituationId)).displayName;
         }
 
@@ -48,7 +48,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         private DialogueTreeView CreatePopup(DialogueTreeView dialogueTreeView)
         {
-            IEnumerable<DialogueTreeItem> situations = dialogueTreeView.Situations;
+            IEnumerable<DialogueTreeItem> situations = dialogueTreeView.DialogueTreeItems;
             List<string> situationNames = situations.Select(treeItem => treeItem.displayName).ToList();
 
             popupField = new PopupField<string>(situationNames, 0, selectedSituationName => {
@@ -63,7 +63,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             DialogueTreeView dialogueTreeView = DialogueEditorWindow.Window.DialogueTreeView;
 
-            IEnumerable<DialogueTreeItem> situations = dialogueTreeView.Situations;
+            IEnumerable<DialogueTreeItem> situations = dialogueTreeView.DialogueTreeItems;
             List<string> situationNames = situations.Select(treeItem => treeItem.displayName).ToList();
 
             popupField.choices = situationNames;
