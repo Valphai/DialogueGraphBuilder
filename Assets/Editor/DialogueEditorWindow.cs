@@ -41,7 +41,6 @@ namespace Chocolate4.Dialogue.Edit
 
         [SerializeField]
         private int selectedColumnIndex = 0;
-
         private int SelectedColumnIndex
         {
             get => selectedColumnIndex;
@@ -62,38 +61,18 @@ namespace Chocolate4.Dialogue.Edit
         {
             var path = AssetDatabase.GetAssetPath(instanceId);
             if (!path.EndsWith(FilePathConstants.Extension, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return false;
+            }
 
-            //string mapToSelect = null;
-            //string actionToSelect = null;
-
-            // Grab InputActionAsset.
-            // NOTE: We defer checking out an asset until we save it. This allows a user to open an .inputactions asset and look at it
-            //       without forcing a checkout.
             var obj = EditorUtility.InstanceIDToObject(instanceId);
             DialogueEditorAsset asset = obj as DialogueEditorAsset;
             if (asset == null)
             {
-                // Check if the user clicked on an action inside the asset.
-                //var actionReference = obj as InputActionReference;
-                //if (actionReference != null)
-                //{
-                //    asset = actionReference.asset;
-                //    mapToSelect = actionReference.action.actionMap.name;
-                //    actionToSelect = actionReference.action.name;
-                //}
-                //else
-                    return false;
+                return false;
             }
 
             Window = OpenEditor(asset, instanceId);
-
-            // If user clicked on an action inside the asset, focus on that action (if we can find it).
-            //if (actionToSelect != null && window.m_ActionMapsTree.TrySelectItem(mapToSelect))
-            //{
-            //    window.OnActionMapTreeSelectionChanged();
-            //    window.m_ActionsTree.SelectItem(actionToSelect);
-            //}
 
             return true;
         }
@@ -126,19 +105,7 @@ namespace Chocolate4.Dialogue.Edit
             EntitiesHolder entitiesDatabase = AssetDatabase.LoadAssetAtPath<EntitiesHolder>(entityDatabasePath);
 
             dialogueAssetManager = new DialogueAssetManager(asset, instanceId, entitiesDatabase);
-
-            //m_ActionAssetManager = new InputActionAssetManager(asset) { onDirtyChanged = OnDirtyChanged };
-            //m_ActionAssetManager.Initialize();
-
             PostInitialize();
-
-            //InitializeTrees();
-            //LoadControlSchemes();
-
-            // Select first action map in asset.
-            //m_ActionMapsTree.SelectFirstToplevelItem();
-
-            //UpdateWindowTitle();
         }
 
         private void OnEnable()
@@ -328,7 +295,17 @@ namespace Chocolate4.Dialogue.Edit
             Action onClickSort = () => EntitiesView.Search(string.Empty);
 
             VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
-            VisualElementBuilder.AddHeaderButtons(onClickAdd, "New Entity", onClickSort, buttonsContainer);
+            VisualElementBuilder.AddHeaderButtons(onClickAdd, "New Entity", buttonsContainer);
+
+            Button sortButton = buttonsContainer
+                .WithButton(string.Empty);
+
+            sortButton
+                .WithOnClick(onClickSort)
+                .WithMinWidth(GraphConstants.InsertButtonWidth);
+
+            buttonsContainer.Add(sortButton);
+
             subPanelEntitiesContent.Add(buttonsContainer);
         }
 
@@ -341,11 +318,9 @@ namespace Chocolate4.Dialogue.Edit
                 GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null));
             };
 
-            //Action onClickSort = () => {
-
-            //VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
-            //VisualElementBuilder.AddHeaderButtons(onClickAdd, TreeGroupsExtensions.DefaultSituationName, onClickSort, buttonsContainer);
-            //subPanelSituationsContent.Add(buttonsContainer);
+            VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
+            VisualElementBuilder.AddHeaderButtons(onClickAdd, TreeGroupsExtensions.DefaultSituationName, buttonsContainer);
+            subPanelSituationsContent.Add(buttonsContainer);
         }
 
         private void SelectEntityView()

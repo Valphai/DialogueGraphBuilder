@@ -8,7 +8,7 @@ namespace Chocolate4.Dialogue.Edit.Utilities
 {
     public static class ScriptableObjectUtilities
     {
-        private const string Asset = ".asset";
+        public const string Asset = ".asset";
 
         public static T CreateAssetAtPath<T>(string path, string fileName) where T : ScriptableObject
         {
@@ -18,12 +18,12 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             return (T)so;
         }
 
-        public static void CreateAssetAtPath(ScriptableObject so, string path, string fileName)
+        public static void CreateAssetAtPath(ScriptableObject asset, string path, string fileName)
         {
             string assetEndPath;
             string uniqueName = GetUniqueNameFromPath(path, fileName);
 
-            string instancePath = AssetDatabase.GetAssetPath(so.GetInstanceID());
+            string instancePath = AssetDatabase.GetAssetPath(asset.GetInstanceID());
             if (File.Exists(instancePath))
             {
                 string oldName = Path.GetFileName(instancePath);
@@ -40,7 +40,7 @@ namespace Chocolate4.Dialogue.Edit.Utilities
 
             assetEndPath = path + uniqueName + Asset;
 
-            AssetDatabase.CreateAsset(so, assetEndPath);
+            AssetDatabase.CreateAsset(asset, assetEndPath);
             AssetDatabase.Refresh();
         }
 
@@ -59,6 +59,17 @@ namespace Chocolate4.Dialogue.Edit.Utilities
 
             string unqueName = ObjectNames.GetUniqueName(fileNames, fileName);
             return unqueName;
+        }
+
+        internal static void RemoveAssetAtPath(int instanceId)
+        {
+            string instancePath = AssetDatabase.GetAssetPath(instanceId);
+            AssetDatabase.DeleteAsset(instancePath);
+        }
+
+        internal static void RemoveAssetAtPath(ScriptableObject asset)
+        {
+            RemoveAssetAtPath(asset.GetInstanceID());
         }
     }
 }

@@ -1,6 +1,8 @@
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +22,19 @@ namespace Chocolate4.Edit.Entities.Utilities
             return string.IsNullOrEmpty(entity.entityName) ? ScriptableObjectUtilities.GetUniqueNameFromPath(
                 FilePathConstants.dialogueEntitiesPath, EntitiesConstants.DefaultEntityName, existingNames
             ) : entity.entityName;
+        }
+
+        internal static DialogueEntity[] GetAllEntities()
+        {
+            string path =
+                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath);
+
+            string[] pathsToAllEntities =
+                Directory.GetFiles(path).Where(asset => asset.EndsWith(ScriptableObjectUtilities.Asset)).ToArray();
+            DialogueEntity[] existingEntities =
+                pathsToAllEntities.Select(p => AssetDatabase.LoadAssetAtPath<DialogueEntity>(p)).Where(entity => entity != null).ToArray();
+
+            return existingEntities;
         }
     }
 }

@@ -84,15 +84,34 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
         private void SaveEntities(EntitiesData entitiesData)
         {
+            string path =
+                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath);
+
+            DialogueEntity[] existingEntities = EntitiesUtilities.GetAllEntities();
+            int[] existingIds = existingEntities.Select(entity => entity.GetInstanceID()).ToArray();
+
+            List<int> cachedIds = new List<int>();
             foreach (DialogueEntity entity in entitiesData.cachedEntities)
             {
+                int instanceId = entity.GetInstanceID();
+                cachedIds.Add(instanceId);
+
                 ScriptableObjectUtilities.CreateAssetAtPath(entity,
-                    FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath),
-                    EntitiesUtilities.GetEntityName(entity)
+                    path, EntitiesUtilities.GetEntityName(entity)
                 );
             }
 
+            for (int i = 0; i < existingIds.Length; i++)
+            {
+                int instanceId = existingIds[i];
+                if (!cachedIds.Contains(instanceId))
+                {
+                    ScriptableObjectUtilities.RemoveAssetAtPath(instanceId);
+                }
+            }
+
             entitiesDatabase.Reload();
+            AssetDatabase.Refresh();
         }
 
         private void TrySaveAssetToFile()

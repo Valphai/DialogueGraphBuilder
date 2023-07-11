@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Search;
+using Chocolate4.Dialogue.Edit.Utilities;
 
 namespace Chocolate4.Edit.Entities
 {
@@ -131,7 +132,17 @@ namespace Chocolate4.Edit.Entities
             ListViewItem listViewItem = item as ListViewItem;
             DialogueEntity entity = displayedEntities[index];
 
+            listViewItem.AddContextualMenu("Remove", _ => RemoveEntity(item, entity));
+
             listViewItem.Initialize(entity);
+        }
+
+        private void RemoveEntity(VisualElement item, DialogueEntity entity)
+        {
+            cachedDialogueEntities.Remove(entity);
+            item.RemoveFromHierarchy();
+
+            RebuildListView();
         }
 
         private void Sort(List<DialogueEntity> entities)

@@ -381,8 +381,7 @@ namespace Chocolate4.Dialogue.Edit.Utilities
         }
 
         public static void AddHeaderButtons(
-            Action onClickAdd, string addText, 
-            Action onClickSort, VisualElement buttonsContainer
+            Action onClickAdd, string addText, VisualElement buttonsContainer
         )
         {
             Button addButton = buttonsContainer
@@ -392,15 +391,7 @@ namespace Chocolate4.Dialogue.Edit.Utilities
                 .WithFlexGrow()
                 .WithMinWidth(GraphConstants.InsertButtonWidth);
 
-            Button sortButton = buttonsContainer
-                .WithButton(string.Empty);
-
-            sortButton
-                .WithOnClick(onClickSort)
-                .WithMinWidth(GraphConstants.InsertButtonWidth);
-
             buttonsContainer.Add(addButton);
-            buttonsContainer.Add(sortButton);
         }
     }
 }
