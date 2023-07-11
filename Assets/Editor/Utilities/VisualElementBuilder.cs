@@ -1,10 +1,6 @@
-﻿using Chocolate4.Dialogue.Edit.Tree;
-using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities.Utilities;
-using Chocolate4.Edit.Graph.Utilities;
+﻿using Chocolate4.Edit.Graph.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -382,6 +378,29 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             parentContainer.Add(imageBackground);
 
             return (entityLabel, entityPortrait);
+        }
+
+        public static void AddHeaderButtons(
+            Action onClickAdd, string addText, 
+            Action onClickSort, VisualElement buttonsContainer
+        )
+        {
+            Button addButton = buttonsContainer
+                .WithButton(addText);
+            addButton
+                .WithOnClick(onClickAdd)
+                .WithFlexGrow()
+                .WithMinWidth(GraphConstants.InsertButtonWidth);
+
+            Button sortButton = buttonsContainer
+                .WithButton(string.Empty);
+
+            sortButton
+                .WithOnClick(onClickSort)
+                .WithMinWidth(GraphConstants.InsertButtonWidth);
+
+            buttonsContainer.Add(addButton);
+            buttonsContainer.Add(sortButton);
         }
     }
 }

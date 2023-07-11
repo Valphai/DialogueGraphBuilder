@@ -285,9 +285,12 @@ namespace Chocolate4.Dialogue.Edit
             Toolbar toolbar = new Toolbar();
 
             ToolbarSearchField searchField = new ToolbarSearchField();
-            searchField.WithFlexGrow()
+            searchField
+                .WithFlexGrow()
                 .WithFlexShrink(1f)
                 .WithMinWidth(GraphConstants.SaveButtonWidth);
+
+            searchField.RegisterValueChangedCallback(OnSearch);
 
             saveButton = new Button() {
                 text = "Save"
@@ -300,6 +303,20 @@ namespace Chocolate4.Dialogue.Edit
             subTwoPanelView.Add(toolbar);
         }
 
+        private void OnSearch(ChangeEvent<string> evt)
+        {
+            string value = evt.newValue;
+
+            if (mainSplitView.Contains(EntitiesView))
+            {
+                EntitiesView.Search(value);
+            }
+            //else
+            //{
+            //    GraphView.Search(value);
+            //}
+        }
+
         private void AddListView()
         {
             subPanelEntitiesContent.Add(EntitiesView.ListView);
@@ -307,46 +324,28 @@ namespace Chocolate4.Dialogue.Edit
 
         private void AddEntitiesHeaderButtons()
         {
+            Action onClickAdd = () => EntitiesView.AddEntity();
+            Action onClickSort = () => EntitiesView.Search(string.Empty);
+
             VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
-
-            Button addButton = buttonsContainer.WithButton("Add Entity").WithOnClick(
-                () => EntitiesView.AddEntity()
-            );
-
-            addButton
-                .WithFlexGrow()
-                .WithMinWidth(GraphConstants.InsertButtonWidth);
-
+            VisualElementBuilder.AddHeaderButtons(onClickAdd, "New Entity", onClickSort, buttonsContainer);
             subPanelEntitiesContent.Add(buttonsContainer);
         }
 
         private void AddGraphHeaderButtons()
         {
-            VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
+            Action onClickAdd = () => {
+                DialogueTreeItem item =
+                    DialogueTreeView.AddTreeItem(TreeGroupsExtensions.DefaultSituationName);
 
-            buttonsContainer.WithButton(TreeGroupsExtensions.SituationString).WithOnClick(
-                () => {
-                    DialogueTreeItem item = DialogueTreeView.AddTreeItem(
-                        TreeGroupsExtensions.DefaultSituationName, TreeGroups.Situation, TreeItemType.Group
-                    );
+                GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null));
+            };
 
-                    GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null));
-                }
-            ).WithMinWidth(GraphConstants.InsertButtonWidth);
+            //Action onClickSort = () => {
 
-            buttonsContainer.WithButton(TreeGroupsExtensions.VariableGroupString).WithOnClick(
-                () => DialogueTreeView.AddTreeItem(
-                    TreeGroupsExtensions.DefaultVariableGroupName, TreeGroups.Variable, TreeItemType.Group
-                )
-            ).WithMinWidth(GraphConstants.InsertButtonWidth);
-
-            buttonsContainer.WithButton(TreeGroupsExtensions.EventGroupString).WithOnClick(
-            () => DialogueTreeView.AddTreeItem(
-                    TreeGroupsExtensions.DefaultEventGroupName, TreeGroups.Event, TreeItemType.Group
-                )
-            ).WithMinWidth(GraphConstants.InsertButtonWidth);
-
-            subPanelSituationsContent.Add(buttonsContainer);
+            //VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();
+            //VisualElementBuilder.AddHeaderButtons(onClickAdd, TreeGroupsExtensions.DefaultSituationName, onClickSort, buttonsContainer);
+            //subPanelSituationsContent.Add(buttonsContainer);
         }
 
         private void SelectEntityView()

@@ -8,11 +8,13 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using Chocolate4.Dialogue.Edit.Search;
 
 namespace Chocolate4.Edit.Entities
 {
-    public class DialogueEntitiesView : VisualElement, IRebuildable<EntitiesData>
+    public class DialogueEntitiesView : VisualElement, IRebuildable<EntitiesData>, ISearchable
     {
+        private List<DialogueEntity> displayedEntities;
         private List<DialogueEntity> cachedDialogueEntities;
         private EntityView entityView;
 
@@ -26,7 +28,8 @@ namespace Chocolate4.Edit.Entities
         public void Rebuild(EntitiesData entitiesData)
         {
             cachedDialogueEntities = entitiesData.cachedEntities.ToList();
-            
+            displayedEntities = cachedDialogueEntities;
+
             CreateListView();
 
             if (!cachedDialogueEntities.IsNullOrEmpty())
@@ -34,12 +37,33 @@ namespace Chocolate4.Edit.Entities
                 ListView.SetSelection(0);
             }
 
-            ListView.Rebuild();
+            Sort(displayedEntities);
+            RebuildListView();
         }
 
         public EntitiesData Save()
         {
             return new EntitiesData() { cachedEntities = cachedDialogueEntities };
+        }
+
+        public void Search(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                displayedEntities = cachedDialogueEntities;
+            }
+            else
+            {
+                displayedEntities = cachedDialogueEntities.Where(entity => entity.entityName.ToLower().Contains(value)).ToList();
+            }
+
+            ListView.itemsSource = displayedEntities;
+
+            Sort(displayedEntities);
+            RebuildListView();
+
+            ListView.ClearSelection();
+            ListView.SetSelection(0);
         }
 
         internal DialogueEntity AddEntity()
@@ -52,14 +76,14 @@ namespace Chocolate4.Edit.Entities
             entity.entityName = name;
 
             cachedDialogueEntities.Add(entity);
-            ListView.Rebuild();
+            RebuildListView();
             return entity;
         }
 
         private void ResolveDependencies()
         {
             cachedDialogueEntities = new List<DialogueEntity>();
-
+            displayedEntities = new List<DialogueEntity>();
             entityView = new EntityView();
             contentContainer.Add(entityView);
             entityView.StretchToParentSize();
@@ -67,12 +91,15 @@ namespace Chocolate4.Edit.Entities
 
         private void CreateListView()
         {
-            ListView = new ListView() { reorderable = true, fixedItemHeight = EntitiesConstants.ListViewItemHeight };
-            ListView.selectedIndex = 0;
-            
-            ListView.itemsSource = cachedDialogueEntities;
-            ListView.makeItem = MakeListViewItem;
-            ListView.bindItem = (item, index) => BindItem(item, index);
+            ListView = new ListView() 
+            { 
+                fixedItemHeight = EntitiesConstants.ListViewItemHeight, 
+                selectedIndex = 0,
+                itemsSource = displayedEntities,
+                makeItem = MakeListViewItem,
+                bindItem = (item, index) => BindItem(item, index),
+            };
+
             ListView.selectionChanged += ListView_selectionChanged;
         }
 
@@ -83,18 +110,41 @@ namespace Chocolate4.Edit.Entities
 
         private void ListView_selectionChanged(IEnumerable<object> selectedItems)
         {
+            if (selectedItems.IsNullOrEmpty())
+            {
+                return;
+            }
+
             DialogueEntity entity = (DialogueEntity)selectedItems.First();
-            
-            ListView.Rebuild();
+
+            if (!displayedEntities.Contains(entity))
+            {
+                return;
+            }
+
+            RebuildListView();
             entityView.Display(entity, (updatedEntity) => ListView.RefreshItem(ListView.selectedIndex));
         }
 
         private void BindItem(VisualElement item, int index)
         {
             ListViewItem listViewItem = item as ListViewItem;
-            DialogueEntity entity = cachedDialogueEntities[index];
+            DialogueEntity entity = displayedEntities[index];
 
             listViewItem.Initialize(entity);
+        }
+
+        private void Sort(List<DialogueEntity> entities)
+        {
+            entities.Sort(delegate (DialogueEntity a, DialogueEntity b)
+            {
+                return a.entityName.CompareTo(b.entityName);
+            });
+        }
+
+        private void RebuildListView()
+        {
+            ListView.Rebuild();
         }
     }
 }
