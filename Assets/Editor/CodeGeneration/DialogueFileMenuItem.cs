@@ -19,7 +19,7 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
             string path = AssetDatabase.GetAssetPath(Selection.activeObject) + FilePathConstants.DirSep + FileName + "." + FilePathConstants.Extension;
 
             string content = writer.buffer.ToString();
-            ProjectWindowUtil.CreateAssetWithContent(path, content, (Texture2D)EditorGUIUtility.Load(DialogueImporter.AssetIcon));
+            ProjectWindowUtil.CreateAssetWithContent(path, content, (Texture2D)EditorGUIUtility.Load(FilePathConstants.assetIcon));
 
             AssetDatabase.Refresh();
         }

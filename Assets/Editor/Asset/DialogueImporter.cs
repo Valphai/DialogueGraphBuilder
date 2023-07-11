@@ -11,7 +11,6 @@ namespace Chocolate4.Dialogue.Edit.Asset
     [ScriptedImporter(Version, FilePathConstants.Extension)]
     public class DialogueImporter : ScriptedImporter
     {
-        public const string AssetIcon = "Icons/Kok.png";
         private const int Version = 1;
 
         public override void OnImportAsset(AssetImportContext ctx)
@@ -49,7 +48,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
             // as the 'name' property in JSON.
             asset.name = Path.GetFileNameWithoutExtension(assetPath);
 
-            var assetIcon = (Texture2D)EditorGUIUtility.Load(AssetIcon);
+            var assetIcon = (Texture2D)EditorGUIUtility.Load(FilePathConstants.assetIcon);
             
             // Add asset.
             ctx.AddObjectToAsset("<root>", asset, assetIcon);
