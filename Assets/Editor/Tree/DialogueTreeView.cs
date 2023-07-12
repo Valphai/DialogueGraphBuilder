@@ -226,15 +226,17 @@ namespace Chocolate4.Dialogue.Edit.Tree
                 return;
 
             int index = selectedIndices.First();
-            DialogueTreeItem sampleItem = TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
 
-            if (sampleItem == null)
+            DialogueTreeItem selectedSituation = 
+                TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
+
+            if (selectedSituation == null)
             {
                 return;
             }
 
             cachedSelectedId = TreeView.GetIdForIndex(index);
-            OnSituationSelected?.Invoke(sampleItem.id);
+            OnSituationSelected?.Invoke(selectedSituation.id);
         }
     }
 }

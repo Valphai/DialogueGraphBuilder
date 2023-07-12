@@ -22,7 +22,7 @@ namespace Chocolate4.Edit.Graph
     {
         public const string DefaultGroupName = "Dialogue Group";
 
-        private string activeSituationGuid = string.Empty;
+        private string activeSituationId = string.Empty;
         private BlackboardProvider blackboardProvider;
         private SearchWindow searchWindow;
 
@@ -140,17 +140,17 @@ namespace Chocolate4.Edit.Graph
             return node;
         }
 
-        internal void DialogueTreeView_OnSituationSelected(string newSituationGuid)
+        internal void DialogueTreeView_OnSituationSelected(string newSituationId)
         {
-            if (!activeSituationGuid.Equals(string.Empty))
+            if (!activeSituationId.Equals(string.Empty))
             {
                 CacheActiveSituation();
             }
 
-            activeSituationGuid = newSituationGuid;
+            activeSituationId = newSituationId;
 
             DeleteElements(graphElements);
-            if (SituationCache.IsCached(newSituationGuid, out SituationSaveData situationSaveData))
+            if (SituationCache.IsCached(newSituationId, out SituationSaveData situationSaveData))
             {
                 RebuildGraph(situationSaveData);
             }
@@ -187,7 +187,7 @@ namespace Chocolate4.Edit.Graph
         private void CacheActiveSituation()
         {
             SituationSaveData situationSaveData =
-                StructureSaver.SaveSituation(activeSituationGuid, graphElements);
+                StructureSaver.SaveSituation(activeSituationId, graphElements);
 
             SituationCache.TryCache(situationSaveData);
         }
@@ -203,7 +203,7 @@ namespace Chocolate4.Edit.Graph
             SituationCache = new SituationCache(situationSaveData);
 
             SituationSaveData situationData = situationSaveData.Find(
-                data => data.situationId.Equals(activeSituationGuid)
+                data => data.situationId.Equals(activeSituationId)
             );
 
             if (situationData == null)
