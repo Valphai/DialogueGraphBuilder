@@ -278,10 +278,10 @@ namespace Chocolate4.Dialogue.Edit
             {
                 EntitiesView.Search(value);
             }
-            //else
-            //{
-            //    GraphView.Search(value);
-            //}
+            else
+            {
+                DialogueTreeView.Search(value);
+            }
         }
 
         private void AddListView()

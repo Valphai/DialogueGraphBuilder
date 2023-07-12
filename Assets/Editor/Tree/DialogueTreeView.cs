@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine.UIElements;
-using Chocolate4.Dialogue.Runtime.Utilities;
 using System.Linq;
 using UnityEditor;
 using Chocolate4.Dialogue.Edit.Saving;
@@ -17,12 +16,16 @@ namespace Chocolate4.Dialogue.Edit.Tree
     [Serializable]
     public class DialogueTreeView : IRebuildable<TreeSaveData>, ISearchable
     {
-        public TreeView TreeView { get; private set; }
+        private TreeSaveData cachedTreeItems;
+        private int cachedSelectedId;
+        private bool shouldCacheTree;
 
-        public event Action<string> OnSituationSelected;
-        public event Action<string> OnTreeItemRemoved;
-        public event Action<string> OnTreeItemAdded;
-        public event Action<string> OnTreeItemRenamed;
+        internal TreeView TreeView { get; private set; }
+
+        internal event Action<string> OnSituationSelected;
+        internal event Action<string> OnTreeItemRemoved;
+        internal event Action<string> OnTreeItemAdded;
+        internal event Action<string> OnTreeItemRenamed;
 
         public IEnumerable<DialogueTreeItem> DialogueTreeItems
         {
@@ -37,18 +40,25 @@ namespace Chocolate4.Dialogue.Edit.Tree
             }
         }
 
-        public void Initialize(TreeSaveData treeSaveData)
+        internal void Initialize(TreeSaveData treeSaveData)
         {
             Rebuild(treeSaveData);
         }
 
         public void Rebuild(TreeSaveData treeSaveData)
         {
-            TreeView = new TreeView() { reorderable = true };
+            cachedTreeItems = treeSaveData;
+            CreateTreeView();
 
+            RebuildTree(treeSaveData);
+        }
+
+        private void RebuildTree(TreeSaveData treeSaveData)
+        {
+            shouldCacheTree = true;
             var items = new List<TreeViewItemData<DialogueTreeItem>>();
 
-            TreeItemSaveData[] rootDatas = 
+            TreeItemSaveData[] rootDatas =
                 treeSaveData.treeItemData.Where(itemSaveData => itemSaveData.depth == 0).ToArray();
 
             int rootElementCount = rootDatas.Length;
@@ -61,11 +71,11 @@ namespace Chocolate4.Dialogue.Edit.Tree
                     )
                 );
             }
+
             TreeView.SetRootItems(items);
 
-            CreateTreeView();
-
             TreeView.SetSelection(treeSaveData.selectedIndex);
+            TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
         }
 
         public TreeSaveData Save()
@@ -73,7 +83,25 @@ namespace Chocolate4.Dialogue.Edit.Tree
             return StructureSaver.SaveTree(TreeView);
         }
 
-        public void RemoveTreeItem(DialogueTreeItem item, int index)
+        public void Search(string value)
+        {
+            if (shouldCacheTree)
+            {
+                cachedTreeItems = Save();
+                shouldCacheTree = false;
+            }
+
+            if (string.IsNullOrEmpty(value))
+            {
+                cachedTreeItems.selectedIndex = TreeView.viewController.GetIndexForId(cachedSelectedId);
+                RebuildTree(cachedTreeItems);
+                return;
+            }
+
+            TreeUtilities.FilterTreeViewBy(value, TreeView, OnSelectionChanged);
+        }
+
+        internal void RemoveTreeItem(DialogueTreeItem item, int index)
         {
             if (TreeView.GetTreeCount() <= 1)
             {
@@ -91,7 +119,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
             OnTreeItemRemoved?.Invoke(item.id);
         }
 
-        public DialogueTreeItem AddTreeItem(string defaultName, int index = -1, string idOverride = "")
+        internal DialogueTreeItem AddTreeItem(string defaultName, int index = -1, string idOverride = "")
         {
             int groupID = TreeView.GetIdForIndex(index);
 
@@ -110,11 +138,7 @@ namespace Chocolate4.Dialogue.Edit.Tree
             return treeItem;
         }
 
-        public void Search(string value)
-        {
-        }
-
-        public void GraphView_OnSituationCached(string situationGuid)
+        internal void GraphView_OnSituationCached(string situationGuid)
         {
             int count = TreeView.GetTreeCount();
             for (int i = 0; i < count; i++)
@@ -146,7 +170,6 @@ namespace Chocolate4.Dialogue.Edit.Tree
         private void BindTreeViewItem(VisualElement element, int index)
         {
             DialogueTreeItem item = TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
-
 
             Label renamableLabel = element.ElementAt(element.childCount - 1) as Label;
             renamableLabel.text = item.displayName;
@@ -185,14 +208,14 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
         private void CreateTreeView()
         {
+            TreeView = new TreeView() { reorderable = true };
+
             TreeView.viewDataKey = "dialogue-tree";
             TreeView.fixedItemHeight = UIStyles.ListViewItemHeight;
 
             TreeView.makeItem = MakeTreeViewItem;
             TreeView.bindItem = BindTreeViewItem;
             TreeView.selectedIndicesChanged += OnSelectionChanged;
-
-            TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
         }
 
         private void OnSelectionChanged(IEnumerable<int> selectedIndices)
@@ -200,13 +223,15 @@ namespace Chocolate4.Dialogue.Edit.Tree
             if (!selectedIndices.Any())
                 return;
 
-            DialogueTreeItem sampleItem = TreeView.GetItemDataForIndex<DialogueTreeItem>(selectedIndices.First());
+            int index = selectedIndices.First();
+            DialogueTreeItem sampleItem = TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
 
             if (sampleItem == null)
             {
                 return;
             }
 
+            cachedSelectedId = TreeView.GetIdForIndex(index);
             OnSituationSelected?.Invoke(sampleItem.id);
         }
     }
