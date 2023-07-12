@@ -174,17 +174,19 @@ namespace Chocolate4.Dialogue.Edit.Tree
             Label renamableLabel = element.ElementAt(element.childCount - 1) as Label;
             renamableLabel.text = item.displayName;
 
-            string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
 
             element.AddContextualMenu("Add Situation", _ => 
                 AddTreeItem(TreeViewConstants.DefaultSituationName, index)
             );
 
-            element.AddContextualMenu("Rename", _ =>
-                VisualElementBuilder.Rename(renamableLabel, existingNames, finishedText => {
+            element.AddContextualMenu("Rename", _ => {
+
+                string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
+                VisualElementBuilder.Rename(renamableLabel, item.displayName, existingNames, finishedText => {
                     item.displayName = finishedText;
                     OnTreeItemRenamed?.Invoke(item.id);
-                })
+                });
+            }
             );
 
             element.AddContextualMenu("Remove", _ => RemoveTreeItem(item, index));
