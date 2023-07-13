@@ -7,6 +7,7 @@ using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Graph;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -32,7 +33,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 title = "Globals",
                 editTextRequested = EditTextRequested,
                 addItemRequested = AddItemRequested,
-                moveItemRequested = MoveItemRequested,
             };
             
             section = new BlackboardSection { headerVisible = false };
@@ -84,7 +84,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
         }
 
-        public void HandlePropertyRemove(IDialogueProperty deletedProperty)
+        internal void HandlePropertyRemove(IDialogueProperty deletedProperty)
         {
             if (!propertyRows.TryGetValue(deletedProperty.Id, out BlackboardRow row))
             {
@@ -104,14 +104,26 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 propertyRows.Remove(deletedProperty.Id);
                 propertyNode.UnbindFromProperty();
 
+                BaseNode dangerCauser = (BaseNode)propertyNode;
+                DangerLogger.ErrorDanger(
+                    "Deleted event property created an empty event node! Remove the node or convert it back to property.", dangerCauser
+                );
+
                 DangerLogger.MarkNodeDangerous(
-                    "Deleted event property created an empty event node! Remove the node or convert it back to property.",
-                    (BaseNode)propertyNode, () => !((IDangerCauser)propertyNode).IsMarkedDangerous || propertyNode.IsBoundToProperty
+                    dangerCauser, () => !((IDangerCauser)propertyNode).IsMarkedDangerous || propertyNode.IsBoundToProperty
                 );
             });
         }
 
-        public void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
+        internal void UpdatePropertyBinds()
+        {
+            foreach (IDialogueProperty property in Properties)
+            {
+                UpdateNodesWith(property);
+            }
+        }
+
+        private void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
         {
             if (propertyRows.ContainsKey(property.Id))
             {
@@ -120,7 +132,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
             if (create)
             {
-                //property.DisplayName = m_Graph.SanitizePropertyName(property.DisplayName);
+                property.DisplayName = GetSanitizedPropertyName(property.DisplayName);
             }
 
             BlackboardField field;
@@ -179,21 +191,16 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             {
                 row.expanded = true;
                 //m_Graph.owner.RegisterCompleteObjectUndo("Create Property");
+
                 field.OpenTextEditor();
+
             }
         }
 
-        internal void UpdatePropertyBinds()
+        private string GetSanitizedPropertyName(string propertyName)
         {
-            foreach (IDialogueProperty property in Properties)
-            {
-                UpdateNodesWith(property);
-            }
-        }
-
-        private void MoveItemRequested(Blackboard arg1, int arg2, VisualElement arg3)
-        {
-            throw new NotImplementedException();
+            string[] existingNames = Properties.Select(property => property.DisplayName).ToArray();
+            return ObjectNames.GetUniqueName(existingNames, propertyName);
         }
 
         private void AddItemRequested(Blackboard blackboard)
@@ -210,10 +217,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             BlackboardField field = (BlackboardField)visualElement;
             IDialogueProperty property = (IDialogueProperty)field.userData;
 
-            if (!string.IsNullOrEmpty(newText) && newText != property.DisplayName)
+            if (!string.IsNullOrEmpty(newText) && !newText.Equals(property.DisplayName))
             {
                 //m_Graph.owner.RegisterCompleteObjectUndo("Edit Property Name");
-                //newText = m_Graph.SanitizePropertyName(newText, property.id);
+                newText = GetSanitizedPropertyName(property.DisplayName);
+
                 property.DisplayName = newText;
                 field.text = newText;
                 UpdateNodesWith(property);

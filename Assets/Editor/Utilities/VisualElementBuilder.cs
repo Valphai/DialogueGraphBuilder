@@ -309,7 +309,7 @@ namespace Chocolate4.Dialogue.Edit.Utilities
         }
         public static TextField WithNodeTextField(
             this VisualElement element, string startText, 
-            Action<ChangeEvent<string>> onInputChanged, bool multiline = true
+            Action<ChangeEvent<string>> onInputChanged = null, bool multiline = true
         )
         {
             TextField textField = element.WithTextField(startText, onInputChanged, multiline);
@@ -320,7 +320,6 @@ namespace Chocolate4.Dialogue.Edit.Utilities
             textField.Q<TextElement>()
                 .WithMaxWidth(UIStyles.MaxWidth)
                 .WithExpandableHeight();
-
 
             return textField;
         }

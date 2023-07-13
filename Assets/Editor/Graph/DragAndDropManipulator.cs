@@ -1,4 +1,5 @@
-﻿using Chocolate4.Dialogue.Edit.Graph.Nodes;
+﻿using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
+using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -33,10 +34,21 @@ namespace Chocolate4.Edit.Graph
 
         private void DragExitedHandler(DragExitedEvent evt)
         {
+            if (evt.propagationPhase != PropagationPhase.AtTarget)
+            {
+                return;
+            }
+
             Vector2 spawnPosition = evt.localMousePosition;
             DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
 
-            BaseNode node = dialogueGraphView.DragSelectablesHandler.SelectedProperty.ToConcreteNode();
+            IDraggableProperty selectedProperty = dialogueGraphView.DragSelectablesHandler.SelectedProperty;
+            if (selectedProperty == null)
+            {
+                return;
+            }
+
+            BaseNode node = selectedProperty.ToConcreteNode();
 
             dialogueGraphView.AddNode(spawnPosition, node);
         }
