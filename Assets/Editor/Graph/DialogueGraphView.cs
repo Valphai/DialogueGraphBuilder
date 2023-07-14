@@ -4,9 +4,9 @@ using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using Chocolate4.Dialogue.Edit.Saving;
+using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
-using Chocolate4.Edit.Graph.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +21,9 @@ namespace Chocolate4.Edit.Graph
     public class DialogueGraphView : GraphView, IRebuildable<GraphSaveData>
     {
         public const string DefaultGroupName = "Dialogue Group";
+        
+        internal string activeSituationId = string.Empty;
 
-        private string activeSituationId = string.Empty;
         private BlackboardProvider blackboardProvider;
         private SearchWindow searchWindow;
 
@@ -31,12 +32,7 @@ namespace Chocolate4.Edit.Graph
 
         public void Initialize()
         {
-            deleteSelection = OnDeleteSelection;
-            graphViewChanged = OnGraphViewChange;
-            nodeCreationRequest = OnNodeCreationRequest;
-            serializeGraphElements += CutCopyOperation;
-            unserializeAndPaste += PasteOperation;
-
+            HandleCallbacks();
             ResolveDependencies();
 
             AddManipulators();
@@ -49,8 +45,10 @@ namespace Chocolate4.Edit.Graph
         {
             base.BuildContextualMenu(evt);
 
-            evt.menu.AppendAction($"Add Group",
-                actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))
+            evt.menu.AppendAction(
+                $"Add Group",
+                actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)), 
+                AddGroupFlags
             );
         }
 
@@ -74,7 +72,7 @@ namespace Chocolate4.Edit.Graph
 
                 BaseNode node = (BaseNode)port.node;
 
-                if (startNode.IsConnectedTo(node))
+                if (startNode.IsConnectedAtAnyPointTo(node))
                 {
                     return;
                 }
@@ -140,6 +138,36 @@ namespace Chocolate4.Edit.Graph
             return node;
         }
 
+        internal CustomGroup CreateGroup(Vector2 startingPosition)
+        {
+            CustomGroup group = new CustomGroup()
+            {
+                title = DefaultGroupName
+            };
+
+            group.SetPosition(new Rect(startingPosition, Vector2.zero));
+
+            AddElement(group);
+
+            foreach (GraphElement element in selection)
+            {
+                if (element is not BaseNode)
+                {
+                    continue;
+                }
+
+                if (element is StartNode or EndNode)
+                {
+                    continue;
+                }
+
+                BaseNode node = (BaseNode)element;
+                group.AddToGroup(node);
+            }
+
+            return group;
+        }
+
         internal void DialogueTreeView_OnSituationSelected(string newSituationId)
         {
             if (!activeSituationId.Equals(string.Empty))
@@ -158,9 +186,9 @@ namespace Chocolate4.Edit.Graph
             blackboardProvider.UpdatePropertyBinds();
         }
 
-        internal void DialogueTreeView_OnTreeItemRemoved(string treeItemGuid)
+        internal void DialogueTreeView_OnTreeItemRemoved(DialogueTreeItem treeItem)
         {
-            if (!SituationCache.IsCached(treeItemGuid, out SituationSaveData cachedSituationSaveData))
+            if (!SituationCache.IsCached(treeItem.id, out SituationSaveData cachedSituationSaveData))
             {
                 return;
             }
@@ -170,6 +198,46 @@ namespace Chocolate4.Edit.Graph
                 Debug.LogError($"Situation {cachedSituationSaveData.situationId} could not be removed.");
                 return;
             }
+
+            PerformOnAllGraphElementsOfType<SituationTransferNode>(node => node.RemoveFromPopup(treeItem));
+        }
+
+        internal void DialogueTreeView_OnTreeItemAdded(DialogueTreeItem treeItem)
+        {
+            PerformOnAllGraphElementsOfType<SituationTransferNode>(node => node.AddToPopup(treeItem));
+        }
+
+        internal void DialogueTreeView_OnTreeItemRenamed(DialogueTreeItem treeItem)
+        {
+            PerformOnAllGraphElementsOfType<SituationTransferNode>(node => node.UpdatePopup(treeItem));
+        }
+
+        internal void PerformOnAllGraphElementsOfType<T>(Action<T> onElementFound) where T : GraphElement
+        {
+            GraphUtilities.PerformOnGraphElementsOfType<T>(graphElements, graphElement => {
+                onElementFound?.Invoke(graphElement);
+            });
+        }
+
+        private void OnElementsRemovedFromGroup(Group group, IEnumerable<GraphElement> removedElements)
+        {
+            GraphUtilities.PerformOnGraphElementsOfType<BaseNode>(removedElements, element => {
+                element.GroupId = string.Empty;
+            });
+        }
+
+        private void OnElementsAddedToGroup(Group group, IEnumerable<GraphElement> newElements)
+        {
+            GraphUtilities.PerformOnGraphElementsOfType<BaseNode>(newElements, element => {
+
+                if (element is StartNode or EndNode)
+                {
+                    group.RemoveElement(element);
+                    return;
+                }
+
+                element.GroupId = ((CustomGroup)group).Id;
+            });
         }
 
         private void ResolveDependencies()
@@ -184,10 +252,23 @@ namespace Chocolate4.Edit.Graph
             Add(blackboardProvider.Blackboard);
         }
 
+        private void HandleCallbacks()
+        {
+            deleteSelection = OnDeleteSelection;
+            graphViewChanged = OnGraphViewChange;
+            nodeCreationRequest = OnNodeCreationRequest;
+
+            elementsAddedToGroup = OnElementsAddedToGroup;
+            elementsRemovedFromGroup = OnElementsRemovedFromGroup;
+
+            serializeGraphElements += CutCopyOperation;
+            unserializeAndPaste += PasteOperation;
+        }
+
         private void CacheActiveSituation()
         {
             SituationSaveData situationSaveData =
-                StructureSaver.SaveSituation(activeSituationId, graphElements);
+                StructureSaver.SaveSituation(activeSituationId, this);
 
             SituationCache.TryCache(situationSaveData);
         }
@@ -222,8 +303,7 @@ namespace Chocolate4.Edit.Graph
                 return;
             }
 
-            List<BaseNode> nodes = CreateNodes(dataHolders);
-            RebuildConnections(nodes);
+            RebuildNodesAndGroups(dataHolders, situationData.groupData, out List<BaseNode> _, out List<CustomGroup> _);
         }
 
         private List<BaseNode> CreateNodes(List<IDataHolder> dataHolders)
@@ -239,6 +319,32 @@ namespace Chocolate4.Edit.Graph
             }
 
             return nodes;
+        }
+
+        private List<CustomGroup> CreateGroups(List<GroupSaveData> groupData)
+        {
+            List<CustomGroup> groups = new List<CustomGroup>();
+            foreach (GroupSaveData data in groupData)
+            {
+                CustomGroup group = CreateGroup(data.position);
+                group.Load(data);
+                groups.Add(group);
+            }
+
+            return groups;
+        }
+
+        private void RebuildGroupMembers(List<BaseNode> nodes, List<CustomGroup> groups)
+        {
+            foreach (CustomGroup group in groups)
+            {
+                List<BaseNode> nodesInGroup = nodes.Where(node => node.GroupId.Equals(group.Id)).ToList();
+
+                foreach (BaseNode node in nodesInGroup)
+                {
+                    group.AddToGroup(node);
+                }
+            }
         }
 
         private void RebuildConnections(List<BaseNode> nodes)
@@ -289,32 +395,6 @@ namespace Chocolate4.Edit.Graph
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new ClickSelector());
             this.AddManipulator(new DragAndDropManipulator(this));
-        }
-
-        private Group CreateGroup(Vector2 startingPosition)
-        {
-            Group group = new Group()
-            {
-                title = DefaultGroupName
-            };
-
-            group.SetPosition(new Rect(startingPosition, Vector2.zero));
-
-            AddElement(group);
-
-            foreach (GraphElement element in selection)
-            {
-                if (element is not BaseNode)
-                {
-                    continue;
-                }
-
-                BaseNode node = (BaseNode)element;
-
-                group.AddElement(node);
-            }
-
-            return group;
         }
 
         private void AddGridBackground()
@@ -377,7 +457,7 @@ namespace Chocolate4.Edit.Graph
             {
                 if (element is IDangerCauser dangerCauser)
                 {
-                    dangerCauser.IsMarkedDangerous = false;
+                    DangerLogger.UnmarkNodeDangerous((BaseNode)dangerCauser);
                 }
             }
 
@@ -393,42 +473,71 @@ namespace Chocolate4.Edit.Graph
                 return;
             }
 
+            ClearSelection();
+
             SituationSaveData saveData = JsonUtility.FromJson<SituationSaveData>(data);
             List<IDataHolder> cache =
                 TypeExtensions.MergeFieldListsIntoOneImplementingType<IDataHolder, SituationSaveData>(saveData);
 
-            List<BaseNode> nodes = CreateNodes(cache);
-            RebuildConnections(nodes);
-
             Vector2 center = GetLocalMousePosition(DialogueEditorWindow.Window.rootVisualElement.contentRect.center);
+
+            GraphUtilities.GeneratePastedIds(saveData.groupData, cache);
+            RebuildNodesAndGroups(cache, saveData.groupData, out List<BaseNode> nodes, out List<CustomGroup> _);
+
             nodes.ForEach(node => {
-                Vector2 position = node.GetPosition();
+                Vector2 position = node.GetPositionRaw();
                 node.SetPosition(new Rect(position + center, Vector2.zero));
             });
 
-            ClearSelection();
             selection.AddRange(nodes);
+        }
+
+        private void RebuildNodesAndGroups(
+            List<IDataHolder> dataHolders, List<GroupSaveData> groupData,
+            out List<BaseNode> nodes, out List<CustomGroup> groups
+        )
+        {
+            nodes = CreateNodes(dataHolders);
+            RebuildConnections(nodes);
+
+            groups = CreateGroups(groupData);
+            RebuildGroupMembers(nodes, groups);
         }
 
         private string CutCopyOperation(IEnumerable<GraphElement> elements)
         {
             elements = elements.ToList();
-            List<IDataHolder> copyCache = new List<IDataHolder>();
+            List<IDataHolder> nodeCopyCache = new List<IDataHolder>();
+            List<GroupSaveData> groupCopyCache = new List<GroupSaveData>();
+
+            Dictionary<string, List<IDataHolder>> oldGroupIds = new Dictionary<string, List<IDataHolder>>();
 
             foreach (GraphElement element in elements)
             {
-                if (element is not BaseNode baseNode)
+                if (element is FromSituationNode)
                 {
                     continue;
                 }
 
-                copyCache.Add(StructureSaver.SaveNode(baseNode));
+                if (element is BaseNode baseNode)
+                {
+                    IDataHolder dataHolder = StructureSaver.SaveNode(baseNode);
+                    nodeCopyCache.Add(dataHolder);
+                    continue;
+                }
+
+                if (element is CustomGroup customGroup)
+                {
+                    GroupSaveData groupData = customGroup.Save();
+                    groupCopyCache.Add(groupData);
+                    continue;
+                }
             }
 
             Vector2 center = GetLocalMousePosition(DialogueEditorWindow.Window.rootVisualElement.contentRect.center);
-            copyCache.ForEach(data => data.NodeData.position -= center);
+            nodeCopyCache.ForEach(data => data.NodeData.position -= center);
 
-            SituationSaveData situationCache = new SituationSaveData("cache", copyCache);
+            SituationSaveData situationCache = new SituationSaveData("cache", nodeCopyCache, groupCopyCache);
             return JsonUtility.ToJson(situationCache);
         }
 
@@ -448,6 +557,20 @@ namespace Chocolate4.Edit.Graph
 
             CreateNode(middlePoint - offset, typeof(StartNode));
             CreateNode(middlePoint + offset, typeof(EndNode));
+        }
+
+        private DropdownMenuAction.Status AddGroupFlags(DropdownMenuAction _)
+        {
+            BaseNode[] baseNodes = selection.OfType<BaseNode>().ToArray();
+            if (
+                baseNodes.Any(node => node is StartNode or EndNode)
+                || baseNodes.Any(node => !string.IsNullOrEmpty(node.GroupId))
+            )
+            {
+                return DropdownMenuAction.Status.Hidden;
+            }
+
+            return DropdownMenuAction.Status.Normal;
         }
     }
 }

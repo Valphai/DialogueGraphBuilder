@@ -51,7 +51,7 @@ namespace Chocolate4.Dialogue.Edit.Search
                 new SearchTreeEntry(new GUIContent("Group", indentIcon))
                 {
                     level = 2,
-                    userData = new Group()
+                    userData = new CustomGroup()
                 },
             };
 
@@ -68,9 +68,17 @@ namespace Chocolate4.Dialogue.Edit.Search
                     context.screenMousePosition - DialogueEditorWindow.Window.position.position
                 );
 
+            Vector2 spawnPosition = dialogueGraphView.GetLocalMousePosition(windowMousePosition);
+            if (SearchTreeEntry.userData is CustomGroup)
+            {
+                dialogueGraphView.CreateGroup(spawnPosition);
+                return true;
+            }
+
             dialogueGraphView.CreateNode(
-                dialogueGraphView.GetLocalMousePosition(windowMousePosition), (Type)SearchTreeEntry.userData
+                spawnPosition, (Type)SearchTreeEntry.userData
             );
+
             return true;
         }
     }

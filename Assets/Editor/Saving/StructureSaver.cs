@@ -2,30 +2,28 @@
 using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using Chocolate4.Edit.Graph;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-using static Chocolate4.Edit.Graph.Utilities.NodeUtilities;
+using static Chocolate4.Dialogue.Edit.Graph.Utilities.NodeUtilities;
 
 namespace Chocolate4.Dialogue.Edit.Saving
 {
     public class StructureSaver
     {
         public static SituationSaveData SaveSituation(
-            string situationGuid, UQueryState<GraphElement> graphElements
+            string situationGuid, DialogueGraphView graphView
         )
         {
             List<IDataHolder> nodeSaveDatas = new List<IDataHolder>();
+            List<GroupSaveData> groupSaveDatas = new List<GroupSaveData>();
 
-            graphElements.ForEach(element => {
-                if (element is BaseNode node)
-                {
-                    nodeSaveDatas.Add(SaveNode(node));
-                }
-            });
+            graphView.PerformOnAllGraphElementsOfType<BaseNode>(node => nodeSaveDatas.Add(SaveNode(node)));
+            graphView.PerformOnAllGraphElementsOfType<CustomGroup>(group => groupSaveDatas.Add(group.Save()));
 
-            return new SituationSaveData(situationGuid, nodeSaveDatas);
+            return new SituationSaveData(situationGuid, nodeSaveDatas, groupSaveDatas);
         }
 
         public static IDataHolder SaveNode(BaseNode node)
