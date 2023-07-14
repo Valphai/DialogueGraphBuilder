@@ -13,6 +13,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
         private static List<DangerFlag> dangerFlags = new List<DangerFlag>();
         private static List<Func<bool>> fixConditions = new List<Func<bool>>();
 
+        public static void Clear()
+        {
+            dangerFlags.Clear();
+            fixConditions.Clear();
+        }
+
         public static bool IsEditorInDanger()
         {
             if (dangerFlags.IsNullOrEmpty())
@@ -21,7 +27,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
                 return false;
             }
 
-            if (ErrorsFixedAutomatically())
+            if (FixErrorsAutomatically())
             {
                 return false;
             }
@@ -29,11 +35,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
             DangerFlag dangerFlag = dangerFlags.First();
             dangerFlag.Display();
 
-            Debug.LogWarning("Editor was not saved! Fix the errors first.");
+            Debug.LogWarning("There are errors in the editor.");
             return true;
         }
 
-        private static bool ErrorsFixedAutomatically()
+        private static bool FixErrorsAutomatically()
         {
             if (fixConditions.IsNullOrEmpty())
             {
@@ -51,8 +57,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
                 return false;
             }
 
-            dangerFlags.Clear();
-            fixConditions.Clear();
+            Clear();
             return true;
         }
 
@@ -88,9 +93,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
             dangerFlags.Remove(existingFlag);
         }
 
-        public static void MarkNodeDangerous(string message, BaseNode dangerousNode, Func<bool> fixCondition = null)
+        public static void MarkNodeDangerous(BaseNode dangerousNode, Func<bool> fixCondition = null)
         {
-            ErrorDanger(message, dangerousNode);
             dangerousNode.style.backgroundColor = UIStyles.ErrorColor;
 
             (dangerousNode as IDangerCauser).IsMarkedDangerous = true;

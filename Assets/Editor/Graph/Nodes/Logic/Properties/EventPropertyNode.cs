@@ -1,7 +1,7 @@
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Utilities;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using UnityEngine;
 using UnityEngine.UIElements;
 

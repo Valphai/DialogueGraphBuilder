@@ -1,12 +1,11 @@
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System.Linq;
 using Chocolate4.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 
@@ -35,7 +34,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 outputPortDataCollection = OutputPortDataCollection,
                 nodeId = Id,
                 nodeType = NodeType.ToString(),
-                position = GetPosition(),
+                position = this.GetPositionRaw(),
                 groupId = GroupId,
             };
         }
@@ -73,11 +72,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             DrawContent();
 
             RefreshExpandedState();
-        }
-
-        public new Vector2 GetPosition()
-        {
-            return new Vector2(style.left.value.value, style.top.value.value);
         }
 
         protected virtual void DrawTitle()

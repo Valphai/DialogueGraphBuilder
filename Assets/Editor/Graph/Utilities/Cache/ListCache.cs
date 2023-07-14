@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Chocolate4.Edit.Graph.Utilities
+namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 {
     public abstract class ListCache<T> where T : IHaveId
     {

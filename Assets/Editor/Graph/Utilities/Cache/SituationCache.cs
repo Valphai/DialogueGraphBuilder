@@ -2,7 +2,7 @@ using Chocolate4.Dialogue.Runtime.Saving;
 using System;
 using System.Collections.Generic;
 
-namespace Chocolate4.Edit.Graph.Utilities
+namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 {
     public class SituationCache : ListCache<SituationSaveData>
     {

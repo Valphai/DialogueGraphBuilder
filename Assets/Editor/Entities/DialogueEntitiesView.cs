@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Search;
 using Chocolate4.Dialogue.Edit.Utilities;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 
 namespace Chocolate4.Edit.Entities
 {

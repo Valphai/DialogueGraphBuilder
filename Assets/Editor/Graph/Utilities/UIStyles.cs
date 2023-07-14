@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Chocolate4.Edit.Graph.Utilities
+namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 {
     public static class UIStyles
     {

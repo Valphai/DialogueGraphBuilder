@@ -1,7 +1,7 @@
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using UnityEngine.UIElements;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
@@ -43,7 +43,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             textField = contentContainer
                 .WithMaxWidth(UIStyles.MaxWidth)
-                .WithNodeTextField(Text, evt => DangerDetector.SanitizeExpression(this, evt.newValue));
+                .WithNodeTextField(Text);
+
+            textField.RegisterCallback<FocusOutEvent>(evt => DangerDetector.SanitizeExpression(this, textField.value));
 
             textField.WithMinHeight(UIStyles.SmallTextFieldHeight);
         }
