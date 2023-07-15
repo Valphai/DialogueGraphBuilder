@@ -20,8 +20,6 @@ namespace Chocolate4.Dialogue.Edit.Utilities
 
         public static void CreateAssetAtPath(ScriptableObject asset, string path, string fileName)
         {
-            string uniqueName = GetUniqueNameFromPath(path, fileName);
-
             string instancePath = AssetDatabase.GetAssetPath(asset.GetInstanceID());
             if (File.Exists(instancePath))
             {
@@ -32,12 +30,12 @@ namespace Chocolate4.Dialogue.Edit.Utilities
                     return;
                 }
 
-                AssetDatabase.RenameAsset(instancePath, uniqueName + Asset);
+                AssetDatabase.RenameAsset(instancePath, fileName + Asset);
                 AssetDatabase.Refresh();
                 return;
             }
 
-            string assetEndPath = path + uniqueName + Asset;
+            string assetEndPath = path + FilePathConstants.DirSep + fileName + Asset;
 
             AssetDatabase.CreateAsset(asset, assetEndPath);
             AssetDatabase.Refresh();

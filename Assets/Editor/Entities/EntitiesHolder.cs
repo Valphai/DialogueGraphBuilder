@@ -1,11 +1,10 @@
+using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using Chocolate4.Edit.Entities.Utilities;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
-namespace Chocolate4.Dialogue.Runtime.Saving
+namespace Chocolate4.Dialogue.Edit.Entities
 {
     [CreateAssetMenu(fileName = DataBase, menuName = FilePathConstants.Chocolate4 + "/" + nameof(EntitiesHolder))]
     public class EntitiesHolder : ScriptableObject
@@ -22,18 +21,9 @@ namespace Chocolate4.Dialogue.Runtime.Saving
 		{
             dataBase.Clear();
 
-            string[] filePaths = Directory.GetFiles(
-                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath), "*.asset"
+            dataBase.AddRange(
+                EntitiesUtilities.GetAllEntities(this, out string _)
             );
-
-            filePaths = filePaths.Where(path => !path.Contains(name)).ToArray();
-
-            foreach (string path in filePaths)
-            {
-                dataBase.Add(
-                    AssetDatabase.LoadAssetAtPath<DialogueEntity>(path)
-                );
-            }
         }
 	}
 }

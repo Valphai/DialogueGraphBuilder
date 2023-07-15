@@ -1,8 +1,9 @@
+using Chocolate4.Dialogue.Edit.Entities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,22 +20,40 @@ namespace Chocolate4.Edit.Entities.Utilities
 
         public static string GetEntityName(DialogueEntity entity, string[] existingNames = null)
         {
-            return string.IsNullOrEmpty(entity.entityName) ? ScriptableObjectUtilities.GetUniqueNameFromPath(
-                FilePathConstants.dialogueEntitiesPath, EntitiesConstants.DefaultEntityName, existingNames
-            ) : entity.entityName;
+            return string.IsNullOrEmpty(entity.entityName) 
+                ? ObjectNames.GetUniqueName(existingNames, EntitiesConstants.DefaultEntityName)
+                : entity.entityName;
         }
 
-        internal static DialogueEntity[] GetAllEntities()
+        internal static List<DialogueEntity> GetAllEntities(EntitiesHolder dataBase, out string folderPath)
         {
-            string path =
-                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath);
+            List<DialogueEntity> allEntities = new List<DialogueEntity>();
 
-            string[] pathsToAllEntities =
-                Directory.GetFiles(path).Where(asset => asset.EndsWith(ScriptableObjectUtilities.Asset)).ToArray();
-            DialogueEntity[] existingEntities =
-                pathsToAllEntities.Select(p => AssetDatabase.LoadAssetAtPath<DialogueEntity>(p)).Where(entity => entity != null).ToArray();
+            int instanceId = dataBase.GetInstanceID();
 
-            return existingEntities;
+            string assetPath = AssetDatabase.GetAssetPath(instanceId);
+            string assetDirectoryPath = Path.GetDirectoryName(assetPath);
+
+            string fileName = Path.GetFileName(assetPath).Replace("." + FilePathConstants.Extension, string.Empty);
+
+            string identifiedFolderName = fileName + FilePathConstants.EntitiesFolder;
+
+            folderPath = assetDirectoryPath + FilePathConstants.DirSep + identifiedFolderName;
+            if (!AssetDatabase.IsValidFolder(folderPath))
+            {
+                AssetDatabase.CreateFolder(assetDirectoryPath, identifiedFolderName);
+                return allEntities;
+            }
+
+            string[] entitiesPaths = Directory.GetFiles(folderPath, "*.asset");
+
+            foreach (string path in entitiesPaths)
+            {
+                DialogueEntity entity = AssetDatabase.LoadAssetAtPath<DialogueEntity>(path);
+                allEntities.Add(entity);
+            }
+
+            return allEntities;
         }
     }
 }

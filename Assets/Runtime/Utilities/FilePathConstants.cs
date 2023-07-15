@@ -10,9 +10,9 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
         public const string AssetFolder = "";
         public const string Collection = "Collection";
         public const string Extension = "chocolatedialogue";
+        public const string EntitiesFolder = "Entities";
 
         public static string testCasesAssetPath = $"{Application.dataPath}{DirSep}{AssetFolder}{DirSep}Tests{DirSep}PlayMode{DirSep}Cases{DirSep}TestCasesDialogueEditor.{Extension}";
-        public static string dialogueEntitiesPath = $"{Application.dataPath}{DirSep}{AssetFolder}{DirSep}Runtime{DirSep}Entities{DirSep}";
         
         public static string placeholderEntityPath = $"Icons{DirSep}Placeholder Entity 512.png";
         public static string situationIconPath = $"Icons{DirSep}Situation Gem 128.png";

@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Edit.Entities;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
@@ -31,6 +32,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
             // Create asset.
             var asset = ScriptableObject.CreateInstance<DialogueEditorAsset>();
+            var entitiesDatabase = ScriptableObject.CreateInstance<EntitiesHolder>();
 
             // Parse JSON.
             try
@@ -47,11 +49,13 @@ namespace Chocolate4.Dialogue.Edit.Asset
             // Force name of asset to be that on the file on disk instead of what may be serialized
             // as the 'name' property in JSON.
             asset.name = Path.GetFileNameWithoutExtension(assetPath);
+            entitiesDatabase.name = EntitiesHolder.DataBase;
 
             var assetIcon = (Texture2D)EditorGUIUtility.Load(FilePathConstants.assetIcon);
             
             // Add asset.
             ctx.AddObjectToAsset("<root>", asset, assetIcon);
+            ctx.AddObjectToAsset("<entities>", entitiesDatabase);
             ctx.SetMainObject(asset);
         }
     }

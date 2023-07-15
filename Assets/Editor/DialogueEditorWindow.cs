@@ -9,13 +9,12 @@ using Chocolate4.Edit.Entities;
 using Chocolate4.Edit.Graph;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using System;
-using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Chocolate4.Dialogue.Edit.Entities;
 
 namespace Chocolate4.Dialogue.Edit
 {
@@ -59,7 +58,7 @@ namespace Chocolate4.Dialogue.Edit
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
         {
-            var path = AssetDatabase.GetAssetPath(instanceId);
+            string path = AssetDatabase.GetAssetPath(instanceId);
             if (!path.EndsWith(FilePathConstants.Extension, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
@@ -79,10 +78,6 @@ namespace Chocolate4.Dialogue.Edit
 
         public static DialogueEditorWindow OpenEditor(DialogueEditorAsset asset, int instanceId)
         {
-            ////REVIEW: It'd be great if the window got docked by default but the public EditorWindow API doesn't allow that
-            ////        to be done for windows that aren't singletons (GetWindow<T>() will only create one window and it's the
-            ////        only way to get programmatic docking with the current API).
-            // See if we have an existing editor window that has the asset open.
             DialogueEditorWindow window = GetWindow<DialogueEditorWindow>();
             window.titleContent = new GUIContent("DialogueEditorWindow");
             window.SetAsset(asset, instanceId);
@@ -98,11 +93,9 @@ namespace Chocolate4.Dialogue.Edit
             if (asset == null)
                 return;
 
-            string entityDatabasePath = Directory.GetFiles(
-                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.dialogueEntitiesPath), "*.asset"
-            ).First(path => path.Contains(EntitiesHolder.DataBase));
+            string path = AssetDatabase.GetAssetPath(instanceId);
 
-            EntitiesHolder entitiesDatabase = AssetDatabase.LoadAssetAtPath<EntitiesHolder>(entityDatabasePath);
+            EntitiesHolder entitiesDatabase = AssetDatabase.LoadAssetAtPath<EntitiesHolder>(path);
 
             dialogueAssetManager = new DialogueAssetManager(asset, instanceId, entitiesDatabase);
             PostInitialize();
