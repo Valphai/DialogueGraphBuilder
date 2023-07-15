@@ -18,5 +18,14 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
             string digitsCombined = new string(digits.ToArray());
             return int.Parse(digitsCombined);
         }
+
+        public static string Sanitize(this string entry)
+        {
+            return entry
+                .Replace("\n", string.Empty)
+                .Replace("\t", string.Empty)
+                .Replace("\r", string.Empty)
+                .Replace(" ", string.Empty);
+        }
     }
 }

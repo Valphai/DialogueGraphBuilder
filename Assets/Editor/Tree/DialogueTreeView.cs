@@ -8,37 +8,28 @@ using Chocolate4.Dialogue.Edit.Tree.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Edit.Search;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using UnityEngine;
+using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 
 namespace Chocolate4.Dialogue.Edit.Tree
 {
     [Serializable]
     public class DialogueTreeView : IRebuildable<TreeSaveData>, ISearchable
     {
+        internal List<DialogueTreeItem> dialogueTreeItems;
+
         private TreeSaveData cachedTreeItems;
         private int cachedSelectedId;
         private bool shouldCacheTree;
+        private int selectedIndex = -1;
 
         internal TreeView TreeView { get; private set; }
 
         internal event Action<string> OnSituationSelected;
-        internal event Action<string> OnTreeItemRemoved;
-        internal event Action<string> OnTreeItemAdded;
-        internal event Action<string> OnTreeItemRenamed;
-
-        public IEnumerable<DialogueTreeItem> DialogueTreeItems
-        {
-            get
-            {
-                List<int> itemIds = TreeView.viewController.GetAllItemIds().ToList();
-
-                foreach (int id in itemIds)
-                {
-                    yield return TreeView.GetItemDataForId<DialogueTreeItem>(id);
-                }
-            }
-        }
+        internal event Action<DialogueTreeItem> OnTreeItemRemoved;
+        internal event Action<DialogueTreeItem> OnTreeItemAdded;
+        internal event Action<DialogueTreeItem> OnTreeItemRenamed;
 
         internal void Initialize(TreeSaveData treeSaveData)
         {
@@ -51,6 +42,20 @@ namespace Chocolate4.Dialogue.Edit.Tree
             CreateTreeView();
 
             RebuildTree(treeSaveData);
+            RebuildItemsList();
+        }
+
+        private void RebuildItemsList()
+        {
+            List<DialogueTreeItem> result = new List<DialogueTreeItem>();
+            List<int> itemIds = TreeView.viewController.GetAllItemIds().ToList();
+
+            foreach (int id in itemIds)
+            {
+                result.Add(TreeView.GetItemDataForId<DialogueTreeItem>(id));
+            }
+
+            dialogueTreeItems = result;
         }
 
         private void RebuildTree(TreeSaveData treeSaveData)
@@ -116,14 +121,15 @@ namespace Chocolate4.Dialogue.Edit.Tree
                 return;
             }
 
-            OnTreeItemRemoved?.Invoke(item.id);
+            dialogueTreeItems.Remove(item);
+            OnTreeItemRemoved?.Invoke(item);
         }
 
         internal DialogueTreeItem AddTreeItem(string defaultName, int index = -1, string idOverride = "")
         {
             int groupID = TreeView.GetIdForIndex(index);
 
-            string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
+            string[] existingNames = dialogueTreeItems.Select(item => item.displayName).ToArray();
             string name = ObjectNames.GetUniqueName(existingNames, defaultName);
 
             DialogueTreeItem treeItem = new DialogueTreeItem(name);
@@ -134,7 +140,8 @@ namespace Chocolate4.Dialogue.Edit.Tree
                 treeItem.id = idOverride;
             }
 
-            OnTreeItemAdded?.Invoke(treeItem.id);
+            dialogueTreeItems.Add(treeItem);
+            OnTreeItemAdded?.Invoke(treeItem);
             return treeItem;
         }
 
@@ -164,7 +171,6 @@ namespace Chocolate4.Dialogue.Edit.Tree
             );
 
             TreeUtilities.ForceRefresh(TreeView, OnSelectionChanged);
-            TreeView.SetSelection(TreeView.viewController.GetIndexForId(itemId));
         }
 
         private void BindTreeViewItem(VisualElement element, int index)
@@ -181,13 +187,12 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
             element.AddContextualMenu("Rename", _ => {
 
-                string[] existingNames = DialogueTreeItems.Select(item => item.displayName).ToArray();
+                string[] existingNames = dialogueTreeItems.Select(item => item.displayName).ToArray();
                 VisualElementBuilder.Rename(renamableLabel, item.displayName, existingNames, finishedText => {
                     item.displayName = finishedText;
-                    OnTreeItemRenamed?.Invoke(item.id);
+                    OnTreeItemRenamed?.Invoke(item);
                 });
-            }
-            );
+            });
 
             element.AddContextualMenu("Remove", _ => RemoveTreeItem(item, index));
         }
@@ -223,19 +228,33 @@ namespace Chocolate4.Dialogue.Edit.Tree
         private void OnSelectionChanged(IEnumerable<int> selectedIndices)
         {
             if (!selectedIndices.Any())
+            {
                 return;
+            }
 
             int index = selectedIndices.First();
+            if (selectedIndex == index)
+            {
+                return;
+            }
+
+            if (DangerLogger.IsEditorInDanger())
+            {
+                TreeView.SetSelection(selectedIndex);
+                return;
+            }
+
+            selectedIndex = index;
 
             DialogueTreeItem selectedSituation = 
-                TreeView.GetItemDataForIndex<DialogueTreeItem>(index);
+                TreeView.GetItemDataForIndex<DialogueTreeItem>(selectedIndex);
 
             if (selectedSituation == null)
             {
                 return;
             }
 
-            cachedSelectedId = TreeView.GetIdForIndex(index);
+            cachedSelectedId = TreeView.GetIdForIndex(selectedIndex);
             OnSituationSelected?.Invoke(selectedSituation.id);
         }
     }

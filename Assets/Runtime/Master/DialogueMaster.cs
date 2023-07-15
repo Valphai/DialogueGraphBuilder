@@ -200,7 +200,8 @@ namespace Chocolate4.Dialogue.Runtime
             string nextSituation = FindSituationName(((SituationTransferNodeSaveData)currentNode).otherSituationId);
             StartSituation(nextSituation);
 
-            return FindNode<SituationTransferNodeSaveData>(node => node.otherSituationId.Equals(currentSituationId));
+            IDataHolder fromNode = FindNode<SituationTransferNodeSaveData>(node => node.otherSituationId.Equals(currentSituationId));
+            return fromNode ?? FindNode<NodeSaveData>(node => node.IsNodeOfType(NodeConstants.StartNode));
         }
 
         private IDataHolder HandleExpressionNode(List<PortData> outputPortDataCollection)

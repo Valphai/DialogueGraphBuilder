@@ -7,7 +7,7 @@ using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Entities;
 using Chocolate4.Edit.Graph;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using System;
 using System.IO;
 using System.Linq;
@@ -110,23 +110,24 @@ namespace Chocolate4.Dialogue.Edit
 
         private void OnEnable()
         {
+            Window = this;
             if (!hasInitialized)
             {
                 return;
             }
-
-            Window = this;
 
             Initialize();
         }
 
         private void OnDisable()
         {
+            DialogueTreeView.OnTreeItemRenamed -= GraphView.DialogueTreeView_OnTreeItemRenamed;
             DialogueTreeView.OnSituationSelected -= GraphView.DialogueTreeView_OnSituationSelected;
             DialogueTreeView.OnTreeItemRemoved -= GraphView.DialogueTreeView_OnTreeItemRemoved;
 
             GraphView.SituationCache.OnSituationCached -= DialogueTreeView.GraphView_OnSituationCached;
 
+            DangerLogger.Clear();
             StoreData();
         }
 
@@ -184,10 +185,12 @@ namespace Chocolate4.Dialogue.Edit
             GraphView.Initialize();
             GraphView.WithFlexGrow();
             DialogueTreeView = new DialogueTreeView();
-            DialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
 
+            DialogueTreeView.OnTreeItemRenamed += GraphView.DialogueTreeView_OnTreeItemRenamed;
             DialogueTreeView.OnSituationSelected += GraphView.DialogueTreeView_OnSituationSelected;
             DialogueTreeView.OnTreeItemRemoved += GraphView.DialogueTreeView_OnTreeItemRemoved;
+
+            DialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
 
             GraphView.SituationCache.OnSituationCached += DialogueTreeView.GraphView_OnSituationCached;
         }
@@ -317,7 +320,7 @@ namespace Chocolate4.Dialogue.Edit
                 DialogueTreeItem item =
                     DialogueTreeView.AddTreeItem(TreeViewConstants.DefaultSituationName);
 
-                GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null));
+                GraphView.SituationCache.TryCache(new SituationSaveData(item.id, null, null));
             };
 
             VisualElement buttonsContainer = new VisualElement().WithHorizontalGrow();

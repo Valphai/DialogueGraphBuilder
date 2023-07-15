@@ -198,13 +198,6 @@ namespace Chocolate4.Edit.Graph
                 Debug.LogError($"Situation {cachedSituationSaveData.situationId} could not be removed.");
                 return;
             }
-
-            PerformOnAllGraphElementsOfType<SituationTransferNode>(node => node.RemoveFromPopup(treeItem));
-        }
-
-        internal void DialogueTreeView_OnTreeItemAdded(DialogueTreeItem treeItem)
-        {
-            PerformOnAllGraphElementsOfType<SituationTransferNode>(node => node.AddToPopup(treeItem));
         }
 
         internal void DialogueTreeView_OnTreeItemRenamed(DialogueTreeItem treeItem)

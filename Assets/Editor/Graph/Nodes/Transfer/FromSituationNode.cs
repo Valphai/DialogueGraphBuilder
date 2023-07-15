@@ -1,3 +1,5 @@
+using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
+
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
     public class FromSituationNode : SituationTransferNode
@@ -6,6 +8,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         protected override void DrawInputPort()
         {
+        }
+
+        protected override void SanitizeSelectedSituation()
+        {
+            DangerDetector.SanitizeTransferNodes(this, DialogueEditorWindow.Window.GraphView);
         }
     }
 }
