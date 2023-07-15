@@ -1,3 +1,4 @@
+using Codice.CM.Client.Differences;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,6 +27,14 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
                 .Replace("\t", string.Empty)
                 .Replace("\r", string.Empty)
                 .Replace(" ", string.Empty);
+        }
+
+        public static string ToPascalCase(this string entry)
+        {
+            string[] words = entry.Split(' ');
+            words = words.Select(word => char.ToUpper(word[0]) + word.Substring(1)).ToArray();
+
+            return string.Join(" ", words);
         }
     }
 }

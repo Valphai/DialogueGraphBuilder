@@ -79,7 +79,8 @@ namespace Chocolate4.Dialogue.Edit.Asset
             TrySaveAssetToFile();
 
             DialogueMasterCollectionGenerator.TryRegenerate(
-                ImportedAsset.fileName, oldFileName, ImportedAsset.graphSaveData.blackboardSaveData
+                ImportedAsset.fileName, oldFileName, ImportedAsset.graphSaveData.blackboardSaveData,
+                ImportedAsset.treeSaveData.treeItemData
             );
         }
 

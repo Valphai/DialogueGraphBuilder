@@ -30,7 +30,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             DialogueNodeSaveData dialogueNodeSaveData = (DialogueNodeSaveData)saveData;
 
             SelectEntity(dialogueNodeSaveData.speaker);
-
+            
             Text = dialogueNodeSaveData.text;
             textField.value = Text;
         }
