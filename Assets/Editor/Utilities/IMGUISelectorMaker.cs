@@ -7,12 +7,11 @@ namespace Chocolate4.Dialogue.Edit.Utilities
 {
     public class IMGUISelectorMaker
     {
-        private int controlID;
-
         public IMGUIContainer MakeIMGUISelector<T>(Action<T> onSelected) where T : UnityEngine.Object
         {
             IMGUIContainer imguiContainer = new IMGUIContainer(() => {
 
+                int controlID = GUIUtility.GetControlID(FocusType.Passive);
                 if (
                     Event.current.commandName.Equals("ObjectSelectorUpdated")
                     && EditorGUIUtility.GetObjectPickerControlID() == controlID
@@ -26,7 +25,6 @@ namespace Chocolate4.Dialogue.Edit.Utilities
                     return;
                 }
 
-                controlID = GUIUtility.GetControlID(FocusType.Passive);
                 EditorGUIUtility.ShowObjectPicker<T>(null, false, string.Empty, controlID);
             });
             imguiContainer.style.alignSelf = Align.FlexEnd;
