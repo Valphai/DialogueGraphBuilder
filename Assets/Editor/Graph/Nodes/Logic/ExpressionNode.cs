@@ -44,10 +44,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             textField = contentContainer
                 .WithMaxWidth(UIStyles.MaxWidth)
                 .WithNodeTextField(Text);
+            textField.WithMinHeight(UIStyles.SmallTextFieldHeight);
 
             textField.RegisterCallback<FocusOutEvent>(evt => DangerDetector.SanitizeExpression(this, textField.value));
-
-            textField.WithMinHeight(UIStyles.SmallTextFieldHeight);
         }
     }
 }

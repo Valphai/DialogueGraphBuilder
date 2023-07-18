@@ -45,9 +45,10 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             textField = contentContainer
                 .WithMaxWidth(UIStyles.MaxWidth)
-                .WithNodeTextField(Text, evt => DangerDetector.SanitizeExpression(this, evt.newValue));
-
+                .WithNodeTextField(Text);
             textField.WithMinHeight(UIStyles.SmallTextFieldHeight);
+
+            textField.RegisterCallback<FocusOutEvent>(evt => DangerDetector.SanitizeExpression(this, textField.value));
         }
 
         protected override void DrawOutputPort()
