@@ -220,7 +220,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             if (!string.IsNullOrEmpty(newText) && !newText.Equals(property.DisplayName))
             {
                 //m_Graph.owner.RegisterCompleteObjectUndo("Edit Property Name");
-                newText = GetSanitizedPropertyName(property.DisplayName);
+                newText = GetSanitizedPropertyName(newText);
 
                 property.DisplayName = newText;
                 field.text = newText;
