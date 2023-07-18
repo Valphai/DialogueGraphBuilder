@@ -162,7 +162,7 @@ namespace Chocolate4.Edit.Graph
                     continue;
                 }
 
-                if (element is StartNode or EndNode)
+                if (element is StartNode)
                 {
                     continue;
                 }
@@ -441,7 +441,7 @@ namespace Chocolate4.Edit.Graph
                     continue;
                 }
 
-                if (selectable is StartNode or EndNode)
+                if (selectable is StartNode)
                 {
                     cannotRemove.Add(selectable as GraphElement);
                 }

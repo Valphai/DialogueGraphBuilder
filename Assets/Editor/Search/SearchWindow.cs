@@ -27,7 +27,7 @@ namespace Chocolate4.Dialogue.Edit.Search
         public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
         {
             List<Type> nodeTypes = TypeExtensions.GetTypes<BaseNode>(FilePathConstants.Chocolate4)
-                .Except(new Type[] { typeof(StartNode), typeof(EndNode), typeof(EventPropertyNode) }).ToList();
+                .Except(new Type[] { typeof(StartNode), typeof(EventPropertyNode) }).ToList();
 
             string contextElementTitle;
             List<SearchTreeEntry> dialogueTreeEntries = new List<SearchTreeEntry>();
