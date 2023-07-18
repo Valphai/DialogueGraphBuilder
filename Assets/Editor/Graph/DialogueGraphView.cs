@@ -50,6 +50,12 @@ namespace Chocolate4.Edit.Graph
                 actionEvent => CreateGroup(GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)), 
                 AddGroupFlags
             );
+            
+            evt.menu.AppendAction(
+                $"Convert To Property",
+                actionEvent => ConvertToProperty(), 
+                ConvertToPropertyStatus
+            );
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -410,6 +416,42 @@ namespace Chocolate4.Edit.Graph
 
             styleSheets.Add(graphStyleSheet);
             styleSheets.Add(nodeStyleSheet);
+        }
+
+        private void ConvertToProperty()
+        {
+            IEnumerable<IPropertyNode> selectedPropertyNodes = selection.OfType<IPropertyNode>();
+            IEnumerable<Type> propertyTypes = TypeExtensions.GetTypes<IDialogueProperty>(FilePathConstants.Chocolate4);
+
+            foreach (IPropertyNode propertyNode in selectedPropertyNodes)
+            {
+                Type typeToMake =
+                    propertyTypes.First(type => type.ToString().Contains(propertyNode.PropertyType.ToString()));
+
+                IDialogueProperty property = (IDialogueProperty)Activator.CreateInstance(typeToMake);
+
+                blackboardProvider.AddProperty(property, true);
+                propertyNode.BindToProperty(property);
+            }
+
+            DangerLogger.TryFixErrorsAutomatically();
+        }
+
+        private DropdownMenuAction.Status ConvertToPropertyStatus(DropdownMenuAction _)
+        {
+            IEnumerable<IPropertyNode> selectedProperties = selection.OfType<IPropertyNode>();
+
+            if (selectedProperties.IsNullOrEmpty())
+            {
+                return DropdownMenuAction.Status.Hidden;
+            }
+
+            if (selectedProperties.Any(node => node.IsBoundToProperty))
+            {
+                return DropdownMenuAction.Status.Hidden;
+            }
+
+            return DropdownMenuAction.Status.Normal;
         }
 
         private GraphViewChange OnGraphViewChange(GraphViewChange change)

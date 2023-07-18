@@ -27,7 +27,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
                 return false;
             }
 
-            if (FixErrorsAutomatically())
+            if (TryFixErrorsAutomatically())
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
             return true;
         }
 
-        private static bool FixErrorsAutomatically()
+        internal static bool TryFixErrorsAutomatically()
         {
             if (fixConditions.IsNullOrEmpty())
             {

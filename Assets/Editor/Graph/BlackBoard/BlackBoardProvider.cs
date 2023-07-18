@@ -94,6 +94,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             row.RemoveFromHierarchy();
             Properties.Remove(deletedProperty);
 
+            
+
             Blackboard.graphView.graphElements.ForEach(element => {
 
                 if (!ElementIsDialogueProperty(element, deletedProperty, out IPropertyNode propertyNode))
@@ -106,11 +108,18 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
 
                 BaseNode dangerCauser = (BaseNode)propertyNode;
                 DangerLogger.ErrorDanger(
-                    "Deleted event property created an empty event node! Remove the node or convert it back to property.", dangerCauser
+                    "Deleted property created an empty node! Remove the node or convert it back to property.", dangerCauser
                 );
 
                 DangerLogger.MarkNodeDangerous(
-                    dangerCauser, () => !((IDangerCauser)propertyNode).IsMarkedDangerous || propertyNode.IsBoundToProperty
+                    dangerCauser, () => {
+                        if (propertyNode.IsBoundToProperty)
+                        {
+                            DangerLogger.UnmarkNodeDangerous(dangerCauser);
+                            return true;
+                        }
+                        return false;
+                    }
                 );
             });
         }
@@ -123,7 +132,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             }
         }
 
-        private void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
+        internal void AddProperty(IDialogueProperty property, bool create = false, int index = -1)
         {
             if (propertyRows.ContainsKey(property.Id))
             {
@@ -155,7 +164,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
                 )
                 { userData = property };
             }
-
 
             BlackboardRow row;
             if (property is IExpandableDialogueProperty expandableProperty)
