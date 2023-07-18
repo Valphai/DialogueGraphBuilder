@@ -982,6 +982,8 @@ namespace B83.LogicExpressionParser
                 return false;
             if (aExpression.Contains(" "))
                 return false;
+            if (aExpression.Contains("true") || aExpression.Contains("false"))
+                return false;
             char firstLetter = char.ToLower(aExpression[0]);
             if (firstLetter != '_' && (firstLetter < 'a' || firstLetter > 'z'))
                 return false;
