@@ -48,7 +48,11 @@ namespace Chocolate4.Dialogue.Edit.Saving
             List<KeyValuePair<int, List<int>>> deepestChildIds = GetNodesByDepth(treeView);
 
             List<TreeItemSaveData> resultData = new List<TreeItemSaveData>();
-            TreeSaveData result = new TreeSaveData(resultData) { selectedIndex = treeView.selectedIndex };
+            TreeSaveData result = new TreeSaveData() 
+            { 
+                treeItemData = resultData,
+                selectedIndex = treeView.selectedIndex 
+            };
 
             foreach (var deepestChildId in deepestChildIds)
             {

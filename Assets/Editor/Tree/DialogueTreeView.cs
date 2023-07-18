@@ -38,10 +38,10 @@ namespace Chocolate4.Dialogue.Edit.Tree
 
         public void Rebuild(TreeSaveData treeSaveData)
         {
-            cachedTreeItems = treeSaveData;
+            cachedTreeItems = new TreeSaveData(treeSaveData);
             CreateTreeView();
 
-            RebuildTree(treeSaveData);
+            RebuildTree(cachedTreeItems);
             RebuildItemsList();
         }
 

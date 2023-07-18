@@ -274,20 +274,23 @@ namespace Chocolate4.Dialogue.Edit.Utilities
         {
             renamableLabel.text = string.Empty;
 
-            TextField textField = new TextField();
-            textField.style.alignSelf = Align.Center;
+            TextField textField = new TextField() { value = oldName };
             renamableLabel.Add(textField);
+            renamableLabel.style.alignSelf = Align.Center;
 
             textField.Focus();
 
             textField.RegisterCallback<FocusOutEvent>(evt => {
 
-                renamableLabel.text = string.IsNullOrEmpty(textField.text) ?
+                string endText = textField.text;
+                renamableLabel.text = string.IsNullOrEmpty(endText) || endText.Equals(oldName) ?
                     oldName
                     : ObjectNames.GetUniqueName(existingNames, textField.text);
 
                 onFinishText?.Invoke(renamableLabel.text);
                 renamableLabel.Remove(textField);
+
+                textField.RemoveFromHierarchy();
             });
         }
 
