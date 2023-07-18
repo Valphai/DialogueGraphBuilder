@@ -9,15 +9,6 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
 {
     internal class MasterTests
     {
-        private const string Test = "Test";
-        private const string Test1 = "Test (1)";
-        private const string Test2 = "Test (2)";
-        private const string Test3 = "Test (3)";
-        private const string Test4 = "Test (4)";
-        private const string Test5 = "Test (5)";
-        private const string Test6 = "Test (6)";
-        private const string Test7 = "Test (7)";
-
         private DialogueMaster dialogueMaster;
 
         [SetUp]
@@ -29,7 +20,7 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [Test]
         public void EndNode_Returns_SituationEndedInfo()
         {
-            dialogueMaster.StartSituation(Test);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
             Assert.IsTrue(nextInfo.SituationEnded);
@@ -38,7 +29,7 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [Test]
         public void Choice_Node_Returns_ChoiceNodeInfo()
         {
-            dialogueMaster.StartSituation(Test1);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test1);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
             Assert.IsTrue(nextInfo.IsChoiceNode);
@@ -47,7 +38,7 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [Test]
         public void Dialogue_Node_Returns_DialogueNodeInfo()
         {
-            dialogueMaster.StartSituation(Test2);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test2);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
             Assert.IsTrue(nextInfo.IsDialogueNode);
@@ -57,9 +48,10 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [Test]
         public void Event_Node_Raises_Event()
         {
-            dialogueMaster.StartSituation(Test7);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test7);
 
-            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
+            TestCasesDialogueEditorCollection collection = 
+                dialogueMaster.GetCollection<TestCasesDialogueEditorCollection>();
 
             List<int> receivedEvents = new List<int>();
             collection.MyEvent += Collection_MyEvent;
@@ -80,8 +72,9 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [TestCase(1)]
         public void Condition_Node_Evaluates_Correctly(int value)
         {
-            dialogueMaster.StartSituation(Test3);
-            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test3);
+            TestCasesDialogueEditorCollection collection = 
+                dialogueMaster.GetCollection<TestCasesDialogueEditorCollection>();
 
             collection.MyInt = value;
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
@@ -92,9 +85,10 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [Test]
         public void Expression_Node_Evaluates_Correctly()
         {
-            dialogueMaster.StartSituation(Test4);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test4);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
-            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
+            TestCasesDialogueEditorCollection collection = 
+                dialogueMaster.GetCollection<TestCasesDialogueEditorCollection>();
 
             Assert.IsTrue(collection.MyBool == false);
             Assert.IsTrue(collection.MyInt == 3);
@@ -103,17 +97,17 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         [Test]
         public void To_Situation_Node_Changes_Situation()
         {
-            dialogueMaster.StartSituation(Test5);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test5);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
-            Assert.IsTrue(dialogueMaster.CurrentSituationName.Equals(Test6));
+            Assert.IsTrue(dialogueMaster.CurrentSituationName.Equals(TestCasesDialogueEditorCollection.Test6));
             Assert.IsTrue(nextInfo.SituationEnded);
         }
 
         [Test]
         public void Selecting_Choice_Ensures_Continuity()
         {
-            dialogueMaster.StartSituation(Test1);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test1);
             DialogueNodeInfo nextInfo = dialogueMaster.NextDialogueElement();
 
             Assert.IsTrue(nextInfo.IsChoiceNode);
@@ -125,14 +119,14 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         }
 
         [Test]
-        [TestCase(Test)]
-        [TestCase(Test1)]
-        [TestCase(Test2)]
+        [TestCase(TestCasesDialogueEditorCollection.Test)]
+        [TestCase(TestCasesDialogueEditorCollection.Test1)]
+        [TestCase(TestCasesDialogueEditorCollection.Test2)]
         public void Can_Switch_Situations(string situationName)
         {
-            dialogueMaster.StartSituation(Test);
+            dialogueMaster.StartSituation(TestCasesDialogueEditorCollection.Test);
             dialogueMaster.NextDialogueElement();
-            Assert.IsTrue(dialogueMaster.CurrentSituationName.Equals(Test));
+            Assert.IsTrue(dialogueMaster.CurrentSituationName.Equals(TestCasesDialogueEditorCollection.Test));
 
             dialogueMaster.StartSituation(situationName);
             Assert.IsTrue(dialogueMaster.CurrentSituationName.Equals(situationName));

@@ -25,7 +25,8 @@ namespace Chocolate4.Dialogue.Tests.PlayMode
         {
             Parser parser = DialogueAssetSetup.GetParser(dialogueMaster, out ParseAdapter _);
 
-            TestCasesDialogueEditorCollection collection = (TestCasesDialogueEditorCollection)dialogueMaster.Collection;
+            TestCasesDialogueEditorCollection collection = 
+                dialogueMaster.GetCollection<TestCasesDialogueEditorCollection>();
             int original = collection.MyInt;
             collection.MyInt += 1;
 

@@ -2,12 +2,12 @@
     "collectionName": "TestCasesDialogueEditor",
     "graphSaveData": {
         "graphViewPosition": {
-            "x": 96.0,
-            "y": 80.0
+            "x": 3.0,
+            "y": -18.0
         },
         "graphViewZoom": {
-            "x": 0.6575162410736084,
-            "y": 0.6575162410736084
+            "x": 1.0,
+            "y": 1.0
         },
         "situationSaveData": [
             {
@@ -735,7 +735,7 @@
         }
     },
     "treeSaveData": {
-        "selectedIndex": 0,
+        "selectedIndex": 3,
         "treeItemData": [
             {
                 "depth": 0,
