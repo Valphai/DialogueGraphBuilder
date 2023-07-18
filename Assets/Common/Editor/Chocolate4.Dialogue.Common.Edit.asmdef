@@ -1,0 +1,16 @@
+{
+    "name": "Chocolate4.Dialogue.Common.Edit",
+    "rootNamespace": "Chocolate4.Dialogue.Common.Edit",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
