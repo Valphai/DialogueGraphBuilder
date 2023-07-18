@@ -1,9 +1,11 @@
 ﻿using Chocolate4.Dialogue.Edit.Graph.Nodes;
+using Chocolate4.Dialogue.Runtime.Saving;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
+using Chocolate4.Dialogue.Runtime.Utilities;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 {
@@ -32,6 +34,35 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 
             IEnumerable<Port> allPorts = inputPorts.Concat(outputPorts);
             return allPorts.Any(port => port.IsConnectedTo(another));
+        }
+
+        internal static void ClearConnectedPortDataTo(Port outputPort)
+        {
+            if (outputPort.connections.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            Edge edge = outputPort.connections.First();
+            List<Port> connectedPorts = outputPort.ConnectedPorts().ToList();
+
+            foreach (Port port in connectedPorts)
+            {
+                BaseNode connectedOtherNode = (BaseNode)port.node;
+
+                IEnumerable<PortData> portDataToRemove =
+                    connectedOtherNode.InputPortDataCollection.Where(portData => portData.otherPortName.Equals(outputPort.portName));
+                if (!portDataToRemove.IsNullOrEmpty())
+                {
+                    PortData ToRemove = portDataToRemove.First();
+                    ToRemove.otherPortName = ToRemove.otherNodeID = string.Empty;
+                }
+
+                port.Disconnect(edge);
+                connectedOtherNode.RefreshPorts();
+            }
+
+            edge.RemoveFromHierarchy();
         }
 
         internal static bool IsConnectedAtAnyPointTo(this BaseNode node, BaseNode another)

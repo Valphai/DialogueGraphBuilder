@@ -70,14 +70,20 @@ namespace Chocolate4.Edit.Graph
                     return;
                 }
 
-                BaseNode node = (BaseNode)port.node;
-
-                if (startNode.IsConnectedAtAnyPointTo(node))
+                if (startPort.portType != port.portType)
                 {
                     return;
                 }
 
-                if (startPort.portType != port.portType)
+                BaseNode node = (BaseNode)port.node;
+
+                if (startNode is ChoiceNode || node is ChoiceNode)
+                {
+                    compatiblePorts.Add(port);
+                    return;
+                }
+
+                if (startNode.IsConnectedAtAnyPointTo(node))
                 {
                     return;
                 }
@@ -439,6 +445,15 @@ namespace Chocolate4.Edit.Graph
                 {
                     cannotRemove.Add(selectable as GraphElement);
                 }
+
+                if (selectable is ChoiceNode choiceNode)
+                {
+                    List<Port> outputPorts = choiceNode.outputContainer.Query<Port>().ToList();
+                    foreach (Port port in outputPorts)
+                    {
+                        choiceNode.RemoveChoicePort(port);
+                    }
+                }
             }
 
             foreach (GraphElement element in cannotRemove)
@@ -453,7 +468,7 @@ namespace Chocolate4.Edit.Graph
                     DangerLogger.UnmarkNodeDangerous((BaseNode)dangerCauser);
                 }
             }
-
+            
             //graph.owner.RegisterCompleteObjectUndo(operationName);
             DeleteSelection();
             ClearSelection();

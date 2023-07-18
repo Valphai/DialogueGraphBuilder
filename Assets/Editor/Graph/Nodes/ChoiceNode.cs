@@ -88,7 +88,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             container
                 .WithButton("-")
-                .WithOnClick(() => RemoveChoicePort(choice, container, extraContentFoldout));
+                .WithOnClick(() => {
+                    choices.Remove(choice);
+                    buttonedPortsContainer.Remove(container);
+                    extraContentContainer.Remove(extraContentFoldout);
+                    RemoveChoicePort(outputPort);
+                });
 
             container.Add(outputPort);
             buttonedPortsContainer.Insert(choiceIndex, container);
@@ -96,19 +101,29 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             AddNewPortData(outputPort, OutputPortDataCollection);
         }
 
-        private void RemoveChoicePort(
-            DialogueChoice choice, VisualElement container, 
-            VisualElement extraContentFoldout
-        )
+        internal void RemoveChoicePort(Port outputPort)
         {
-            buttonedPortsContainer.Remove(container);
-            extraContentContainer.Remove(extraContentFoldout);
-            choices.Remove(choice);
+            Utilities.NodeUtilities.ClearConnectedPortDataTo(outputPort);
+
+            outputPort.DisconnectAll();
+            RefreshPorts();
+            RemovePortData(outputPort, OutputPortDataCollection);
+        }
+
+        private void RemovePortData(Port port, List<PortData> dataCollection)
+        {
+            PortData portData = dataCollection.Find(data => data.thisPortName.Equals(port.portName));
+            if (portData == null)
+            {
+                return;
+            }
+
+            dataCollection.Remove(portData);
         }
 
         private void AddNewPortData(Port port, List<PortData> dataCollection)
         {
-            PortData portData = dataCollection.Find(data => data.thisPortType.Equals(port.portName));
+            PortData portData = dataCollection.Find(data => data.thisPortName.Equals(port.portName));
             if (portData != null)
             {
                 return;
