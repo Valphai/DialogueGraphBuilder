@@ -39,7 +39,7 @@ namespace Chocolate4.Edit.Graph
                 return;
             }
 
-            Vector2 spawnPosition = evt.localMousePosition;
+            Vector2 spawnPosition = dialogueGraphView.GetLocalMousePosition(evt.localMousePosition);
             DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
 
             IDraggableProperty selectedProperty = dialogueGraphView.DragSelectablesHandler.SelectedProperty;
