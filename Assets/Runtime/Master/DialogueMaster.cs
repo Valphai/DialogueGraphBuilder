@@ -22,13 +22,13 @@ namespace Chocolate4.Dialogue.Runtime
 
         private IDataHolder currentNode;
         private SituationSaveData currentSituation;
-        private bool hasInitialized;
+        private string previousSituationId;
         private List<IDataHolder> allNodes;
         private int selectedChoice;
         private ParseAdapter parseAdapter;
+        private IDialogueMasterCollection collection;
 
-        /// <summary>Collection of variables and events defined in the editor.</summary>
-        public IDialogueMasterCollection Collection { get; private set; }
+        public bool HasInitialized { get; private set; }
 
         public string CurrentSituationName => FindSituationName(currentSituation);
 
@@ -43,21 +43,28 @@ namespace Chocolate4.Dialogue.Runtime
         /// <summary>
         /// Starts a given situation at StartNode. To proceed to next node you have to explicitly invoke <seealso cref="NextDialogueElement"/>.
         /// </summary>
-        /// <param name="situationName"></param>
+        /// <param name="situationName">The name of the situation, it can be obtained from <seealso cref="collection"/></param>
         public void StartSituation(string situationName)
         {
-            if (!hasInitialized)
+            if (!HasInitialized)
             {
                 Debug.LogError("Dialogue Master has not initialized yet!", this);
                 return;
             }
+            
+            SituationSaveData newSituation = FindSituationByName(situationName);
 
             if (currentSituation != null)
             {
-                Debug.Log($"There was an active situation: {currentSituation.situationId}.\nTrying to start new situation: {situationName}");
+                previousSituationId = currentSituation.situationId;
+                Debug.Log($"There was an active situation: {previousSituationId}.\nTrying to start new situation: {situationName}");
+            }
+            else
+            {
+                previousSituationId = newSituation.situationId;
             }
 
-            currentSituation = FindSituationByName(situationName);
+            currentSituation = newSituation;
 
             if (currentSituation == null)
             {
@@ -65,7 +72,8 @@ namespace Chocolate4.Dialogue.Runtime
                 return;
             }
 
-            currentNode = currentSituation.nodeData.Find(node => node.nodeType.Contains(NodeConstants.StartNode));
+            currentNode = 
+                currentSituation.nodeData.Find(node => node.nodeType.Contains(NodeConstants.StartNode));
 
             allNodes =
                 TypeExtensions.MergeFieldListsIntoOneImplementingType<IDataHolder, SituationSaveData>(currentSituation);
@@ -77,7 +85,7 @@ namespace Chocolate4.Dialogue.Runtime
         /// <returns>Information about the next dialogue element in the <seealso cref="DialogueNodeInfo"/> format.</returns>
         public DialogueNodeInfo NextDialogueElement()
         {
-            if (!hasInitialized)
+            if (!HasInitialized)
             {
                 Debug.LogError("Tried to get next dialogue element but DialogueMaster was not initialized! This is not allowed.", this);
                 return null;
@@ -89,14 +97,15 @@ namespace Chocolate4.Dialogue.Runtime
                 return null;
             }
 
-            currentNode = NextNode();
+            TryGetNextNode(ref currentNode);
+
             while (currentNode.IsNodeOfType(
                 NodeConstants.ConditionNode, NodeConstants.ExpressionNode, 
                 NodeConstants.FromSituationNode, NodeConstants.ToSituationNode,
-                NodeConstants.EventPropertyNode)
+                NodeConstants.EventPropertyNode, NodeConstants.StartNode)
             )
             {
-                currentNode = NextNode();
+                TryGetNextNode(ref currentNode);
             }
 
             if (currentNode.IsNodeOfType(NodeConstants.EndNode))
@@ -126,12 +135,33 @@ namespace Chocolate4.Dialogue.Runtime
             selectedChoice = index;
         }
 
+        /// <summary>
+        /// Allows you to get the collection of <seealso cref="dialogueAsset"/> and casts it to a given type.
+        /// </summary>
+        /// <returns>Collection of situations, variables and events defined in the asset.</returns>
+        public T GetCollection<T>() where T : class, IDialogueMasterCollection
+        {
+            if (collection == null)
+            {
+                Debug.LogWarning($"Collection has not yet initialized. ");
+                return null;
+            }
+
+            if (collection is not T)
+            {
+                Debug.LogWarning($"Tried to access collection {typeof(T)} but it was of type {collection.GetType()}");
+                return null;
+            }
+
+            return (T)collection;
+        }
+
         public void Initialize()
         {
-            Collection = CreateCollection();
-            parseAdapter = new ParseAdapter(Collection);
+            collection = CreateCollection();
+            parseAdapter = new ParseAdapter(collection);
 
-            hasInitialized = true;
+            HasInitialized = true;
         }
 
         private IDialogueMasterCollection CreateCollection()
@@ -146,8 +176,27 @@ namespace Chocolate4.Dialogue.Runtime
             return (IDialogueMasterCollection)Activator.CreateInstance(assetMatchedCollectionType);
         }
 
+        private bool TryGetNextNode(ref IDataHolder current)
+        {
+            IDataHolder previousNode = current;
+            current = NextNode();
+            if (current == null)
+            {
+                current = GetStartOrFromNodeFrom(previousSituationId);
+                Debug.Log($"{previousNode.GetNodeType()} could not find next node in {FindSituationName(currentSituation)} situation. Redirecting to {current.GetNodeType()}.");
+                return false;
+            }
+
+            return true;
+        }
+
         private IDataHolder NextNode()
         {
+            if (currentNode == null)
+            {
+                return null;
+            }
+
             List<PortData> outputPortDataCollection = currentNode.NodeData.outputPortDataCollection;
 
             string nodeType = currentNode.GetNodeType();
@@ -180,16 +229,16 @@ namespace Chocolate4.Dialogue.Runtime
                 return HandleEventPropertyNode(outputPortDataCollection);
             }
 
-            Debug.LogError($"Encountered unsupported node {currentNode}! This node is null.");
+            Debug.LogWarning($"There is nothing left after node {currentNode.GetNodeType()}!");
             return null;
         }
 
         private IDataHolder HandleEventPropertyNode(List<PortData> outputPortDataCollection)
         {
             string eventName = FindPropertyNameById(((PropertyNodeSaveData)currentNode).propertyID);
-            Collection.CollectionType.GetMethod(
+            collection.CollectionType.GetMethod(
                 $"Invoke{eventName}", BindingFlags.NonPublic | BindingFlags.Instance
-            ).Invoke(Collection, null);
+            ).Invoke(collection, null);
 
             return FindNode(outputPortDataCollection.First().otherNodeID);
         }
@@ -199,8 +248,16 @@ namespace Chocolate4.Dialogue.Runtime
             string currentSituationId = currentSituation.Id;
             string nextSituation = FindSituationName(((SituationTransferNodeSaveData)currentNode).otherSituationId);
             StartSituation(nextSituation);
+            return GetStartOrFromNodeFrom(currentSituationId);
+        }
 
-            IDataHolder fromNode = FindNode<SituationTransferNodeSaveData>(node => node.otherSituationId.Equals(currentSituationId));
+        private IDataHolder GetStartOrFromNodeFrom(string situationId)
+        {
+            IDataHolder fromNode = FindNode<SituationTransferNodeSaveData>(
+                node => node.otherSituationId.Equals(situationId)
+                && node.IsNodeOfType(NodeConstants.FromSituationNode)
+            );
+
             return fromNode ?? FindNode<NodeSaveData>(node => node.IsNodeOfType(NodeConstants.StartNode));
         }
 
@@ -229,13 +286,15 @@ namespace Chocolate4.Dialogue.Runtime
                 return FindNode(outputPortDataCollection.First().otherNodeID);
             }
 
-            if (selectedChoice > count)
+            try
+            {
+                return FindNode(outputPortDataCollection[selectedChoice].otherNodeID);
+            }
+            catch (ArgumentOutOfRangeException)
             {
                 Debug.LogError($"Selected choice index {selectedChoice} was greater than number of choices {count}! Aborting.");
                 return null;
             }
-
-            return FindNode(outputPortDataCollection[selectedChoice].otherNodeID);
         }
 
         private IDataHolder FindNode<T>(Predicate<T> match) where T : IDataHolder
@@ -268,8 +327,14 @@ namespace Chocolate4.Dialogue.Runtime
         {
             TreeItemSaveData matchedData = 
                 dialogueAsset.treeSaveData.treeItemData.Find(itemData => itemData.rootItem.displayName.Equals(situationName));
-
-            return dialogueAsset.graphSaveData.situationSaveData.Find(data => data.Id == matchedData.rootItem.id);
+            try
+            {
+                return dialogueAsset.graphSaveData.situationSaveData.Find(data => data.Id == matchedData.rootItem.id);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException($"Situation with the name {situationName} was not found.");
+            }
         }
 
         private string FindSituationName(string id)
