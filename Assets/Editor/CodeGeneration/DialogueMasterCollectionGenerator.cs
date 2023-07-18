@@ -34,6 +34,7 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
             Writer writer = new Writer(new StringBuilder());
 
             writer.WriteLine("using System;");
+            writer.WriteLine("using System.Collections.Generic;");
             writer.WriteLine();
             writer.WriteLine("namespace Chocolate4.Dialogue.Runtime.Master.Collections");
             writer.BeginBlockWithIndent();
@@ -44,6 +45,20 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
 
             writer.WriteLine("#region Situation Names");
 
+            writer.WriteLine("public enum SituationName");
+            writer.BeginBlockWithIndent();
+
+            foreach (TreeItemSaveData treeItemData in treeItemsSaveData)
+            {
+                string displayName = treeItemData.rootItem.displayName;
+                string sanitizedDisplayName = displayName.ToPascalCase().Sanitize();
+
+                writer.WriteLine($"{sanitizedDisplayName},");
+            }
+
+            writer.EndBlockWithIndent();
+            writer.WriteLine();
+
             foreach (TreeItemSaveData treeItemData in treeItemsSaveData)
             {
                 string displayName = treeItemData.rootItem.displayName;
@@ -52,6 +67,23 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
                 writer.WriteLine($"public const string {sanitizedDisplayName} = \"{displayName}\";");
             }
 
+            writer.WriteLine();
+            writer.WriteLine("private Dictionary<SituationName, string> situations = new Dictionary<SituationName, string>");
+            writer.BeginBlockWithIndent();
+
+            foreach (TreeItemSaveData treeItemData in treeItemsSaveData)
+            {
+                string displayName = treeItemData.rootItem.displayName;
+                string sanitizedDisplayName = displayName.ToPascalCase().Sanitize();
+
+                writer.WriteLine($"{{ SituationName.{sanitizedDisplayName}, {sanitizedDisplayName} }},");
+            }
+
+            writer.EndBlockWithIndent(";");
+
+            writer.WriteLine();
+            writer.WriteLine("public string GetSituationName(SituationName situationName) => situations[situationName];");
+            writer.WriteLine();
             writer.WriteLine("#endregion");
             writer.WriteLine();
 

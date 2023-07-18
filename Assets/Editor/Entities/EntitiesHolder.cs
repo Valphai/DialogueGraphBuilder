@@ -1,12 +1,10 @@
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Edit.Entities.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Chocolate4.Dialogue.Edit.Entities
 {
-    [CreateAssetMenu(fileName = DataBase, menuName = FilePathConstants.Chocolate4 + "/" + nameof(EntitiesHolder))]
     public class EntitiesHolder : ScriptableObject
 	{
         public const string DataBase = "Entities Database";

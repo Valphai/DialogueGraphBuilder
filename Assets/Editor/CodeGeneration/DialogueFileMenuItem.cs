@@ -1,4 +1,3 @@
-using Chocolate4.Dialogue.Edit.Asset;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
 using System.Text;
@@ -11,7 +10,7 @@ namespace Chocolate4.Dialogue.Edit.CodeGeneration
     {
         private const string FileName = "DialogueEditor";
 
-        [MenuItem("Assets/Create/DialogueEditor")]
+        [MenuItem("Assets/Create/Chocolate4/DialogueEditor")]
         public static void MakeDialogueEditorFile()
         {
             Writer writer = WriteDefaultContent();
