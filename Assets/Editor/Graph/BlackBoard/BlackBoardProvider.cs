@@ -225,6 +225,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.BlackBoard
             BlackboardField field = (BlackboardField)visualElement;
             IDialogueProperty property = (IDialogueProperty)field.userData;
 
+            newText = newText.Sanitize();
             if (!string.IsNullOrEmpty(newText) && !newText.Equals(property.DisplayName))
             {
                 //m_Graph.owner.RegisterCompleteObjectUndo("Edit Property Name");

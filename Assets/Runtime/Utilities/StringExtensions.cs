@@ -29,7 +29,16 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
                 .Replace("(", string.Empty)
                 .Replace("{", string.Empty)
                 .Replace(")", string.Empty)
-                .Replace("}", string.Empty);
+                .Replace("}", string.Empty)
+                .Replace("<", string.Empty)
+                .Replace(">", string.Empty)
+                .Replace("=", string.Empty)
+                .Replace("+", string.Empty)
+                .Replace("-", string.Empty)
+                .Replace("/", string.Empty)
+                .Replace(";", string.Empty)
+                .Replace(",", string.Empty)
+                .Replace(".", string.Empty);
         }
 
         public static string ToPascalCase(this string entry)
