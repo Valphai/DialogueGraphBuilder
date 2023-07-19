@@ -126,6 +126,8 @@ namespace Chocolate4.Dialogue.Edit
 
         private void TrySave()
         {
+            GraphView.ValidateForSave();
+
             if (DangerLogger.IsEditorInDanger())
             {
                 return;

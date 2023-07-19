@@ -48,10 +48,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
 
             if (dangerFlags.Count != fixConditions.Count)
             {
+                Debug.LogWarning($"Developer logging error occured.");
                 return false;
             }
 
-            bool errorsFixed = fixConditions.All(condition => condition?.Invoke() == true);
+            var fixes = fixConditions.ToArray();
+            bool errorsFixed = fixes.All(condition => condition?.Invoke() == true);
             if (!errorsFixed)
             {
                 return false;
@@ -85,12 +87,14 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger
         public static void UnmarkDangerFlag(IDangerCauser causer)
         {
             DangerFlag existingFlag = dangerFlags.Find(flag => flag.dangerCauser == causer);
+            int index = dangerFlags.IndexOf(existingFlag);
             if (existingFlag == null)
             {
                 return;
             }
 
             dangerFlags.Remove(existingFlag);
+            fixConditions.RemoveAt(index);
         }
 
         public static void MarkNodeDangerous(BaseNode dangerousNode, Func<bool> fixCondition = null)

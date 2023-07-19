@@ -217,6 +217,57 @@ namespace Chocolate4.Edit.Graph
             PerformOnAllGraphElementsOfType<SituationTransferNode>(node => node.UpdatePopup(treeItem));
         }
 
+        internal void ValidateForSave()
+        {
+            List<BaseNode> starterNodes = graphElements
+                .Where(graphElement => graphElement is StartNode || graphElement is FromSituationNode)
+                .Select(node => (BaseNode)node)
+                .ToList();
+
+            Func<BaseNode, bool> onEveryNextNode = portOwner => {
+
+                if (portOwner.IsMarkedDangerous)
+                {
+                    return false;
+                }
+
+                List<Port> outputPorts = portOwner.outputContainer.Query<Port>().ToList();
+                if (outputPorts.All(port => port.IsConnectedToAny()))
+                {
+                    return false;
+                }
+
+
+                DangerLogger.WarnDanger($"{portOwner} disrupts the flow of the dialogue. Disconnect it from From Situation Nodes/Start Node or ensure all its output ports are connected to another node.", portOwner);
+
+                DangerLogger.MarkNodeDangerous(portOwner, () => {
+
+                    // need to refresh outputPorts every time because of dynamic choice node.
+                    outputPorts = portOwner.outputContainer.Query<Port>().ToList();
+
+                    if (outputPorts.All(port => port.IsConnectedToAny())
+                        || starterNodes.All(starterNode => !starterNode.IsConnectedAtAnyPointTo(portOwner))
+                    )
+                    {
+                        DangerLogger.UnmarkNodeDangerous(portOwner);
+                        return true;
+                    }
+
+                    return false;
+                });
+
+                return true;
+            };
+
+            foreach (BaseNode starterNode in starterNodes)
+            {
+                if (NodeUtilities.FindMatchingNode(starterNode, Direction.Output, onEveryNextNode))
+                {
+                    return;
+                }
+            }
+        }
+
         internal void PerformOnAllGraphElementsOfType<T>(Action<T> onElementFound) where T : GraphElement
         {
             GraphUtilities.PerformOnGraphElementsOfType<T>(graphElements, graphElement => {
@@ -356,7 +407,8 @@ namespace Chocolate4.Edit.Graph
         {
             foreach (BaseNode node in nodes)
             {
-                foreach (PortData portData in node.OutputPortDataCollection)
+                List<PortData> allOutputPortData = node.GetAllPortData(Direction.Output);
+                foreach (PortData portData in allOutputPortData)
                 {
                     if (string.IsNullOrEmpty(portData.thisPortName))
                     {
@@ -367,6 +419,7 @@ namespace Chocolate4.Edit.Graph
                     List<BaseNode> connections =
                         nodes.Where(childNode => childNode.Id == childID).ToList();
 
+                    List<Port> ports = node.Query<Port>().ToList();
                     Port outputPort = node.outputContainer.Q<Port>(portData.thisPortName);
 
                     ConnectPorts(outputPort, portData, connections);
@@ -514,6 +567,8 @@ namespace Chocolate4.Edit.Graph
             //graph.owner.RegisterCompleteObjectUndo(operationName);
             DeleteSelection();
             ClearSelection();
+
+            DangerLogger.TryFixErrorsAutomatically();
         }
 
         private void PasteOperation(string operationName, string data)
@@ -571,7 +626,7 @@ namespace Chocolate4.Edit.Graph
 
                 if (element is BaseNode baseNode)
                 {
-                    IDataHolder dataHolder = StructureSaver.SaveNode(baseNode);
+                    IDataHolder dataHolder = baseNode.Save();
                     nodeCopyCache.Add(dataHolder);
                     continue;
                 }
