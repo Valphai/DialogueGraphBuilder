@@ -75,6 +75,9 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 
             LinkedListNode<BaseNode> evaluatedNode = nodeQueue.First;
 
+            // prevent stack overflows
+            List<BaseNode> seenNodes = new List<BaseNode>();
+
             while (evaluatedNode != null)
             {
                 BaseNode evaluatedBaseNode = evaluatedNode.Value;
@@ -98,11 +101,17 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
                             continue;
                         }
 
-                        if(onEveryNextNode.Invoke(portOwner))
+                        if (seenNodes.Contains(portOwner))
+                        {
+                            continue;
+                        }
+
+                        if (onEveryNextNode.Invoke(portOwner))
                         {
                             return true;
                         }
 
+                        seenNodes.Add(portOwner);
                         nodeQueue.AddAfter(evaluatedNode, portOwner);
                     }
                 }

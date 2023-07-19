@@ -81,19 +81,6 @@ namespace Chocolate4.Edit.Graph
                     return;
                 }
 
-                BaseNode node = (BaseNode)port.node;
-
-                if (startNode is ChoiceNode || node is ChoiceNode)
-                {
-                    compatiblePorts.Add(port);
-                    return;
-                }
-
-                if (startNode.IsConnectedAtAnyPointTo(node))
-                {
-                    return;
-                }
-
                 compatiblePorts.Add(port);
             });
 
