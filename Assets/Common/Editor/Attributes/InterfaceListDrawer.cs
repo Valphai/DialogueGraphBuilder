@@ -1,3 +1,4 @@
+using Chocolate4.Dialogue.Common.Runtime;
 using System;
 using System.Linq;
 using UnityEditor;

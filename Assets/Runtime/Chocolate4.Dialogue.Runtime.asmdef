@@ -2,7 +2,7 @@
     "name": "Chocolate4.Dialogue.Runtime",
     "rootNamespace": "Chocolate4.Dialogue.Runtime",
     "references": [
-        "GUID:2bcb8cf3d42a50d4f85bae21e1b63019"
+        "GUID:6f81a4118cd24844197a40cb2d9410c2"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

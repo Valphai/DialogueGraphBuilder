@@ -4,7 +4,6 @@ using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Runtime.Utilities.Parsing;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
 namespace Chocolate4.Dialogue.Tests.Utilities
@@ -20,11 +19,11 @@ namespace Chocolate4.Dialogue.Tests.Utilities
             GameObject go = new GameObject("Dialogue Master");
             DialogueMaster dialogueMaster = go.AddComponent<DialogueMaster>();
 
-            string path =
-                FilePathConstants.GetPathRelativeTo(FilePathConstants.Assets, FilePathConstants.testCasesAssetPath);
+            string path = 
+                FilePathConstants.Chocolate4 + FilePathConstants.DirSep + FilePathConstants.testCasesAsset;
 
             DialogueEditorAsset asset =
-                AssetDatabase.LoadAssetAtPath<DialogueEditorAsset>(path);
+                Resources.Load<DialogueEditorAsset>(path);
 
             FieldInfo dialogueAssetField =
                 typeof(DialogueMaster).GetField(DialogueAsset, BindingFlags.NonPublic | BindingFlags.Instance);

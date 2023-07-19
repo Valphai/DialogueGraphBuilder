@@ -1,13 +1,14 @@
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Chocolate4.Dialogue.Edit.Entities
+namespace Chocolate4.Dialogue.Runtime.Entities
 {
     public class EntitiesHolder : ScriptableObject
 	{
         public const string DataBase = "Entities Database";
+
+        public string associatedAssetName;
 
         [SerializeField]
         private List<DialogueEntity> dataBase = new List<DialogueEntity>();
@@ -20,7 +21,7 @@ namespace Chocolate4.Dialogue.Edit.Entities
             dataBase.Clear();
 
             dataBase.AddRange(
-                EntitiesUtilities.GetAllEntities(this, out string _)
+                EntitiesUtilities.GetAllEntities(this)
             );
         }
 	}

@@ -4,8 +4,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Chocolate4.Dialogue.Runtime",
-        "Chocolate4.Dialogue.Tests.Utilities"
+        "Chocolate4.Dialogue.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

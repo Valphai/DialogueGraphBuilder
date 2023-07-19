@@ -1,12 +1,8 @@
 {
-    "name": "Chocolate4.Dialogue.Common.Edit",
-    "rootNamespace": "Chocolate4.Dialogue.Common.Edit",
-    "references": [
-        "GUID:6f81a4118cd24844197a40cb2d9410c2"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "name": "Chocolate4.Dialogue.Common.Runtime",
+    "rootNamespace": "Chocolate4.Dialogue.Common.Runtime",
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

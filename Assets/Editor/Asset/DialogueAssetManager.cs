@@ -13,7 +13,8 @@ using Chocolate4.Edit.Entities;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Edit.Entities.Utilities;
 using System.Collections.Generic;
-using Chocolate4.Dialogue.Edit.Entities;
+using Chocolate4.Dialogue.Runtime.Entities;
+using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer;
 
 namespace Chocolate4.Dialogue.Edit.Asset
 {
@@ -86,7 +87,12 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
         private void SaveEntities(EntitiesData entitiesData)
         {
-            List<DialogueEntity> existingEntities = EntitiesUtilities.GetAllEntities(entitiesDatabase, out string folderPath);
+            List<DialogueEntity> existingEntities = 
+                Runtime.EntitiesUtilities.GetAllEntities(entitiesDatabase);
+
+            string assetsRelativePath =
+                FilePathConstants.GetEntitiesPathRelative(entitiesDatabase.associatedAssetName);
+
             int[] existingIds = existingEntities.Select(entity => entity.GetInstanceID()).ToArray();
 
             List<int> cachedIds = new List<int>();
@@ -96,7 +102,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
                 cachedIds.Add(instanceId);
 
                 ScriptableObjectUtilities.CreateAssetAtPath(entity,
-                    folderPath, EntitiesUtilities.GetEntityName(entity)
+                    assetsRelativePath, EntitiesUtilities.GetEntityName(entity)
                 );
             }
 

@@ -1,4 +1,4 @@
-using Chocolate4.Dialogue.Edit.Entities;
+using Chocolate4.Dialogue.Runtime.Entities;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
@@ -48,7 +48,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
             // Force name of asset to be that on the file on disk instead of what may be serialized
             // as the 'name' property in JSON.
-            asset.name = Path.GetFileNameWithoutExtension(assetPath);
+            asset.name = entitiesDatabase.associatedAssetName = Path.GetFileNameWithoutExtension(assetPath);
             entitiesDatabase.name = EntitiesHolder.DataBase;
 
             var assetIcon = (Texture2D)EditorGUIUtility.Load(FilePathConstants.assetIcon);
