@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Chocolate4.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
+using System.Linq;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
@@ -30,8 +31,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         {
             return new NodeSaveData()
             {
-                inputPortDataCollection = InputPortDataCollection,
-                outputPortDataCollection = OutputPortDataCollection,
+                inputPortDataCollection = InputPortDataCollection.ToList(),
+                outputPortDataCollection = OutputPortDataCollection.ToList(),
                 nodeId = Id,
                 nodeType = NodeType.ToString(),
                 position = this.GetPositionRaw(),
@@ -41,8 +42,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Load(IDataHolder saveData)
         {
-            InputPortDataCollection = saveData.NodeData.inputPortDataCollection;
-            OutputPortDataCollection = saveData.NodeData.outputPortDataCollection;
+            InputPortDataCollection = saveData.NodeData.inputPortDataCollection.ToList();
+            OutputPortDataCollection = saveData.NodeData.outputPortDataCollection.ToList();
             Id = saveData.NodeData.nodeId;
             GroupId = saveData.NodeData.groupId;
 

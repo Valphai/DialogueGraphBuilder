@@ -22,13 +22,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             return $"{title} : {id}";
         }
 
-        public void Load(GroupSaveData saveData)
-        {
-            id = saveData.id;
-            title = saveData.displayName;
-            SetPosition(new Rect(saveData.position, Vector2.zero));
-        }
-
         public GroupSaveData Save()
         {
             return new GroupSaveData()
@@ -37,6 +30,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
                 displayName = title,
                 position = this.GetPositionRaw(),
             };
+        }
+
+        public void Load(GroupSaveData saveData)
+        {
+            id = saveData.id;
+            title = saveData.displayName;
+            SetPosition(new Rect(saveData.position, Vector2.zero));
         }
 
         internal void AddToGroup(BaseNode node)
