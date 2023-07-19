@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 using Chocolate4.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using System.Linq;
+using Chocolate4.Dialogue.Graph.Edit;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {
@@ -17,8 +18,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public string GroupId { get; set; }
         public string Id { get; set; }
         public Type NodeType { get; set; }
-        public List<PortData> InputPortDataCollection { get; private set; }
-        public List<PortData> OutputPortDataCollection { get; private set; }
         public abstract string Name { get; set; }
         public bool IsMarkedDangerous { get; set; }
 
@@ -29,10 +28,13 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual IDataHolder Save()
         {
+            List<PortData> inputPortData = inputContainer.Query<DataPort>().ToList().Select(port => port.Save()).ToList();
+            List<PortData> outputPortData = outputContainer.Query<DataPort>().ToList().Select(port => port.Save()).ToList();
+
             return new NodeSaveData()
             {
-                inputPortDataCollection = InputPortDataCollection.ToList(),
-                outputPortDataCollection = OutputPortDataCollection.ToList(),
+                inputPortDataCollection = inputPortData,
+                outputPortDataCollection = outputPortData,
                 nodeId = Id,
                 nodeType = NodeType.ToString(),
                 position = this.GetPositionRaw(),
@@ -42,20 +44,18 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void Load(IDataHolder saveData)
         {
-            InputPortDataCollection = saveData.NodeData.inputPortDataCollection.ToList();
-            OutputPortDataCollection = saveData.NodeData.outputPortDataCollection.ToList();
             Id = saveData.NodeData.nodeId;
             GroupId = saveData.NodeData.groupId;
 
-            LoadPortTypes(InputPortDataCollection, inputContainer);
-            LoadPortTypes(OutputPortDataCollection, outputContainer);
+            List<PortData> inputPortData = saveData.NodeData.inputPortDataCollection.ToList();
+            List<PortData> outputPortData = saveData.NodeData.outputPortDataCollection.ToList();
+            LoadPortTypes(inputPortData, inputContainer);
+            LoadPortTypes(outputPortData, outputContainer);
         }
 
         public virtual void Initialize(Vector3 startingPosition)
         {
             Id = Guid.NewGuid().ToString();
-            InputPortDataCollection = new List<PortData>();
-            OutputPortDataCollection = new List<PortData>();
             NodeType = GetType();
 
             SetPosition(new Rect(startingPosition, Vector2.zero));
@@ -63,7 +63,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public virtual void PostInitialize()
         {
-            CreatePortData();
         }
 
         public virtual void Draw()
@@ -120,42 +119,19 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             inputContainer.Add(inputPort);
         }
 
-        protected virtual Port DrawPort(string name, Direction direction, Port.Capacity capacity, Type type)
+        protected virtual DataPort DrawPort(string name, Direction direction, Port.Capacity capacity, Type type)
         {
-            Port port = InstantiatePort(Orientation.Horizontal, direction, capacity, type);
-            port.portName = port.name = name;
+            DataPort port = DataPort.Create<Edge>(name, Orientation.Horizontal, direction, capacity, type);
 
             return port;
         }
 
-        protected virtual void CreatePortData()
-        {
-            CreatePortData(inputContainer, InputPortDataCollection);
-            CreatePortData(outputContainer, OutputPortDataCollection);
-        }
-
-        protected void CreatePortData(VisualElement container, List<PortData> dataCollection)
-        {
-            dataCollection.Clear();
-
-            List<Port> ports = container.Query<Port>().ToList();
-            foreach (Port port in ports)
-            {
-                PortData portData = new PortData() 
-                { 
-                    thisPortName = port.portName,
-                    thisPortType = port.portType.ToString()
-                };
-                dataCollection.Add(portData);
-            }
-        }
-
         private void LoadPortTypes(List<PortData> portDataCollection, VisualElement portContainer)
         {
-            List<Port> ports = portContainer.Query<Port>().ToList();
+            List<DataPort> ports = portContainer.Query<DataPort>().ToList();
             for (int i = 0; i < ports.Count; i++)
             {
-                ports[i].portType = Type.GetType(portDataCollection[i].thisPortType);
+                ports[i].Load(portDataCollection[i]);
             }
         }
     }

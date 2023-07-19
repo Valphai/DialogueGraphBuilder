@@ -28,7 +28,6 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
         public override void Load(IDataHolder saveData)
         {
-            base.Load(saveData);
             ChoiceNodeSaveData choicesSaveData = (ChoiceNodeSaveData)saveData;
             choices = choicesSaveData.choices.ToList();
 
@@ -36,6 +35,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             {
                 AddChoicePort(choice);
             }
+
+            base.Load(saveData);
         }
 
         protected override void AddExtraContent(VisualElement contentContainer)
@@ -97,45 +98,18 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 
             container.Add(outputPort);
             buttonedPortsContainer.Insert(choiceIndex, container);
-
-            AddNewPortData(outputPort, OutputPortDataCollection);
         }
 
         internal void RemoveChoicePort(Port outputPort)
         {
-            Utilities.NodeUtilities.ClearConnectedPortDataTo(outputPort);
+            List<Edge> connectedEdges = outputPort.connections.ToList();
+            foreach (var edge in connectedEdges)
+            {
+                outputPort.Disconnect(edge);
+                edge.RemoveFromHierarchy();
+            }
 
-            outputPort.DisconnectAll();
             RefreshPorts();
-            RemovePortData(outputPort, OutputPortDataCollection);
-        }
-
-        private void RemovePortData(Port port, List<PortData> dataCollection)
-        {
-            PortData portData = dataCollection.Find(data => data.thisPortName.Equals(port.portName));
-            if (portData == null)
-            {
-                return;
-            }
-
-            dataCollection.Remove(portData);
-        }
-
-        private void AddNewPortData(Port port, List<PortData> dataCollection)
-        {
-            PortData portData = dataCollection.Find(data => data.thisPortName.Equals(port.portName));
-            if (portData != null)
-            {
-                return;
-            }
-
-            portData = new PortData()
-            {
-                thisPortName = port.portName,
-                thisPortType = port.portType.ToString()
-            };
-
-            dataCollection.Add(portData);
         }
     }
 }

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-using Chocolate4.Dialogue.Runtime.Utilities;
+using Chocolate4.Dialogue.Graph.Edit;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Utilities
 {
     public static class NodeUtilities
     {
-        public static List<BaseNode> GetConnections(Port port, Direction requestedPort, Action<Port> actionOnOtherPort = null)
+        public static List<BaseNode> GetConnectedNodesTo(Port port, Direction requestedPort, Action<Port> actionOnOtherPort = null)
         {
             List<Edge> connections = port.connections.ToList();
 
@@ -36,33 +36,12 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
             return allPorts.Any(port => port.IsConnectedTo(another));
         }
 
-        internal static void ClearConnectedPortDataTo(Port outputPort)
+        internal static List<PortData> GetAllPortData(this BaseNode node, Direction portDirection)
         {
-            if (outputPort.connections.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            Edge edge = outputPort.connections.First();
-            List<Port> connectedPorts = outputPort.ConnectedPorts().ToList();
-
-            foreach (Port port in connectedPorts)
-            {
-                BaseNode connectedOtherNode = (BaseNode)port.node;
-
-                IEnumerable<PortData> portDataToRemove =
-                    connectedOtherNode.InputPortDataCollection.Where(portData => portData.otherPortName.Equals(outputPort.portName));
-                if (!portDataToRemove.IsNullOrEmpty())
-                {
-                    PortData ToRemove = portDataToRemove.First();
-                    ToRemove.otherPortName = ToRemove.otherNodeID = string.Empty;
-                }
-
-                port.Disconnect(edge);
-                connectedOtherNode.RefreshPorts();
-            }
-
-            edge.RemoveFromHierarchy();
+            return (portDirection == Direction.Input ? node.inputContainer : node.outputContainer)
+                .Query<DataPort>().ToList()
+                .Select(port => port.PortData)
+                .ToList();
         }
 
         internal static bool IsConnectedAtAnyPointTo(this BaseNode node, BaseNode another)
@@ -87,7 +66,7 @@ namespace Chocolate4.Dialogue.Edit.Graph.Utilities
             return isConnected;
         }
 
-        private static bool FindMatchingNode(
+        internal static bool FindMatchingNode(
             BaseNode startNode, Direction direction, Func<BaseNode, bool> onEveryNextNode
         )
         {

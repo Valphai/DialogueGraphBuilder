@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-using static Chocolate4.Dialogue.Edit.Graph.Utilities.NodeUtilities;
 
 namespace Chocolate4.Dialogue.Edit.Saving
 {
@@ -20,27 +19,10 @@ namespace Chocolate4.Dialogue.Edit.Saving
             List<IDataHolder> nodeSaveDatas = new List<IDataHolder>();
             List<GroupSaveData> groupSaveDatas = new List<GroupSaveData>();
 
-            graphView.PerformOnAllGraphElementsOfType<BaseNode>(node => nodeSaveDatas.Add(SaveNode(node)));
+            graphView.PerformOnAllGraphElementsOfType<BaseNode>(node => nodeSaveDatas.Add(node.Save()));
             graphView.PerformOnAllGraphElementsOfType<CustomGroup>(group => groupSaveDatas.Add(group.Save()));
 
             return new SituationSaveData(situationGuid, nodeSaveDatas, groupSaveDatas);
-        }
-
-        public static IDataHolder SaveNode(BaseNode node)
-        {
-            List<Port> outputPorts = node.outputContainer.Query<Port>().ToList();
-            List<Port> inputPorts = node.inputContainer.Query<Port>().ToList();
-
-            if (!outputPorts.IsNullOrEmpty())
-            {
-                SaveConnections(node.OutputPortDataCollection, outputPorts, Direction.Input);
-            }
-            if (!inputPorts.IsNullOrEmpty())
-            {
-                SaveConnections(node.InputPortDataCollection, inputPorts, Direction.Output);
-            }
-
-            return node.Save();
         }
 
         public static TreeSaveData SaveTree(TreeView treeView)
@@ -63,25 +45,6 @@ namespace Chocolate4.Dialogue.Edit.Saving
             }
 
             return result;
-        }
-
-        private static void SaveConnections(List<PortData> portDataCollection, List<Port> ports, Direction requestedPort)
-        {
-            foreach (Port port in ports)
-            {
-                PortData portData = portDataCollection.Find(portData => portData.thisPortName.Equals(port.portName));
-
-                List<BaseNode> connectedNodes = 
-                    GetConnections(port, requestedPort, (otherPort) => portData.otherPortName = otherPort.portName);
-
-                if (connectedNodes.IsNullOrEmpty())
-                {
-                    portData.otherNodeID = portData.otherPortName = string.Empty;
-                    continue;
-                }
-
-                connectedNodes.ForEach(child => portData.otherNodeID = child.Id);
-            }
         }
 
         private static List<KeyValuePair<int, List<int>>> GetNodesByDepth(TreeView treeView)
