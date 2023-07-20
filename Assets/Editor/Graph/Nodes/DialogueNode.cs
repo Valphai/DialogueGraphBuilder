@@ -1,10 +1,10 @@
 ﻿using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UIElements;
+using Chocolate4.Dialogue.Edit.Entities.Utilities;
 
 namespace Chocolate4.Dialogue.Edit.Graph.Nodes
 {

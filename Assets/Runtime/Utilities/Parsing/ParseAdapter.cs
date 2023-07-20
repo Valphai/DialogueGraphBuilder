@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Chocolate4.Runtime.Utilities.Parsing
+namespace Chocolate4.Dialogue.Runtime.Utilities.Parsing
 {
 	public class ParseAdapter
 	{

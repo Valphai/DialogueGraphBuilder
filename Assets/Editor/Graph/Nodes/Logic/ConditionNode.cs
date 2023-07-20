@@ -2,7 +2,7 @@
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
-using Chocolate4.Runtime.Utilities;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 

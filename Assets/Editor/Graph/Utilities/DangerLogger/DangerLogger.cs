@@ -1,5 +1,5 @@
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
-using Chocolate4.Edit.Graph.Utilities;
+using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using System.Collections.Generic;
 using System.Linq;

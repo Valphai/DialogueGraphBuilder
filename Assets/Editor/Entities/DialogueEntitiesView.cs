@@ -1,7 +1,7 @@
 using Chocolate4.Dialogue.Edit.Saving;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities.Sidebar;
-using Chocolate4.Edit.Entities.Utilities;
+using Chocolate4.Dialogue.Edit.Entities.Sidebar;
+using Chocolate4.Dialogue.Edit.Entities.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -12,7 +12,7 @@ using Chocolate4.Dialogue.Edit.Search;
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 
-namespace Chocolate4.Edit.Entities
+namespace Chocolate4.Dialogue.Edit.Entities
 {
     public class DialogueEntitiesView : VisualElement, IRebuildable<EntitiesData>, ISearchable
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Chocolate4.Runtime.Utilities;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities.DangerLogger;
 using System.Linq;
 using Chocolate4.Dialogue.Graph.Edit;

@@ -1,4 +1,3 @@
-using Chocolate4.Dialogue.Edit;
 using Chocolate4.Dialogue.Edit.Graph.BlackBoard;
 using Chocolate4.Dialogue.Edit.Graph.Nodes;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
@@ -16,7 +15,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using SearchWindow = Chocolate4.Dialogue.Edit.Search.SearchWindow;
 
-namespace Chocolate4.Edit.Graph
+namespace Chocolate4.Dialogue.Edit.Graph
 {
     public class DialogueGraphView : GraphView, IRebuildable<GraphSaveData>
     {
@@ -248,7 +247,7 @@ namespace Chocolate4.Edit.Graph
 
             foreach (BaseNode starterNode in starterNodes)
             {
-                if (NodeUtilities.FindMatchingNode(starterNode, Direction.Output, onEveryNextNode))
+                if (Utilities.NodeUtilities.FindMatchingNode(starterNode, Direction.Output, onEveryNextNode))
                 {
                     return;
                 }

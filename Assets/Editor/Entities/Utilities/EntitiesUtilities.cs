@@ -3,7 +3,7 @@ using Chocolate4.Dialogue.Runtime.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Chocolate4.Edit.Entities.Utilities
+namespace Chocolate4.Dialogue.Edit.Entities.Utilities
 {
     public static class EntitiesUtilities
     {

@@ -1,4 +1,4 @@
-namespace Chocolate4.Runtime.Utilities
+namespace Chocolate4.Dialogue.Runtime.Utilities
 {
     public static class NodeConstants
     {

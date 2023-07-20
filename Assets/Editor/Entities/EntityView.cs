@@ -1,13 +1,13 @@
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities.Utilities;
+using Chocolate4.Dialogue.Edit.Entities.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using System;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Chocolate4.Edit.Entities
+namespace Chocolate4.Dialogue.Edit.Entities
 {
     public class EntityView : VisualElement
     {

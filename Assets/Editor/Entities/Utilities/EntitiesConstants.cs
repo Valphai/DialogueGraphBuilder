@@ -1,4 +1,4 @@
-namespace Chocolate4.Edit.Entities.Utilities
+namespace Chocolate4.Dialogue.Edit.Entities.Utilities
 {
 	public static class EntitiesConstants
 	{

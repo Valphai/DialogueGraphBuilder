@@ -1,7 +1,7 @@
 ﻿using Chocolate4.Dialogue.Edit.Tree;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities;
-using Chocolate4.Edit.Graph;
+using Chocolate4.Dialogue.Edit.Entities;
+using Chocolate4.Dialogue.Edit.Graph;
 
 namespace Chocolate4.Dialogue.Edit.Saving
 {

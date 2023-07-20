@@ -2,7 +2,7 @@ using B83.LogicExpressionParser;
 using Chocolate4.Dialogue.Runtime;
 using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Runtime.Utilities;
-using Chocolate4.Runtime.Utilities.Parsing;
+using Chocolate4.Dialogue.Runtime.Utilities.Parsing;
 using System.Reflection;
 using UnityEngine;
 

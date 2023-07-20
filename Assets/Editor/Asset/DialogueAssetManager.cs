@@ -1,6 +1,6 @@
 ﻿using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Edit.Tree;
-using Chocolate4.Edit.Graph;
+using Chocolate4.Dialogue.Edit.Graph;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -9,12 +9,11 @@ using Chocolate4.Dialogue.Runtime.Asset;
 using Chocolate4.Dialogue.Edit.CodeGeneration;
 using System.Linq;
 using Chocolate4.Dialogue.Runtime.Utilities;
-using Chocolate4.Edit.Entities;
+using Chocolate4.Dialogue.Edit.Entities;
 using Chocolate4.Dialogue.Edit.Utilities;
-using Chocolate4.Edit.Entities.Utilities;
+using Chocolate4.Dialogue.Edit.Entities.Utilities;
 using System.Collections.Generic;
 using Chocolate4.Dialogue.Runtime.Entities;
-using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer;
 
 namespace Chocolate4.Dialogue.Edit.Asset
 {

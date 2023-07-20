@@ -2,7 +2,7 @@ using B83.LogicExpressionParser;
 using Chocolate4.Dialogue.Runtime;
 using Chocolate4.Dialogue.Runtime.Master.Collections;
 using Chocolate4.Dialogue.Tests.Utilities;
-using Chocolate4.Runtime.Utilities.Parsing;
+using Chocolate4.Dialogue.Runtime.Utilities.Parsing;
 using NUnit.Framework;
 
 namespace Chocolate4.Dialogue.Tests.PlayMode

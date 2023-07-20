@@ -1,10 +1,10 @@
 using Chocolate4.Dialogue.Edit.Utilities;
 using Chocolate4.Dialogue.Runtime.Saving;
-using Chocolate4.Edit.Entities.Utilities;
+using Chocolate4.Dialogue.Edit.Entities.Utilities;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
 using UnityEngine.UIElements;
 
-namespace Chocolate4.Edit.Entities.Sidebar
+namespace Chocolate4.Dialogue.Edit.Entities.Sidebar
 {
     public class ListViewItem : VisualElement
     {

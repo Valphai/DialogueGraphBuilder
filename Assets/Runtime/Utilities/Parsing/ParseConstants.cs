@@ -1,4 +1,4 @@
-namespace Chocolate4.Runtime.Utilities.Parsing
+namespace Chocolate4.Dialogue.Runtime.Utilities.Parsing
 {
     public class ParseConstants
     {

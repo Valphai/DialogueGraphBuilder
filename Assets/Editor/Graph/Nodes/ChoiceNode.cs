@@ -2,7 +2,7 @@
 using Chocolate4.Dialogue.Runtime.Nodes;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Edit.Graph.Utilities;
-using Chocolate4.Runtime.Utilities;
+using Chocolate4.Dialogue.Runtime.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;

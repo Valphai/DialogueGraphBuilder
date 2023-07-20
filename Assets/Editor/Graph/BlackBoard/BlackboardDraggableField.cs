@@ -1,4 +1,4 @@
-using Chocolate4.Edit.Graph;
+using Chocolate4.Dialogue.Edit.Graph;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Chocolate4.Edit.Graph
+namespace Chocolate4.Dialogue.Edit.Graph
 {
     public class DragAndDropManipulator : PointerManipulator
     {
