@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Chocolate4.Dialogue.Common.Runtime
+namespace Chocolate4.Dialogue.Runtime.Common
 {
     public class InterfaceListAttribute : PropertyAttribute
     {

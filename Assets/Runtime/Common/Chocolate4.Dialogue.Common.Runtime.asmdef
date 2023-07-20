@@ -1,6 +1,6 @@
 {
-    "name": "Chocolate4.Dialogue.Common.Runtime",
-    "rootNamespace": "Chocolate4.Dialogue.Common.Runtime",
+    "name": "Chocolate4.Dialogue.Runtime.Common",
+    "rootNamespace": "Chocolate4.Dialogue.Runtime.Common",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

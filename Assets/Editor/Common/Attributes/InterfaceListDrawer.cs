@@ -1,10 +1,10 @@
-using Chocolate4.Dialogue.Common.Runtime;
+using Chocolate4.Dialogue.Runtime.Common;
 using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Chocolate4.Dialogue.Common.Edit
+namespace Chocolate4.Dialogue.Edit.Common
 {
     [CustomPropertyDrawer(typeof(InterfaceListAttribute))]
     public class InterfaceListDrawer : PropertyDrawer

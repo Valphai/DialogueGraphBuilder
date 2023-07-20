@@ -1,4 +1,4 @@
-﻿using Chocolate4.Dialogue.Common.Runtime;
+﻿using Chocolate4.Dialogue.Runtime.Common;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using System;
 using System.Collections.Generic;

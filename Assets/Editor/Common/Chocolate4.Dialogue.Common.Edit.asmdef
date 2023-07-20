@@ -1,6 +1,6 @@
 {
-    "name": "Chocolate4.Dialogue.Common.Edit",
-    "rootNamespace": "Chocolate4.Dialogue.Common.Edit",
+    "name": "Chocolate4.Dialogue.Edit.Common",
+    "rootNamespace": "Chocolate4.Dialogue.Edit.Common",
     "references": [
         "GUID:6f81a4118cd24844197a40cb2d9410c2"
     ],
