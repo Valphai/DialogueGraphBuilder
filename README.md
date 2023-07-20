@@ -48,9 +48,15 @@ It's recommended to download the package from the Releases page as this guarante
 
 # Quick Setup
 
+## Editor
+
 In order to start using the tool, after installing the package, navigate to Create>Chocolate4/DialogueEditor.
 
-Double click on the asset and its ready to use.
+Double click on the asset and the tool is ready to use.
+
+## Build/Playmode
+
+To start using the tool in build/playmode, a scene
 
 # Documentation
 
@@ -115,19 +121,49 @@ Dialogue Master is a component responsible for running the dialogue graph flow a
 
 In order to use the master, simply add the component to an object in the hierarchy and set exposed fields in the inspector.
 
+Public methods in the master include:
+
+#### ```Initialize()```
+
+For the initialization purposes you are given an option to either initialize the master from the Awake method, this is done by ticking ```autoInitialize``` field, or from this method. This method has to be invoked before ```DialogueMaster``` can work properly.
+
+#### ```StartSituation(string situationName)```
+
+Allows to start a situation explicitly at any given moment. It will set the current node to either [StartNode](#start-node) or [FromSituationNode](#from-situation-node). No situation is set by default, this method has to be called before calling ```NextDialogueElement()```.
+
+#### ```NextDialogueElement()```
+
+This method will proceed with dialogue flow in a given situation. Returns [DialogueNodeInfo](#dialoguenodeinfo.) that allows you to interact with the Dialogue graph externally. This method will usually be called whenever player makes a choice, wants to progress in the dialogue or when a situation has ended.
+
+Invoking ```NextDialogueElement()``` when [DialogueNodeInfo](#dialoguenodeinfo) returns ```IsChoiceNode``` before using ```SetSelectedChoice(int index)```, will result in the first choice being selected, previously selected choice selected, or an error if the number of choices in the current node is smaller than previously selected choice index.
+
+#### ```SetSelectedChoice(int index)```
+
+When arriving at the [ChoiceNode](#choice-node), this method has to be called when the player makes their choice with the index of said choice. 
+
+#### ```GetCollection<T>()```
+
+This method allows you to get access to currently selected [collection](#collections) in the asset. Use the collection to interact with variables and events.
+
 ### Collections
 
-Collections are per asset generated scripts with variables and events defined in the [blackboard](#blackboard) and situation names defined in the [tree view](#situations).
+Collections are per asset generated scripts with variables and events defined in the graph's [blackboard](#blackboard), and situation names defined in the [tree view](#situations). They allow you to gain read/write access to any variable you create within the assets' EditorWindow tool.
 
-You can access the current collection from the [DialogueMaster](#dialoguemaster) by invoking ```DialogueMaster.GetCollection<T>()``` where T is the asset name followed by the word "Collection".
+All the collections are automatically generated inside Runtime/Master/Collections folder, after you create the Dialogue Asset. Note that any changes made to this file will be lost if not made from within the asset.
 
-Collections are created inside of ```DialogueMaster``` based on the asset you provide it with (```DialogueMaster.dialogueAsset```).
+You can access the current collection from the [DialogueMaster](#dialoguemaster) by invoking ```DialogueMaster.GetCollection<T>()``` where T is the asset name followed by the word "Collection". The IntelliSense of your code editor should allow you to see the collection once you've saved changes in the assets' EditorWindow.
+
+Collections are created at runtime inside of ```DialogueMaster``` based on the asset you provide it with (field ```DialogueMaster.dialogueAsset```). 
+
+All the variable values in the collection can be read and set by the user. All the events can be subscribed to or unsubscribed from (see [EventNode](#event-node)).
 
 ## DialogueNodeInfo
 
 ```DialogueNodeInfo``` is sent by ```DialogueMaster.NextDialogueElement()``` method. In the class, you will find any information you need from a node while traversing the graph, such as speaker, dialogue text, choices and whether situation has ended.
 
-```DialogueNodeInfo``` is sent only on [Dialogue](#dialogue-node), [Choice](#choice-node) and [End](#end-node) nodes.
+```DialogueNodeInfo``` is sent only on [Dialogue](#dialogue-node), [Choice](#choice-node) and [End](#end-node) nodes. When sent, the dialogue flow will stop along with it, allowing you to process the active node yourself, and call ```DialogueMaster.NextDialogueElement()``` again when needed. All other nodes are processed internally immiedately, until the three above mentioned nodes are reached in the flow for you to use.
+
+When [ToSituationNode](#to-situation-node) is reached, it will immiedately switch to the next situation
 
 ## Graph View
 
@@ -139,13 +175,15 @@ Blackboard is a collection of dialogue variables and events, similar to ShaderGr
 
 By pressing the "+" icon in the top right, you will be able to create variables and events that can be used across [situations](#situations). The default value of each variable can be set by expanding the "Pill" with the ">" button.
 
-Event is a special Pill which doesn't have any default value, and can be dragged into the [graph view](#graph-view) to create an [Event Node](#event-node).
+Event is a special Pill which doesn't have any default value, and can be dragged into the graph view to create an [Event Node](#event-node).
 
 ### Nodes
 
-Graph view supports a variety of nodes to help you build the flow. Additionally you can also group the nodes by pressing RMB or navigating to Dialogue>Group in the search window opened by pressing Space.
+Graph view supports a variety of nodes to help you build the flow. Additionally you can also group the nodes by pressing RMB or navigating to Dialogue>Group in the search window opened by pressing Space. The selected nodes can be grouped all at once by creating group using the above methods while having nodes selected.
 
-Aside from the [Start Node](#start-node) every node can be deleted by either pressing the Del key on the keyboard or by pressing RMB and pressing "Remove" on the contextual menu.
+To remove a node from a group, while holding Shift press on a given node. Aside from the [Start Node](#start-node) every node can be deleted by either pressing the Del key on the keyboard or by pressing RMB and pressing "Remove" on the contextual menu.
+
+DialogueGraphBuilder allows for cyclic node connections, however the user should remain cautious when creating such connections as they may lead to unwanted behaviours.
 
 #### Dialogue Node
 
@@ -203,7 +241,7 @@ If it is attempted to move past the End Node with ```DialogueMaster.NextDialogue
 
 #### From Situation Node
 
-This node allows to create a point where dialogue should continue from, when the situation the flow came from, is set as value of this node.
+This node allows to create a point where dialogue should continue from, when the situation the flow came from, is set as value of this node. In a situation, there can only be one ```FromSituationNode``` navigating to the same situation.
 
 From Situation Nodes allow for specific transition that would not be otherwise possible only by using Start Nodes.
 
