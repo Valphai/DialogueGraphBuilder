@@ -1,0 +1,1537 @@
+{
+    "collectionName": "ShopKeeper",
+    "graphSaveData": {
+        "graphViewPosition": {
+            "x": 231.0,
+            "y": 194.0
+        },
+        "graphViewZoom": {
+            "x": 0.25,
+            "y": 0.25
+        },
+        "situationSaveData": [
+            {
+                "situationId": "90bdc140-e08e-4b55-a175-23558dc0005f",
+                "nodeData": [
+                    {
+                        "nodeId": "0eb2cba6-4e0e-4a57-b5f5-9468e54e81b4",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.StartNode",
+                        "position": {
+                            "x": -232.60008239746095,
+                            "y": 508.9801025390625
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [],
+                        "outputPortDataCollection": [
+                            {
+                                "otherNodeID": "eb5743b3-2e58-4f6e-990d-1576dfc1bcaf",
+                                "otherPortName": "In",
+                                "thisPortName": "Out",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ]
+                    },
+                    {
+                        "nodeId": "f5fb56cd-2686-4621-a7fd-683524711727",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 3284.938232421875,
+                            "y": 301.0000305175781
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "ffbbe6c2-4e23-42e4-9a89-8c4dbfc78fd6",
+                                "otherPortName": "Choice (1)",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    },
+                    {
+                        "nodeId": "11fc37e5-cd94-4a7f-8a86-c00877e9051b",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 2161.722900390625,
+                            "y": 760.3705444335938
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "25b9cbf7-2253-454d-9b28-782e405fc072",
+                                "otherPortName": "Out",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    },
+                    {
+                        "nodeId": "3abfaa69-6aff-4cd2-aa38-997558ef26fb",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 2427.988037109375,
+                            "y": 79.0
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "624c6e8e-7558-4482-bcf9-b5f5af395223",
+                                "otherPortName": "Out",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    }
+                ],
+                "textNodeData": [
+                    {
+                        "text": "PlayerGold == 300;",
+                        "nodeSaveData": {
+                            "nodeId": "b6b7b55d-dfd7-4386-b8fa-5f676c9395e6",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ConditionNode",
+                            "position": {
+                                "x": 2247.0,
+                                "y": 407.00006103515627
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "ce5d7345-4c6b-4c2b-bfa6-1950365f85a8",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "ffbbe6c2-4e23-42e4-9a89-8c4dbfc78fd6",
+                                    "otherPortName": "In",
+                                    "thisPortName": "True",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "e25fab9f-ec90-40ba-bc5d-e0b091d03a2f",
+                                    "otherPortName": "In",
+                                    "thisPortName": "False",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "FirstTimeInTheShop == true;",
+                        "nodeSaveData": {
+                            "nodeId": "eb5743b3-2e58-4f6e-990d-1576dfc1bcaf",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ConditionNode",
+                            "position": {
+                                "x": -70.60008239746094,
+                                "y": 508.9801025390625
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "0eb2cba6-4e0e-4a57-b5f5-9468e54e81b4",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "360ae84c-1831-4057-add4-3ecac672437c",
+                                    "otherPortName": "In",
+                                    "thisPortName": "True",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "c020cc8e-d5ea-4bae-a38a-ce221ed231c8",
+                                    "otherPortName": "In",
+                                    "thisPortName": "False",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "SimonIntroducedHimself = true;\nFirstTimeInTheShop = false;",
+                        "nodeSaveData": {
+                            "nodeId": "c59913f9-8180-4884-92e8-1b943ffc6952",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ExpressionNode",
+                            "position": {
+                                "x": 801.35498046875,
+                                "y": -89.29000091552735
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "32f631ca-b347-4e07-bcd4-fa41b66fef6b",
+                                    "otherPortName": "Choice",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "bb818e4d-e811-4117-aa2d-6e56308d3fbc",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dialogueNodeData": [
+                    {
+                        "text": "I am just looking around.",
+                        "speaker": {
+                            "instanceID": 34672
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "506d99fc-ee13-49ca-a7f8-1c07679cd826",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1325.0,
+                                "y": -140.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "bb818e4d-e811-4117-aa2d-6e56308d3fbc",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "08b54dbe-7203-408e-8522-14f82e139882",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "You're in luck! We just got a fresh shipment.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "6866e108-d487-4400-b21f-3f438b9a916b",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1918.6173095703125,
+                                "y": 8.000030517578125
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "08b54dbe-7203-408e-8522-14f82e139882",
+                                    "otherPortName": "Choice",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "624c6e8e-7558-4482-bcf9-b5f5af395223",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Sorry I think I lost my wallet.",
+                        "speaker": {
+                            "instanceID": 34672
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "e25fab9f-ec90-40ba-bc5d-e0b091d03a2f",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 2571.000244140625,
+                                "y": 516.4000244140625
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "b6b7b55d-dfd7-4386-b8fa-5f676c9395e6",
+                                    "otherPortName": "False",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "8889c63e-2eab-4142-b172-6b7dcd0a1493",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Absolutely, that will be 300 golden pieces!",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "ce5d7345-4c6b-4c2b-bfa6-1950365f85a8",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1918.6173095703125,
+                                "y": 338.00006103515627
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "08b54dbe-7203-408e-8522-14f82e139882",
+                                    "otherPortName": "Choice (1)",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "b6b7b55d-dfd7-4386-b8fa-5f676c9395e6",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Thanks for your patronage, your room is on the third floor, first door to the right.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "00e1dc94-f38a-4fdc-aa1e-4b97490432e8",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 2787.323974609375,
+                                "y": 44.00004577636719
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "ffbbe6c2-4e23-42e4-9a89-8c4dbfc78fd6",
+                                    "otherPortName": "Choice",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "c515f3da-e00a-44d7-bb55-3c745e90a1dc",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Farewell adventurer, until we meet again.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "25b9cbf7-2253-454d-9b28-782e405fc072",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1831.722900390625,
+                                "y": 694.3704223632813
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "32f631ca-b347-4e07-bcd4-fa41b66fef6b",
+                                    "otherPortName": "Choice (3)",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "11fc37e5-cd94-4a7f-8a86-c00877e9051b",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Welcome adventurer! You've come to the right place. We have a wide variety of supplies to suit your needs. What are you looking for?",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "360ae84c-1831-4057-add4-3ecac672437c",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 172.39991760253907,
+                                "y": 438.98004150390627
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "eb5743b3-2e58-4f6e-990d-1576dfc1bcaf",
+                                    "otherPortName": "True",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "32f631ca-b347-4e07-bcd4-fa41b66fef6b",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Who am I? I am Simon, the shopkeeper, at your service. Tell me, adventurer, what brings you to these parts and what sort of supplies do you seek? ",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "bb818e4d-e811-4117-aa2d-6e56308d3fbc",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1016.3399658203125,
+                                "y": -157.19253540039063
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "c59913f9-8180-4884-92e8-1b943ffc6952",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "506d99fc-ee13-49ca-a7f8-1c07679cd826",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "propertyNodeSaveData": [
+                    {
+                        "propertyID": "25577837-1f03-4a7c-933a-81f611d434da",
+                        "propertyType": 2,
+                        "value": "",
+                        "nodeSaveData": {
+                            "nodeId": "624c6e8e-7558-4482-bcf9-b5f5af395223",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EventPropertyNode",
+                            "position": {
+                                "x": 2247.0,
+                                "y": 78.99996948242188
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "6866e108-d487-4400-b21f-3f438b9a916b",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "3abfaa69-6aff-4cd2-aa38-997558ef26fb",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "propertyID": "3200f03d-2e71-4ed8-9584-4fe36b59aa6a",
+                        "propertyType": 2,
+                        "value": "",
+                        "nodeSaveData": {
+                            "nodeId": "c515f3da-e00a-44d7-bb55-3c745e90a1dc",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EventPropertyNode",
+                            "position": {
+                                "x": 3087.323974609375,
+                                "y": 117.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "00e1dc94-f38a-4fdc-aa1e-4b97490432e8",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "f5fb56cd-2686-4621-a7fd-683524711727",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "situationTransferNodeData": [
+                    {
+                        "otherSituationId": "ad353261-a6ec-4335-8c6f-5de384182c90",
+                        "nodeSaveData": {
+                            "nodeId": "8889c63e-2eab-4142-b172-6b7dcd0a1493",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ToSituationNode",
+                            "position": {
+                                "x": 2893.100830078125,
+                                "y": 585.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "e25fab9f-ec90-40ba-bc5d-e0b091d03a2f",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": []
+                        }
+                    },
+                    {
+                        "otherSituationId": "5bceb238-bc0d-4e8c-97a5-53cdc5434f0a",
+                        "nodeSaveData": {
+                            "nodeId": "c020cc8e-d5ea-4bae-a38a-ce221ed231c8",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ToSituationNode",
+                            "position": {
+                                "x": 126.39994812011719,
+                                "y": 769.9801025390625
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "eb5743b3-2e58-4f6e-990d-1576dfc1bcaf",
+                                    "otherPortName": "False",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": []
+                        }
+                    }
+                ],
+                "choiceNodeData": [
+                    {
+                        "choices": [
+                            {
+                                "name": "Choice",
+                                "text": "What have you got for sale?"
+                            },
+                            {
+                                "name": "Choice (1)",
+                                "text": "Can I rent a room for a night?"
+                            },
+                            {
+                                "name": "Choice (2)",
+                                "text": "Bye."
+                            }
+                        ],
+                        "nodeSaveData": {
+                            "nodeId": "08b54dbe-7203-408e-8522-14f82e139882",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ChoiceNode",
+                            "position": {
+                                "x": 1617.81640625,
+                                "y": 188.00006103515626
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "506d99fc-ee13-49ca-a7f8-1c07679cd826",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "6866e108-d487-4400-b21f-3f438b9a916b",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "ce5d7345-4c6b-4c2b-bfa6-1950365f85a8",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (1)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "25b9cbf7-2253-454d-9b28-782e405fc072",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (2)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "choices": [
+                            {
+                                "name": "Choice",
+                                "text": "Here you go."
+                            },
+                            {
+                                "name": "Choice (1)",
+                                "text": "I think I'll have to think it over."
+                            }
+                        ],
+                        "nodeSaveData": {
+                            "nodeId": "ffbbe6c2-4e23-42e4-9a89-8c4dbfc78fd6",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ChoiceNode",
+                            "position": {
+                                "x": 2571.0,
+                                "y": 262.86248779296877
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "b6b7b55d-dfd7-4386-b8fa-5f676c9395e6",
+                                    "otherPortName": "True",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "00e1dc94-f38a-4fdc-aa1e-4b97490432e8",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "f5fb56cd-2686-4621-a7fd-683524711727",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (1)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "choices": [
+                            {
+                                "name": "Choice",
+                                "text": "Who are you?"
+                            },
+                            {
+                                "name": "Choice (3)",
+                                "text": "Bye."
+                            }
+                        ],
+                        "nodeSaveData": {
+                            "nodeId": "32f631ca-b347-4e07-bcd4-fa41b66fef6b",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ChoiceNode",
+                            "position": {
+                                "x": 607.0,
+                                "y": 509.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "360ae84c-1831-4057-add4-3ecac672437c",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "c59913f9-8180-4884-92e8-1b943ffc6952",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "25b9cbf7-2253-454d-9b28-782e405fc072",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (3)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "groupData": []
+            },
+            {
+                "situationId": "5bceb238-bc0d-4e8c-97a5-53cdc5434f0a",
+                "nodeData": [
+                    {
+                        "nodeId": "02f6d809-928b-4e49-9b51-90dc57b515ee",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.StartNode",
+                        "position": {
+                            "x": -113.74972534179688,
+                            "y": 313.0000305175781
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [],
+                        "outputPortDataCollection": [
+                            {
+                                "otherNodeID": "f8395d64-7607-4a68-ab44-992032355603",
+                                "otherPortName": "In",
+                                "thisPortName": "Out",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ]
+                    },
+                    {
+                        "nodeId": "f9ec3bf0-5278-491b-9421-715ccdc069a3",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 1233.8687744140625,
+                            "y": 274.0
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "362355df-e90a-4007-b4a3-0af55016e8b8",
+                                "otherPortName": "Out",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    }
+                ],
+                "textNodeData": [],
+                "dialogueNodeData": [
+                    {
+                        "text": "Ah its you again! Welcome, what stories do you bring?",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "f8395d64-7607-4a68-ab44-992032355603",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 74.1324691772461,
+                                "y": 243.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "02f6d809-928b-4e49-9b51-90dc57b515ee",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "dff30731-9d21-4cac-a654-a143f343b3b0",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Take a look.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "7b11a167-e6d3-493b-b059-1da90f427605",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 761.9600830078125,
+                                "y": 212.00502014160157
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "dff30731-9d21-4cac-a654-a143f343b3b0",
+                                    "otherPortName": "Choice (1)",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "362355df-e90a-4007-b4a3-0af55016e8b8",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "See you around adventurer.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "12f8d42e-cfa4-4624-a2f5-c5c39797ac36",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 762.0,
+                                "y": 508.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "dff30731-9d21-4cac-a654-a143f343b3b0",
+                                    "otherPortName": "Choice (2)",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "f9ec3bf0-5278-491b-9421-715ccdc069a3",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "propertyNodeSaveData": [
+                    {
+                        "propertyID": "25577837-1f03-4a7c-933a-81f611d434da",
+                        "propertyType": 2,
+                        "value": "",
+                        "nodeSaveData": {
+                            "nodeId": "362355df-e90a-4007-b4a3-0af55016e8b8",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EventPropertyNode",
+                            "position": {
+                                "x": 1058.0,
+                                "y": 274.5
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "7b11a167-e6d3-493b-b059-1da90f427605",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "f9ec3bf0-5278-491b-9421-715ccdc069a3",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "situationTransferNodeData": [
+                    {
+                        "otherSituationId": "ad353261-a6ec-4335-8c6f-5de384182c90",
+                        "nodeSaveData": {
+                            "nodeId": "1994c7fe-5e35-4760-91c7-8985abd1f170",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ToSituationNode",
+                            "position": {
+                                "x": 761.9600830078125,
+                                "y": 112.00503540039063
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "dff30731-9d21-4cac-a654-a143f343b3b0",
+                                    "otherPortName": "Choice",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": []
+                        }
+                    }
+                ],
+                "choiceNodeData": [
+                    {
+                        "choices": [
+                            {
+                                "name": "Choice",
+                                "text": "Heard anything interesting lately?"
+                            },
+                            {
+                                "name": "Choice (1)",
+                                "text": "Show me your wares."
+                            },
+                            {
+                                "name": "Choice (2)",
+                                "text": "Bye."
+                            }
+                        ],
+                        "nodeSaveData": {
+                            "nodeId": "dff30731-9d21-4cac-a654-a143f343b3b0",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ChoiceNode",
+                            "position": {
+                                "x": 389.0,
+                                "y": 313.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "f8395d64-7607-4a68-ab44-992032355603",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "1994c7fe-5e35-4760-91c7-8985abd1f170",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "7b11a167-e6d3-493b-b059-1da90f427605",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (1)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "12f8d42e-cfa4-4624-a2f5-c5c39797ac36",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (2)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "groupData": []
+            },
+            {
+                "situationId": "ad353261-a6ec-4335-8c6f-5de384182c90",
+                "nodeData": [
+                    {
+                        "nodeId": "e34526cd-0818-4aef-869e-d8a64f968ded",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 1072.632080078125,
+                            "y": 612.7000122070313
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "2dbcb673-1082-4fcb-ba8f-85166f31a617",
+                                "otherPortName": "Out",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    },
+                    {
+                        "nodeId": "0d07e859-5da6-4c41-a0da-ead1af7fcc47",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.StartNode",
+                        "position": {
+                            "x": -337.7952575683594,
+                            "y": 651.1702880859375
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [],
+                        "outputPortDataCollection": [
+                            {
+                                "otherNodeID": "3043a7e1-5e99-4e92-b173-9059d262eaf8",
+                                "otherPortName": "In",
+                                "thisPortName": "Out",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ]
+                    },
+                    {
+                        "nodeId": "837aedd1-4796-476c-a77f-9d1654d3df5f",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.EndNode",
+                        "position": {
+                            "x": 2553.05078125,
+                            "y": 252.15005493164063
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [
+                            {
+                                "otherNodeID": "60a618c9-5bb1-419f-9c2d-bd63680612a9",
+                                "otherPortName": "Out",
+                                "thisPortName": "In",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ],
+                        "outputPortDataCollection": []
+                    }
+                ],
+                "textNodeData": [
+                    {
+                        "text": "IntroducedMysticForestQuest==true;",
+                        "nodeSaveData": {
+                            "nodeId": "3043a7e1-5e99-4e92-b173-9059d262eaf8",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ConditionNode",
+                            "position": {
+                                "x": -169.0,
+                                "y": 652.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "0d07e859-5da6-4c41-a0da-ead1af7fcc47",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "162e8ffe-d72c-4f3f-8c3f-68576f9e1e7b",
+                                    "otherPortName": "In",
+                                    "thisPortName": "True",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "aa2b2de8-5aa0-42ed-8239-000cbf058531",
+                                    "otherPortName": "In",
+                                    "thisPortName": "False",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dialogueNodeData": [
+                    {
+                        "text": "Sure thing, come back if you change your mind.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "2dbcb673-1082-4fcb-ba8f-85166f31a617",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 756.4501953125,
+                                "y": 534.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "162e8ffe-d72c-4f3f-8c3f-68576f9e1e7b",
+                                    "otherPortName": "Choice (1)",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "e34526cd-0818-4aef-869e-d8a64f968ded",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Alright then, first and foremost, be wary of the forest's illusions. It is known to deceive even the bravest hearts. Trust your instincts, for they shall guide you through the labyrinth of enchantments.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "60f5a9b9-7a03-44a1-abeb-fc5b8cb470aa",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 815.0000610351563,
+                                "y": 199.00001525878907
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "162e8ffe-d72c-4f3f-8c3f-68576f9e1e7b",
+                                    "otherPortName": "Choice",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "6889ca1e-0b41-4a75-8ba0-ccce93916d30",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "The creatures of the Enchanted Forest are a mix of friend and foe. Treat them with respect, and they may provide assistance. But be cautious, for some may test your mettle. Carry a charm of protection to ward off any malevolent spirits.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "6889ca1e-0b41-4a75-8ba0-ccce93916d30",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1092.7725830078125,
+                                "y": 199.00001525878907
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "60f5a9b9-7a03-44a1-abeb-fc5b8cb470aa",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "2e8be443-aaa1-4e14-9b09-f1c9897ab5d8",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "I shall remember your advice and come prepared. Is there anything else I should know?",
+                        "speaker": {
+                            "instanceID": 34672
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "2e8be443-aaa1-4e14-9b09-f1c9897ab5d8",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1383.949951171875,
+                                "y": 199.00006103515626
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "6889ca1e-0b41-4a75-8ba0-ccce93916d30",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "a3e85a97-6301-4f9b-aa4d-6864b055f38d",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "I will seek out the Whispering Oak and heed its wisdom. Thank you, shopkeeper, for entrusting me with this important mission.",
+                        "speaker": {
+                            "instanceID": 34672
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "98259696-a1b5-4563-9b6b-f992779936e1",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1958.8004150390625,
+                                "y": 198.99990844726563
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "a3e85a97-6301-4f9b-aa4d-6864b055f38d",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "60a618c9-5bb1-419f-9c2d-bd63680612a9",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "One final piece of counsel, adventurer. Seek the Whispering Oak, a sentient tree deep within the forest. It holds ancient wisdom and may offer guidance on your quest. Listen carefully to its words.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "a3e85a97-6301-4f9b-aa4d-6864b055f38d",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1675.2200927734375,
+                                "y": 198.9999542236328
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "2e8be443-aaa1-4e14-9b09-f1c9897ab5d8",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "98259696-a1b5-4563-9b6b-f992779936e1",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "May your steps be guided, and your heart remain steadfast. Return safely, and with the Crystal, our world will be forever grateful.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "60a618c9-5bb1-419f-9c2d-bd63680612a9",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 2255.64990234375,
+                                "y": 199.00003051757813
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "98259696-a1b5-4563-9b6b-f992779936e1",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "837aedd1-4796-476c-a77f-9d1654d3df5f",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "propertyNodeSaveData": [],
+                "situationTransferNodeData": [
+                    {
+                        "otherSituationId": "2021a139-45e2-493f-8a28-4004be79f926",
+                        "nodeSaveData": {
+                            "nodeId": "aa2b2de8-5aa0-42ed-8239-000cbf058531",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ToSituationNode",
+                            "position": {
+                                "x": 151.80001831054688,
+                                "y": 738.300048828125
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "3043a7e1-5e99-4e92-b173-9059d262eaf8",
+                                    "otherPortName": "False",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": []
+                        }
+                    },
+                    {
+                        "otherSituationId": "2021a139-45e2-493f-8a28-4004be79f926",
+                        "nodeSaveData": {
+                            "nodeId": "3af404fa-8745-4cde-ae72-9b4cf46d1854",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.FromSituationNode",
+                            "position": {
+                                "x": 281.0,
+                                "y": 277.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "162e8ffe-d72c-4f3f-8c3f-68576f9e1e7b",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "choiceNodeData": [
+                    {
+                        "choices": [
+                            {
+                                "name": "Choice",
+                                "text": "I accept your quest."
+                            },
+                            {
+                                "name": "Choice (1)",
+                                "text": "I need to think it over."
+                            }
+                        ],
+                        "nodeSaveData": {
+                            "nodeId": "162e8ffe-d72c-4f3f-8c3f-68576f9e1e7b",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ChoiceNode",
+                            "position": {
+                                "x": 568.7500610351563,
+                                "y": 293.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "3af404fa-8745-4cde-ae72-9b4cf46d1854",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "60f5a9b9-7a03-44a1-abeb-fc5b8cb470aa",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                },
+                                {
+                                    "otherNodeID": "2dbcb673-1082-4fcb-ba8f-85166f31a617",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Choice (1)",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "groupData": []
+            },
+            {
+                "situationId": "2021a139-45e2-493f-8a28-4004be79f926",
+                "nodeData": [
+                    {
+                        "nodeId": "2735371f-b324-4ab1-a634-3f1c929fe418",
+                        "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.StartNode",
+                        "position": {
+                            "x": -28.000003814697267,
+                            "y": 528.5499877929688
+                        },
+                        "groupId": "",
+                        "inputPortDataCollection": [],
+                        "outputPortDataCollection": [
+                            {
+                                "otherNodeID": "dcf4e8f7-2547-4c5b-bc1a-ba88247b2061",
+                                "otherPortName": "In",
+                                "thisPortName": "Out",
+                                "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                            }
+                        ]
+                    }
+                ],
+                "textNodeData": [],
+                "dialogueNodeData": [
+                    {
+                        "text": "I have a personal quest, a task that requires a brave soul like yourself. Deep within the Mystic Forest lies an ancient relic, the Crystal of Fairies. Legends say it possesses incredible power to prevent adventurers from getting shot in the knee.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "dcf4e8f7-2547-4c5b-bc1a-ba88247b2061",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 131.99998474121095,
+                                "y": 459.088134765625
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "2735371f-b324-4ab1-a634-3f1c929fe418",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "3de44e6d-d77d-4403-8651-3ab3366ebd79",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "he journey will not be an easy one, adventurer. The Mystic Forest is fraught with peril and enchantments. But should you be willing to face the challenges, retrieve the Crystal and return it to me, you shall be rewarded handsomely.",
+                        "speaker": {
+                            "instanceID": 34706
+                        },
+                        "nodeSaveData": {
+                            "nodeId": "3de44e6d-d77d-4403-8651-3ab3366ebd79",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 432.0,
+                                "y": 459.088134765625
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "dcf4e8f7-2547-4c5b-bc1a-ba88247b2061",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "e3cbbf3b-383d-4e11-a92b-194a6d362eaf",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "propertyNodeSaveData": [],
+                "situationTransferNodeData": [
+                    {
+                        "otherSituationId": "ad353261-a6ec-4335-8c6f-5de384182c90",
+                        "nodeSaveData": {
+                            "nodeId": "e3cbbf3b-383d-4e11-a92b-194a6d362eaf",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.ToSituationNode",
+                            "position": {
+                                "x": 746.0,
+                                "y": 533.8125
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "3de44e6d-d77d-4403-8651-3ab3366ebd79",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": []
+                        }
+                    }
+                ],
+                "choiceNodeData": [],
+                "groupData": []
+            }
+        ],
+        "blackboardSaveData": {
+            "dialoguePropertiesSaveData": [
+                {
+                    "value": "",
+                    "id": "25577837-1f03-4a7c-933a-81f611d434da",
+                    "propertyType": 2,
+                    "displayName": "OpenedShop"
+                },
+                {
+                    "value": "True",
+                    "id": "4afa9b89-06ef-47e2-852d-58f4c6175a0a",
+                    "propertyType": 0,
+                    "displayName": "FirstTimeInTheShop"
+                },
+                {
+                    "value": "False",
+                    "id": "f8935f6e-2389-4109-8dfd-ac51218cded7",
+                    "propertyType": 0,
+                    "displayName": "SimonIntroducedHimself"
+                },
+                {
+                    "value": "0",
+                    "id": "cf28cabb-8760-4557-8b3e-62975ae02dc5",
+                    "propertyType": 1,
+                    "displayName": "PlayerGold"
+                },
+                {
+                    "value": "",
+                    "id": "3200f03d-2e71-4ed8-9584-4fe36b59aa6a",
+                    "propertyType": 2,
+                    "displayName": "PlayerBoughtRoom"
+                },
+                {
+                    "value": "False",
+                    "id": "01c27a56-7321-4674-9e02-9d74c06a34ce",
+                    "propertyType": 0,
+                    "displayName": "IntroducedMysticForestQuest"
+                }
+            ]
+        }
+    },
+    "treeSaveData": {
+        "selectedIndex": 0,
+        "treeItemData": [
+            {
+                "depth": 0,
+                "rootItem": {
+                    "displayName": "Just entered the shop",
+                    "id": "90bdc140-e08e-4b55-a175-23558dc0005f"
+                },
+                "childrenGuids": [
+                    "5bceb238-bc0d-4e8c-97a5-53cdc5434f0a",
+                    "ad353261-a6ec-4335-8c6f-5de384182c90"
+                ]
+            },
+            {
+                "depth": 1,
+                "rootItem": {
+                    "displayName": "Back to the shop",
+                    "id": "5bceb238-bc0d-4e8c-97a5-53cdc5434f0a"
+                },
+                "childrenGuids": []
+            },
+            {
+                "depth": 1,
+                "rootItem": {
+                    "displayName": "Looking for work",
+                    "id": "ad353261-a6ec-4335-8c6f-5de384182c90"
+                },
+                "childrenGuids": [
+                    "2021a139-45e2-493f-8a28-4004be79f926"
+                ]
+            },
+            {
+                "depth": 2,
+                "rootItem": {
+                    "displayName": "Mystic forest quest intro",
+                    "id": "2021a139-45e2-493f-8a28-4004be79f926"
+                },
+                "childrenGuids": []
+            }
+        ]
+    }
+}
