@@ -450,8 +450,8 @@ namespace Chocolate4.Dialogue.Edit.Graph
 
         private void AddStyles()
         {
-            StyleSheet graphStyleSheet = (StyleSheet)EditorGUIUtility.Load("DialogueSystem/DialogueGraphStyle.uss");
-            StyleSheet nodeStyleSheet = (StyleSheet)EditorGUIUtility.Load("DialogueSystem/DialogueNodeStyle.uss");
+            StyleSheet graphStyleSheet = (StyleSheet)EditorGUIUtility.Load(FilePathConstants.GetEditorVisualAssetPath(FilePathConstants.dialogueGraphStyle));
+            StyleSheet nodeStyleSheet = (StyleSheet)EditorGUIUtility.Load(FilePathConstants.GetEditorVisualAssetPath(FilePathConstants.dialogueNodeStyle));
 
             styleSheets.Add(graphStyleSheet);
             styleSheets.Add(nodeStyleSheet);
