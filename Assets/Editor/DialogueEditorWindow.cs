@@ -22,15 +22,13 @@ namespace Chocolate4.Dialogue.Edit
     {
         public static DialogueEditorWindow Window { get; private set; }
 
-        [SerializeField] 
-        private bool hasInitialized;
-
         private TwoPaneSplitView splitView;
         private VisualElement mainSplitView;
         private VisualElement subTwoPanelView;
         private VisualElement subPanelSituationsContent;
         private VisualElement subPanelEntitiesContent;
 
+        private bool hasInitialized;
         private Button saveButton;
         private DialogueAssetManager dialogueAssetManager;
 
@@ -114,6 +112,11 @@ namespace Chocolate4.Dialogue.Edit
 
         private void OnDisable()
         {
+            if (!hasInitialized)
+            {
+                return;
+            }
+
             DialogueTreeView.OnTreeItemRenamed -= GraphView.DialogueTreeView_OnTreeItemRenamed;
             DialogueTreeView.OnSituationSelected -= GraphView.DialogueTreeView_OnSituationSelected;
             DialogueTreeView.OnTreeItemRemoved -= GraphView.DialogueTreeView_OnTreeItemRemoved;
