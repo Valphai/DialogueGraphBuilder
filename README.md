@@ -50,13 +50,15 @@ It's recommended to download the package from the Releases page as this guarante
 
 ## Editor
 
-In order to start using the tool, after installing the package, navigate to Create>Chocolate4/DialogueEditor.
+In order to start using the tool, after installing the package, navigate to Create/Chocolate4/DialogueEditor.
 
 Double click on the asset and the tool is ready to use.
 
 ## Build/Playmode
 
-To start using the tool in build/playmode, a scene
+To start using the tool in build/playmode, after creating and editing within the dialogue asset, create a game object in the scene and add [DialogueMaster](#dialoguemaster) component to it. Tick auto initialize inspector field and drag the dialogue asset into the exposed field.
+
+The created dialogue asset is now ready to be used through the [DialogueMaster](#dialoguemaster)!
 
 # Documentation
 
@@ -117,7 +119,7 @@ The above approach will create a processed clone of the entity with identifier i
 
 ## DialogueMaster
 
-Dialogue Master is a component responsible for running the dialogue graph flow at runtime. It provides the API to Start different situations, receive current [node info](#dialoguenodeinfo) or grant access to variable [collection](#collections) of the current asset.
+Dialogue Master is a component responsible for running the dialogue graph flow at runtime. It provides the API to start different situations, receive current [node info](#dialoguenodeinfo) or grant access to variable [collection](#collections) of the current asset.
 
 In order to use the master, simply add the component to an object in the hierarchy and set exposed fields in the inspector.
 
@@ -133,13 +135,13 @@ Allows to start a situation explicitly at any given moment. It will set the curr
 
 #### ```NextDialogueElement()```
 
-This method will proceed with dialogue flow in a given situation. Returns [DialogueNodeInfo](#dialoguenodeinfo.) that allows you to interact with the Dialogue graph externally. This method will usually be called whenever player makes a choice, wants to progress in the dialogue or when a situation has ended.
+This method will proceed with dialogue flow in a given situation. Returns [DialogueNodeInfo](#dialoguenodeinfo.) that allows you to interact with the Dialogue graph externally. You should use this method usually whenever player makes a choice or wants to progress in the dialogue.
 
 Invoking ```NextDialogueElement()``` when [DialogueNodeInfo](#dialoguenodeinfo) returns ```IsChoiceNode``` before using ```SetSelectedChoice(int index)```, will result in the first choice being selected, previously selected choice selected, or an error if the number of choices in the current node is smaller than previously selected choice index.
 
 #### ```SetSelectedChoice(int index)```
 
-When arriving at the [ChoiceNode](#choice-node), this method has to be called when the player makes their choice with the index of said choice. 
+When arriving at the [ChoiceNode](#choice-node) ([DialogueNodeInfo](#dialoguenodeinfo) returned with ```IsChoiceNode```), this method has to be called when the player makes their choice with the index of said choice. 
 
 #### ```GetCollection<T>()```
 
