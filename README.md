@@ -2,7 +2,7 @@
 
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Valphai/DialogueGraphBuilder)
 ![GitHub](https://img.shields.io/github/license/Valphai/DialogueGraphBuilder)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Valphai/DialogueGraphBuilder)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/Valphai/DialogueGraphBuilder)
 ![GitHub Release Date](https://img.shields.io/github/release-date/Valphai/DialogueGraphBuilder)
 
 # Introduction
