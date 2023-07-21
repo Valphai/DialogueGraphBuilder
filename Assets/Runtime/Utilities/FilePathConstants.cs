@@ -19,7 +19,7 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
 
         public static string testCasesAsset = $"TestCasesDialogueEditor";
 #if UNITY_EDITOR
-        public static string placeholderEntityPath = $"Icons{DirSep}Placeholder Entity 512.png";
+        public static string placeholderEntityPath = $"Icons{DirSep}Placeholder Entity 256.png";
         public static string situationIconPath = $"Icons{DirSep}Situation Gem 128.png";
         public static string assetIcon = $"Icons{DirSep}Book Icon 64.png";
 
