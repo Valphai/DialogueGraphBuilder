@@ -41,7 +41,7 @@ DialogueGraphBuilder has been tested in Unity on the following platforms:
 DialogueGraphBuilder currently supports the following:
 
 1. From source
-2. From the Releases page (TODO)
+2. From the Releases page
 3. From the AssetStore (TODO)
 
 It's recommended to download the package from the Releases page as this guarantees you will get the most up to date version of the project.
@@ -406,7 +406,7 @@ private void ShopKeeperCollection_PlayerBoughtRoom()
 
 # Release Notes
 
-## Version 1.0.0 (date)
+## Version 1.0.0
 
 Initial release for Unity 2022.2.14
 
