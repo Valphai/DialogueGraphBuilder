@@ -51,9 +51,21 @@ namespace Chocolate4.Dialogue.Runtime.Utilities
 #if UNITY_EDITOR
         public static string FindPackageFolder()
         {
-            string directory = 
-                Directory.GetDirectories(Application.dataPath, Chocolate4 + DirSep + AssetName + DirSep, SearchOption.AllDirectories).First();
-            string assetsRelativePath = GetPathRelativeTo(Assets, directory);
+            string directory;
+            string assetsRelativePath;
+            try
+            {
+                directory = 
+                    Directory.GetDirectories(Application.dataPath, Chocolate4 + DirSep + AssetName + DirSep, SearchOption.AllDirectories).First();
+                assetsRelativePath = GetPathRelativeTo(Assets, directory);
+            }
+            catch (System.Exception)
+            {
+                directory = Application.dataPath;
+                assetsRelativePath = GetPathRelativeTo(Assets, directory);
+                
+                return assetsRelativePath;
+            }
 
             string pathLastElement = assetsRelativePath.Split(DirSep).Last();
 
