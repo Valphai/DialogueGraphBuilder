@@ -13,7 +13,7 @@ namespace Chocolate4.Dialogue.Edit.Tree.Utilities
     {
         public static Texture2D GetSituationIcon()
         {
-            return (Texture2D)EditorGUIUtility.Load(FilePathConstants.situationIconPath);
+            return (Texture2D)EditorGUIUtility.Load(FilePathConstants.GetEditorVisualAssetPath(FilePathConstants.situationIconPath));
         }
 
         public static void ForceRefresh(TreeView treeView, Action<IEnumerable<int>> onSelectionChanged)
