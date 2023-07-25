@@ -1,0 +1,42 @@
+name: Perform tests
+
+on: 
+  [push, pull_request]
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+jobs:
+  testRunner:
+    name: Test in ${{ matrix.testMode }} ✨
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        testMode:
+          - EditMode
+          - PlayMode
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.5.3
+        with:
+          lfs: true
+
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2.2.0
+        id: testRunner
+        with:
+          testMode: ${{ matrix.testMode }}
+          checkName: ${{ matrix.testMode }} test results
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Test results (${{ matrix.testMode }})
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
