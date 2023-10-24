@@ -181,7 +181,7 @@ Public methods in the DialogueMaster include:
 
 #### ```Initialize()```
 
-For initialization, you have the option to either initialize the master from the Awake method (by ticking the ```autoInitialize``` field) or by invoking this method manually. Proper initialization is required for the ```DialogueMaster`` to function correctly.
+For initialization, you have the option to either initialize the master from the Awake method (by ticking the ```autoInitialize``` field) or by invoking this method manually. Proper initialization is required for the ```DialogueMaster``` to function correctly.
 
 #### ```StartSituation(string situationName)```
 
