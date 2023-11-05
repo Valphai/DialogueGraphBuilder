@@ -18,15 +18,15 @@ using Chocolate4.Dialogue.Runtime.Entities;
 namespace Chocolate4.Dialogue.Edit.Asset
 {
     [System.Serializable]
-    public class DialogueAssetManager
+    internal class DialogueAssetManager
     {
         [SerializeField] 
         private int instanceId;
-        [SerializeField]
-        private EntitiesHolder entitiesDatabase;
 
         private DataRebuilder dataRebuilder;
 
+        [field:SerializeField]
+        internal EntitiesHolder EntitiesDatabase { get; private set; }
         [field:SerializeField] 
         public DialogueEditorAsset ImportedAsset { get; private set; }
 
@@ -39,8 +39,8 @@ namespace Chocolate4.Dialogue.Edit.Asset
         {
             dataRebuilder = new DataRebuilder();
 
-            this.entitiesDatabase = entitiesDatabase;
             this.instanceId = instanceId;
+            EntitiesDatabase = entitiesDatabase;
             ImportedAsset = importedAsset;
 
             EntitiesData entitiesData = new EntitiesData() 
@@ -53,7 +53,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
 
         internal void Rebuild(DialogueTreeView treeView, DialogueGraphView graphView, DialogueEntitiesView entitiesView)
         {
-            entitiesDatabase.Reload();
+            EntitiesDatabase.Reload();
             dataRebuilder.Rebuild(treeView, graphView, entitiesView);
         }
 
@@ -87,10 +87,10 @@ namespace Chocolate4.Dialogue.Edit.Asset
         private void SaveEntities(EntitiesData entitiesData)
         {
             List<DialogueEntity> existingEntities = 
-                Runtime.EntitiesUtilities.GetAllEntities(entitiesDatabase);
+                Runtime.EntitiesUtilities.GetAllEntities(EntitiesDatabase);
 
             string assetsRelativePath =
-                FilePathConstants.GetEntitiesPathRelative(entitiesDatabase.associatedAssetName);
+                FilePathConstants.GetEntitiesPathRelative(EntitiesDatabase.associatedAssetName);
 
             int[] existingIds = existingEntities.Select(entity => entity.GetInstanceID()).ToArray();
 
@@ -114,7 +114,7 @@ namespace Chocolate4.Dialogue.Edit.Asset
                 }
             }
 
-            entitiesDatabase.Reload();
+            EntitiesDatabase.Reload();
             AssetDatabase.Refresh();
         }
 

@@ -71,6 +71,7 @@ namespace Chocolate4.Dialogue.Edit.Entities
         internal DialogueEntity AddEntity()
         {
             DialogueEntity entity = ScriptableObject.CreateInstance<DialogueEntity>();
+            entity.Initialize();
 
             string[] existingNames = cachedDialogueEntities.Select(entity => entity.entityName).ToArray();
             string name = EntitiesUtilities.GetEntityName(entity, existingNames);

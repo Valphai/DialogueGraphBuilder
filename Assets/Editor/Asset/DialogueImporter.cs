@@ -51,6 +51,8 @@ namespace Chocolate4.Dialogue.Edit.Asset
             asset.name = entitiesDatabase.associatedAssetName = Path.GetFileNameWithoutExtension(assetPath);
             entitiesDatabase.name = EntitiesHolder.DataBase;
 
+            entitiesDatabase.Reload();
+
             var assetIcon = (Texture2D)EditorGUIUtility.Load(FilePathConstants.GetEditorVisualAssetPath(FilePathConstants.assetIcon));
             
             // Add asset.

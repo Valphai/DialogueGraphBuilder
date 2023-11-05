@@ -1,4 +1,5 @@
 using Chocolate4.Dialogue.Runtime.Asset;
+using Chocolate4.Dialogue.Runtime.Entities;
 using Chocolate4.Dialogue.Runtime.Master.Collections;
 using Chocolate4.Dialogue.Runtime.Saving;
 using Chocolate4.Dialogue.Runtime.Utilities;
@@ -14,7 +15,7 @@ namespace Chocolate4.Dialogue.Runtime
     [DisallowMultipleComponent]
     public class DialogueMaster : MonoBehaviour
     {
-        [SerializeField] 
+        [SerializeField]
         private DialogueEditorAsset dialogueAsset;
         [SerializeField]
         private bool autoInitialize;
@@ -27,8 +28,10 @@ namespace Chocolate4.Dialogue.Runtime
         private ParseAdapter parseAdapter;
         private IDialogueMasterCollection collection;
 
-        public bool HasInitialized { get; private set; }
+        [field:SerializeField]
+        public EntitiesHolder EntitiesDatabase { get; private set; }
 
+        public bool HasInitialized { get; private set; }
         public string CurrentSituationName => FindSituationName(currentSituation);
 
         private void Awake()
@@ -114,7 +117,9 @@ namespace Chocolate4.Dialogue.Runtime
             else if (currentNode.IsNodeOfType(NodeConstants.DialogueNode))
             {
                 DialogueNodeSaveData dialogueNodeSaveData = (currentNode as DialogueNodeSaveData);
-                return DialogueNodeInfo.DialogueInfo(dialogueNodeSaveData.text, dialogueNodeSaveData.speaker);
+
+                EntitiesDatabase.TryGetEntity(dialogueNodeSaveData.speakerIdentifier, out DialogueEntity speaker);
+                return DialogueNodeInfo.DialogueInfo(dialogueNodeSaveData.text, speaker);
             }
             else if (currentNode.IsNodeOfType(NodeConstants.ChoiceNode))
             {
