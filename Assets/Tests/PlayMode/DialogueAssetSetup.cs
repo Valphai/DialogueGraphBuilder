@@ -1,8 +1,10 @@
 using B83.LogicExpressionParser;
 using Chocolate4.Dialogue.Runtime;
 using Chocolate4.Dialogue.Runtime.Asset;
+using Chocolate4.Dialogue.Runtime.Entities;
 using Chocolate4.Dialogue.Runtime.Utilities;
 using Chocolate4.Dialogue.Runtime.Utilities.Parsing;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -21,14 +23,23 @@ namespace Chocolate4.Dialogue.Tests.Utilities
 
             string path = 
                 FilePathConstants.Chocolate4 + FilePathConstants.DirSep + FilePathConstants.testCasesAsset;
-
+            
             DialogueEditorAsset asset =
                 Resources.Load<DialogueEditorAsset>(path);
+
+            string fullAssetPath = UnityEditor.AssetDatabase.GetAssetPath(asset);
+
+            Object[] assets = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(fullAssetPath);
+            EntitiesHolder entitiesDatabase = assets.Last() as EntitiesHolder;
 
             FieldInfo dialogueAssetField =
                 typeof(DialogueMaster).GetField(DialogueAsset, BindingFlags.NonPublic | BindingFlags.Instance);
 
+            PropertyInfo entitiesField =
+                typeof(DialogueMaster).GetProperty("EntitiesDatabase", BindingFlags.Public | BindingFlags.Instance);
+
             dialogueAssetField.SetValue(dialogueMaster, asset);
+            entitiesField.SetValue(dialogueMaster, entitiesDatabase);
 
             dialogueMaster.Initialize();
 
