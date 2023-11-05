@@ -16,3 +16,8 @@ MonoBehaviour:
   entityName: King Henry
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: be36f9a8-5e15-4e51-a15f-d646a302ac39
+  entityProcessors: []
+  references:
+    version: 2
+    RefIds: []

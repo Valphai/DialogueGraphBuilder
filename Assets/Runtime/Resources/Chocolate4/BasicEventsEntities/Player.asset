@@ -16,3 +16,8 @@ MonoBehaviour:
   entityName: Player
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 47252157-8ee1-4b8c-b0bf-250bcd6bf66a
+  entityProcessors: []
+  references:
+    version: 2
+    RefIds: []

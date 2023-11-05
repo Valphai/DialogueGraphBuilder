@@ -16,3 +16,8 @@ MonoBehaviour:
   entityName: Guard
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 09bcd444-d5ce-4cc9-90d9-c33f874657ed
+  entityProcessors: []
+  references:
+    version: 2
+    RefIds: []

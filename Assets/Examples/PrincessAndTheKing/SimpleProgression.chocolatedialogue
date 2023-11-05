@@ -2,12 +2,12 @@
     "collectionName": "SimpleProgression",
     "graphSaveData": {
         "graphViewPosition": {
-            "x": -2395.0,
-            "y": -12.0
+            "x": -4539.0,
+            "y": -15.0
         },
         "graphViewZoom": {
-            "x": 0.5717532634735107,
-            "y": 0.5717532634735107
+            "x": 1.0,
+            "y": 1.0
         },
         "situationSaveData": [
             {
@@ -53,103 +53,8 @@
                 "textNodeData": [],
                 "dialogueNodeData": [
                     {
-                        "text": "Princess Isabella's voice trembled as she stood at the entrance to the king's study.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "1661a065-661a-4354-a2b8-7f563f8b1439",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": -70.98412322998047,
-                                "y": 280.0
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "935e7da7-c15e-449e-8d33-eee13fb688e2",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "bc7897d9-730b-4133-a571-6532c1acb01d",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "text": "Of course, my dear. Come in. What troubles you?",
-                        "speaker": {
-                            "instanceID": 34676
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "bc7897d9-730b-4133-a571-6532c1acb01d",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": 217.9999542236328,
-                                "y": 280.0
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "1661a065-661a-4354-a2b8-7f563f8b1439",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "00771210-8803-436a-a32f-a48b3258a6f2",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "text": "Father, may I have a word with you?",
-                        "speaker": {
-                            "instanceID": 34694
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "935e7da7-c15e-449e-8d33-eee13fb688e2",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": -360.24847412109377,
-                                "y": 280.0
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "cf932a0f-5818-40a8-ac99-b80ad6297537",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "1661a065-661a-4354-a2b8-7f563f8b1439",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
                         "text": "Father, I have been pondering the path that lies ahead of me. I yearn for adventure and the chance to explore beyond the castle walls.",
-                        "speaker": {
-                            "instanceID": 34694
-                        },
+                        "speakerIdentifier": "9731942d-fae3-498d-ac3d-c046ec8f0ceb",
                         "nodeSaveData": {
                             "nodeId": "513dab7b-bba8-4d1a-a525-b48d9e631de7",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -178,9 +83,7 @@
                     },
                     {
                         "text": "The king's brow furrowed.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
                         "nodeSaveData": {
                             "nodeId": "885444db-ae9f-46b2-8cf4-f3d6ac5406e8",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -209,9 +112,7 @@
                     },
                     {
                         "text": "But Father, there is so much more to learn and discover. I want to understand the world, its people, and their stories.",
-                        "speaker": {
-                            "instanceID": 34694
-                        },
+                        "speakerIdentifier": "9731942d-fae3-498d-ac3d-c046ec8f0ceb",
                         "nodeSaveData": {
                             "nodeId": "4ea0a8ce-15f2-4b3a-9dea-367a289dc667",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -240,9 +141,7 @@
                     },
                     {
                         "text": "Isabella, I understand your longing, but the kingdom needs you here. We rely on your wisdom and grace to guide us.",
-                        "speaker": {
-                            "instanceID": 34676
-                        },
+                        "speakerIdentifier": "be36f9a8-5e15-4e51-a15f-d646a302ac39",
                         "nodeSaveData": {
                             "nodeId": "335d7047-3a04-4c35-a1d2-3930af975e10",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -271,9 +170,7 @@
                     },
                     {
                         "text": "I am grateful for your trust, Father, but I believe I can serve our kingdom better if I experience life outside these castle walls.",
-                        "speaker": {
-                            "instanceID": 34694
-                        },
+                        "speakerIdentifier": "9731942d-fae3-498d-ac3d-c046ec8f0ceb",
                         "nodeSaveData": {
                             "nodeId": "ed07b81f-022e-41fa-b9a6-e7d769159623",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -302,9 +199,7 @@
                     },
                     {
                         "text": "The king sighed and rose from his seat, stepping toward his daughter.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
                         "nodeSaveData": {
                             "nodeId": "82fb7962-0476-45e4-87ad-52531716eb16",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -332,41 +227,8 @@
                         }
                     },
                     {
-                        "text": "Isabella, I remember when I was your age, full of curiosity and dreams. But remember, being a ruler requires sacrifice.",
-                        "speaker": {
-                            "instanceID": 34676
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "d5abbd66-d253-4104-8046-0250b99592d7",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": 3168.1201171875,
-                                "y": 280.0
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "82fb7962-0476-45e4-87ad-52531716eb16",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "c6dcb546-c3c7-422c-b6ac-de3b33d75261",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
                         "text": "I am willing to make that sacrifice, Father. I will return, equipped with knowledge and understanding to aid our kingdom.",
-                        "speaker": {
-                            "instanceID": 34694
-                        },
+                        "speakerIdentifier": "9731942d-fae3-498d-ac3d-c046ec8f0ceb",
                         "nodeSaveData": {
                             "nodeId": "c6dcb546-c3c7-422c-b6ac-de3b33d75261",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -395,9 +257,7 @@
                     },
                     {
                         "text": "Thank you, Father! I promise I will do my utmost to bring honor to our kingdom.",
-                        "speaker": {
-                            "instanceID": 34694
-                        },
+                        "speakerIdentifier": "9731942d-fae3-498d-ac3d-c046ec8f0ceb",
                         "nodeSaveData": {
                             "nodeId": "a177b1cd-6f8b-4d74-93aa-18941c5ed454",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -426,9 +286,7 @@
                     },
                     {
                         "text": "Very well, my dear. If this is what you truly desire, I will allow you to embark on your journey. But promise me, never forget your responsibilities and the people who depend on you.",
-                        "speaker": {
-                            "instanceID": 34676
-                        },
+                        "speakerIdentifier": "be36f9a8-5e15-4e51-a15f-d646a302ac39",
                         "nodeSaveData": {
                             "nodeId": "c7ae72b5-943a-4ab0-8747-19fa4b0c4e08",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -457,9 +315,7 @@
                     },
                     {
                         "text": "Go, my daughter, and may your journey be filled with wisdom and joy. Return to us, a princess worthy of her crown.",
-                        "speaker": {
-                            "instanceID": 34676
-                        },
+                        "speakerIdentifier": "be36f9a8-5e15-4e51-a15f-d646a302ac39",
                         "nodeSaveData": {
                             "nodeId": "f3f5bc9e-9bca-460e-86a8-99c38694a041",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -488,9 +344,7 @@
                     },
                     {
                         "text": "The king placed a hand on her shoulder, his gaze softening.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
                         "nodeSaveData": {
                             "nodeId": "0705c1f4-1fd6-44a1-9105-ef6afd2a693b",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -519,9 +373,7 @@
                     },
                     {
                         "text": "With a heartfelt embrace, Isabella bid her father farewell, setting forth on a path that would shape her into the wise and compassionate ruler she was destined to become.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
                         "nodeSaveData": {
                             "nodeId": "227d98e0-1795-4cab-8544-f13428bdb5fd",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -550,9 +402,7 @@
                     },
                     {
                         "text": "Isabella took a deep breath, gathering her courage.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
                         "nodeSaveData": {
                             "nodeId": "00771210-8803-436a-a32f-a48b3258a6f2",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -580,41 +430,8 @@
                         }
                     },
                     {
-                        "text": "Isabella, you know the responsibilities that come with being a princess. Your duty is to the kingdom.",
-                        "speaker": {
-                            "instanceID": 34676
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "ee40c41a-fccf-4ac1-b5c6-53bfba4b7cfa",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": 1408.400146484375,
-                                "y": 280.00006103515627
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "885444db-ae9f-46b2-8cf4-f3d6ac5406e8",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "4ea0a8ce-15f2-4b3a-9dea-367a289dc667",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
                         "text": "The king leaned back in his chair, studying his daughter.",
-                        "speaker": {
-                            "instanceID": 34678
-                        },
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
                         "nodeSaveData": {
                             "nodeId": "742e67b6-5b11-4c73-82ba-8033313bd6d8",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -634,6 +451,151 @@
                             "outputPortDataCollection": [
                                 {
                                     "otherNodeID": "335d7047-3a04-4c35-a1d2-3930af975e10",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Princess Isabella's voice trembled as she stood at the entrance to the king's study.",
+                        "speakerIdentifier": "98e4abeb-032a-4076-b9ef-d519658ee925",
+                        "nodeSaveData": {
+                            "nodeId": "1661a065-661a-4354-a2b8-7f563f8b1439",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": -70.98412322998047,
+                                "y": 280.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "935e7da7-c15e-449e-8d33-eee13fb688e2",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "bc7897d9-730b-4133-a571-6532c1acb01d",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Isabella, I remember when I was your age, full of curiosity and dreams. But remember, being a ruler requires sacrifice.",
+                        "speakerIdentifier": "be36f9a8-5e15-4e51-a15f-d646a302ac39",
+                        "nodeSaveData": {
+                            "nodeId": "d5abbd66-d253-4104-8046-0250b99592d7",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 3168.1201171875,
+                                "y": 280.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "82fb7962-0476-45e4-87ad-52531716eb16",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "c6dcb546-c3c7-422c-b6ac-de3b33d75261",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Father, may I have a word with you?",
+                        "speakerIdentifier": "9731942d-fae3-498d-ac3d-c046ec8f0ceb",
+                        "nodeSaveData": {
+                            "nodeId": "935e7da7-c15e-449e-8d33-eee13fb688e2",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": -360.24847412109377,
+                                "y": 280.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "cf932a0f-5818-40a8-ac99-b80ad6297537",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "1661a065-661a-4354-a2b8-7f563f8b1439",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Of course, my dear. Come in. What troubles you?",
+                        "speakerIdentifier": "be36f9a8-5e15-4e51-a15f-d646a302ac39",
+                        "nodeSaveData": {
+                            "nodeId": "bc7897d9-730b-4133-a571-6532c1acb01d",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 217.9999542236328,
+                                "y": 280.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "1661a065-661a-4354-a2b8-7f563f8b1439",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "00771210-8803-436a-a32f-a48b3258a6f2",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Isabella, you know the responsibilities that come with being a princess. Your duty is to the kingdom.",
+                        "speakerIdentifier": "be36f9a8-5e15-4e51-a15f-d646a302ac39",
+                        "nodeSaveData": {
+                            "nodeId": "ee40c41a-fccf-4ac1-b5c6-53bfba4b7cfa",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 1408.400146484375,
+                                "y": 280.00006103515627
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "885444db-ae9f-46b2-8cf4-f3d6ac5406e8",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "4ea0a8ce-15f2-4b3a-9dea-367a289dc667",
                                     "otherPortName": "In",
                                     "thisPortName": "Out",
                                     "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"

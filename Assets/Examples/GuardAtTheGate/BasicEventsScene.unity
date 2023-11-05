@@ -1124,6 +1124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueAsset: {fileID: -944628639613478452, guid: a26a1b85346a2eb48906d2292df6de24, type: 3}
   autoInitialize: 1
+  <EntitiesDatabase>k__BackingField: {fileID: 5716753443103562374, guid: a26a1b85346a2eb48906d2292df6de24, type: 3}
 --- !u!4 &1770288594
 Transform:
   m_ObjectHideFlags: 0

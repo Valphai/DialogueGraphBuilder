@@ -16,3 +16,8 @@ MonoBehaviour:
   entityName: Narrator
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 98e4abeb-032a-4076-b9ef-d519658ee925
+  entityProcessors: []
+  references:
+    version: 2
+    RefIds: []

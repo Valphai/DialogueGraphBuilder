@@ -321,6 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueAsset: {fileID: -944628639613478452, guid: f38856fb6fac9654cbb15a3340933a99, type: 3}
   autoInitialize: 1
+  <EntitiesDatabase>k__BackingField: {fileID: 5716753443103562374, guid: f38856fb6fac9654cbb15a3340933a99, type: 3}
 --- !u!4 &474739580
 Transform:
   m_ObjectHideFlags: 0
@@ -644,8 +645,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -923,6 +924,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8650755730507464526, guid: fbb47b248f5d256469042cd46c784cab, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1146,6 +1151,10 @@ PrefabInstance:
     - target: {fileID: 859989735248487697, guid: 0cde2c046a7b4bf4b8c8698b8a31c965, type: 3}
       propertyPath: m_Name
       value: Character Portrait
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453700342059293696, guid: 0cde2c046a7b4bf4b8c8698b8a31c965, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -2,12 +2,12 @@
     "collectionName": "BasicEvents",
     "graphSaveData": {
         "graphViewPosition": {
-            "x": 238.0,
-            "y": 79.0
+            "x": 355.0,
+            "y": 99.0
         },
         "graphViewZoom": {
-            "x": 0.8695651888847351,
-            "y": 0.8695651888847351
+            "x": 0.6575162410736084,
+            "y": 0.6575162410736084
         },
         "situationSaveData": [
             {
@@ -53,22 +53,20 @@
                 "textNodeData": [],
                 "dialogueNodeData": [
                     {
-                        "text": "Halt! Entry into our city does require a toll, I'm afraid. A sum of ten gold coins is the standard fee for outsiders.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "text": "We cannot let just about anyone run wild in the city that's what the fee is for.",
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
-                            "nodeId": "0de6805b-f313-453d-8cc6-d0a609c11a89",
+                            "nodeId": "51d4a17f-33c7-495d-871e-9a56ea9e9685",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
                             "position": {
-                                "x": 5.000025749206543,
-                                "y": 243.9999542236328
+                                "x": 303.0,
+                                "y": -108.80751037597656
                             },
                             "groupId": "",
                             "inputPortDataCollection": [
                                 {
-                                    "otherNodeID": "665e1394-5904-4f30-8202-af6f588c4fae",
-                                    "otherPortName": "Out",
+                                    "otherNodeID": "cc12713f-8a04-4f2b-9132-dd1e93fc38e1",
+                                    "otherPortName": "Choice",
                                     "thisPortName": "In",
                                     "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
                                 }
@@ -84,22 +82,20 @@
                         }
                     },
                     {
-                        "text": "We cannot let just about anyone run wild in the city that's what the fee is for.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "text": "Halt! Entry into our city does require a toll, I'm afraid. A sum of ten gold coins is the standard fee for outsiders.",
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
-                            "nodeId": "51d4a17f-33c7-495d-871e-9a56ea9e9685",
+                            "nodeId": "0de6805b-f313-453d-8cc6-d0a609c11a89",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
                             "position": {
-                                "x": 303.0,
-                                "y": -108.80751037597656
+                                "x": 5.000025749206543,
+                                "y": 243.9999542236328
                             },
                             "groupId": "",
                             "inputPortDataCollection": [
                                 {
-                                    "otherNodeID": "cc12713f-8a04-4f2b-9132-dd1e93fc38e1",
-                                    "otherPortName": "Choice",
+                                    "otherNodeID": "665e1394-5904-4f30-8202-af6f588c4fae",
+                                    "otherPortName": "Out",
                                     "thisPortName": "In",
                                     "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
                                 }
@@ -174,7 +170,7 @@
                             "groupId": "",
                             "inputPortDataCollection": [
                                 {
-                                    "otherNodeID": "51d4a17f-33c7-495d-871e-9a56ea9e9685",
+                                    "otherNodeID": "0de6805b-f313-453d-8cc6-d0a609c11a89",
                                     "otherPortName": "Out",
                                     "thisPortName": "In",
                                     "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
@@ -249,9 +245,7 @@
                 "dialogueNodeData": [
                     {
                         "text": "How about we come to a mutually beneficial agreement? I happen to possess some rare artifacts from my recent travels. These items hold great value, and I'm sure they would be of interest to someone of your standing.",
-                        "speaker": {
-                            "instanceID": 23694
-                        },
+                        "speakerIdentifier": "47252157-8ee1-4b8c-b0bf-250bcd6bf66a",
                         "nodeSaveData": {
                             "nodeId": "b422fa03-5924-48c0-bf30-f071da2f3ab4",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -280,9 +274,7 @@
                     },
                     {
                         "text": "An arrangement, you say? Well, I suppose there's always room for negotiations. What do you propose, traveler?",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
                             "nodeId": "aeaa324f-c5c1-4b21-a154-347f4e1d605d",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -310,41 +302,8 @@
                         }
                     },
                     {
-                        "text": "Impressive indeed. I have not seen artifacts like  these ever since I've been shot in the knee.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "5ec9802f-25d8-4866-9513-f34aad057db2",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": 867.0,
-                                "y": 243.0
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "6609109f-be12-4927-848f-dd78adb0e2ac",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "6b9a856c-c77b-45b1-83ee-4a2ce70ecc85",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
                         "text": "Very well, I shall accept your bribe in exchange for entry into the city. Enjoy your stay, adventurer.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
                             "nodeId": "6b9a856c-c77b-45b1-83ee-4a2ce70ecc85",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -373,9 +332,7 @@
                     },
                     {
                         "text": "Rare artifacts, you say? That does sound intriguing. Show me what you have, and we can discuss further.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
                             "nodeId": "6609109f-be12-4927-848f-dd78adb0e2ac",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -395,6 +352,35 @@
                             "outputPortDataCollection": [
                                 {
                                     "otherNodeID": "5ec9802f-25d8-4866-9513-f34aad057db2",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Impressive indeed. I have not seen artifacts like  these ever since I've been shot in the knee.",
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
+                        "nodeSaveData": {
+                            "nodeId": "5ec9802f-25d8-4866-9513-f34aad057db2",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 867.0,
+                                "y": 243.0
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "6609109f-be12-4927-848f-dd78adb0e2ac",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "6b9a856c-c77b-45b1-83ee-4a2ce70ecc85",
                                     "otherPortName": "In",
                                     "thisPortName": "Out",
                                     "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
@@ -451,41 +437,8 @@
                 "textNodeData": [],
                 "dialogueNodeData": [
                     {
-                        "text": "Surely, there must be some way we can come to an understanding. I can offer you four gold coins as a gesture of goodwill. Perhaps that would be enough?",
-                        "speaker": {
-                            "instanceID": 23694
-                        },
-                        "nodeSaveData": {
-                            "nodeId": "a3d4293f-97e4-4551-bd5f-fd147610572f",
-                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
-                            "position": {
-                                "x": 234.30006408691407,
-                                "y": 246.99996948242188
-                            },
-                            "groupId": "",
-                            "inputPortDataCollection": [
-                                {
-                                    "otherNodeID": "a790d6b1-5f53-45cd-ac66-fb6ade2f18da",
-                                    "otherPortName": "Out",
-                                    "thisPortName": "In",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ],
-                            "outputPortDataCollection": [
-                                {
-                                    "otherNodeID": "9c0ce684-44eb-4891-bd9c-bd4678aa78ba",
-                                    "otherPortName": "In",
-                                    "thisPortName": "Out",
-                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
-                                }
-                            ]
-                        }
-                    },
-                    {
                         "text": "I'm afraid not, adventurer. The toll is non-negotiable and serves as a means to uphold the security and prosperity of our city. We cannot make exceptions.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
                             "nodeId": "a790d6b1-5f53-45cd-ac66-fb6ade2f18da",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -514,9 +467,7 @@
                     },
                     {
                         "text": "I cannot compromise the rules set forth. The toll remains ten gold coins, no less.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
                             "nodeId": "9c0ce684-44eb-4891-bd9c-bd4678aa78ba",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -545,9 +496,7 @@
                     },
                     {
                         "text": "I wish you luck on your endeavors, adventurer. May you find fortune and return to our gates soon.",
-                        "speaker": {
-                            "instanceID": 23676
-                        },
+                        "speakerIdentifier": "09bcd444-d5ce-4cc9-90d9-c33f874657ed",
                         "nodeSaveData": {
                             "nodeId": "6a6b581c-9ca7-4c5a-ac08-8ec1e5c6333c",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -567,6 +516,35 @@
                             "outputPortDataCollection": [
                                 {
                                     "otherNodeID": "e6e484f6-0883-42dc-bf67-eeadbad671c5",
+                                    "otherPortName": "In",
+                                    "thisPortName": "Out",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": "Surely, there must be some way we can come to an understanding. I can offer you four gold coins as a gesture of goodwill. Perhaps that would be enough?",
+                        "speakerIdentifier": "47252157-8ee1-4b8c-b0bf-250bcd6bf66a",
+                        "nodeSaveData": {
+                            "nodeId": "a3d4293f-97e4-4551-bd5f-fd147610572f",
+                            "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
+                            "position": {
+                                "x": 234.30006408691407,
+                                "y": 246.99996948242188
+                            },
+                            "groupId": "",
+                            "inputPortDataCollection": [
+                                {
+                                    "otherNodeID": "a790d6b1-5f53-45cd-ac66-fb6ade2f18da",
+                                    "otherPortName": "Out",
+                                    "thisPortName": "In",
+                                    "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
+                                }
+                            ],
+                            "outputPortDataCollection": [
+                                {
+                                    "otherNodeID": "9c0ce684-44eb-4891-bd9c-bd4678aa78ba",
                                     "otherPortName": "In",
                                     "thisPortName": "Out",
                                     "thisPortType": "Chocolate4.Dialogue.Edit.Graph.Utilities.TransitionPortType"
@@ -593,7 +571,7 @@
         }
     },
     "treeSaveData": {
-        "selectedIndex": 0,
+        "selectedIndex": 2,
         "treeItemData": [
             {
                 "depth": 0,

@@ -16,3 +16,8 @@ MonoBehaviour:
   entityName: Princess Isabella
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 9731942d-fae3-498d-ac3d-c046ec8f0ceb
+  entityProcessors: []
+  references:
+    version: 2
+    RefIds: []

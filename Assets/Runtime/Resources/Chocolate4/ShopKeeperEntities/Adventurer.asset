@@ -16,6 +16,7 @@ MonoBehaviour:
   entityName: Adventurer
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 7a7f1496-6ea2-4079-a047-964ea3e1aea3
   entityProcessors: []
   references:
     version: 2
