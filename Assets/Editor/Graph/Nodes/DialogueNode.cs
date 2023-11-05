@@ -21,7 +21,11 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
         public override IDataHolder Save()
         {
             NodeSaveData saveData = (NodeSaveData)base.Save();
-            return new DialogueNodeSaveData() { text = Text, speaker = speaker, nodeSaveData = saveData };
+            return new DialogueNodeSaveData() 
+            { 
+                text = Text, 
+                speakerIdentifier = speaker == null ? string.Empty : speaker.Identifier, 
+                nodeSaveData = saveData };
         }
 
         public override void Load(IDataHolder saveData)
@@ -29,7 +33,8 @@ namespace Chocolate4.Dialogue.Edit.Graph.Nodes
             base.Load(saveData);
             DialogueNodeSaveData dialogueNodeSaveData = (DialogueNodeSaveData)saveData;
 
-            SelectEntity(dialogueNodeSaveData.speaker);
+            DialogueEditorWindow.Window.DialogueAssetManager.EntitiesDatabase.TryGetEntity(dialogueNodeSaveData.speakerIdentifier, out speaker);
+            SelectEntity(speaker);
             
             Text = dialogueNodeSaveData.text;
             textField.value = Text;

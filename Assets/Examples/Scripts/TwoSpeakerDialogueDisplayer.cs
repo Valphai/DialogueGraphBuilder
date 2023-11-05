@@ -159,7 +159,7 @@ namespace Chocolate4.Dialogue.Examples
             {
                 string speakerIdentifier = activeSpeakerIdentifiers[currentSide];
                 if (string.IsNullOrEmpty(speakerIdentifier)
-                    || !speakerIdentifier.Equals(newSpeaker.identifier)
+                    || !speakerIdentifier.Equals(newSpeaker.Identifier)
                 )
                 {
                     int enumMemberCount = 2;
@@ -167,7 +167,7 @@ namespace Chocolate4.Dialogue.Examples
                     currentSide = (int)speakerSide;
                 }
 
-                activeSpeakerIdentifiers[currentSide] = newSpeaker.identifier;
+                activeSpeakerIdentifiers[currentSide] = newSpeaker.Identifier;
                 speakerNameText[currentSide].SetText(newSpeaker.entityName);
             }
             if (speakerImagesDefined)

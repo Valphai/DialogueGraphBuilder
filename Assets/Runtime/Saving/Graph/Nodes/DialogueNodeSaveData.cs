@@ -6,7 +6,7 @@ namespace Chocolate4.Dialogue.Runtime.Saving
     public class DialogueNodeSaveData : IDataHolder
     {
         public string text;
-        public DialogueEntity speaker;
+        public string speakerIdentifier;
         public NodeSaveData nodeSaveData;
 
         public NodeSaveData NodeData => nodeSaveData;
