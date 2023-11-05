@@ -24,6 +24,7 @@
       - [```NextDialogueElement()```](#nextdialogueelement)
       - [```SetSelectedChoice(int index)```](#setselectedchoiceint-index)
       - [```GetCollection<T>()```](#getcollectiont)
+    - [**Entities**](#entities-1)
     - [**Collections**](#collections)
       - [**Automatic Generation**](#automatic-generation)
       - [**Accessing Collections**](#accessing-collections)
@@ -85,7 +86,7 @@ DialogueGraphBuilder has been extensively tested in Unity on various platforms, 
 
 DialogueGraphBuilder can be installed in various ways:
 
-1. **From Source:** Download the source code and build it yourself.
+1. **From Source:** Download the source code and open the project through Unity hub.
 2. **From the Releases Page:** Download the latest release from our Releases page for the most up-to-date version.
 3. **From the Asset Store (Coming Soon):** Keep an eye out for our Asset Store listing.
 
@@ -108,7 +109,7 @@ To use the tool in your build or play mode, follow these steps:
 2. Create a game object in your scene.
 3. Add a **[DialogueMaster](#dialoguemaster)** component to the game object.
 4. Enable the "Auto Initialize" field in the Inspector.
-5. Drag your dialogue asset into the exposed field.
+5. Drag your dialogue asset and its entity database into the exposed fields.
 
 Now, your dialogue asset is ready to be used through the DialogueMaster.
 
@@ -145,6 +146,8 @@ You can also sort entities by name using the button next to "New Entity." Simila
 ![](Assets/Documentation/Images/EntitiesView.png)
 
 Right-click on any entity to access the Contextual Menu and delete an entity.
+
+For accessing entities at runtime see **[DialogueMaster](#entities-1)**.
 
 ### **IEntityProcessor**
 
@@ -200,6 +203,10 @@ When arriving at the **[ChoiceNode](#choice-node)** **([DialogueNodeInfo](#dialo
 #### ```GetCollection<T>()```
 
 This method allows you to get access to currently selected **[collection](#collections)** in the asset. Use the collection to interact with variables and events.
+
+### **Entities**
+
+You may access entities created in the editor through the ```DialogueMaster.EntitiesDatabase``` property.
 
 ### **Collections**
 
