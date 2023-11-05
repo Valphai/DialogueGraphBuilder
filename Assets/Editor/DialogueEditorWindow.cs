@@ -30,8 +30,8 @@ namespace Chocolate4.Dialogue.Edit
 
         private bool hasInitialized;
         private Button saveButton;
-        private DialogueAssetManager dialogueAssetManager;
 
+        internal DialogueAssetManager DialogueAssetManager { get; private set; }
         public DialogueEntitiesView EntitiesView { get; private set; }
         public DialogueGraphView GraphView { get; private set; }
         public DialogueTreeView DialogueTreeView { get; private set; }
@@ -95,7 +95,7 @@ namespace Chocolate4.Dialogue.Edit
 
             EntitiesHolder entitiesDatabase = AssetDatabase.LoadAssetAtPath<EntitiesHolder>(path);
 
-            dialogueAssetManager = new DialogueAssetManager(asset, instanceId, entitiesDatabase);
+            DialogueAssetManager = new DialogueAssetManager(asset, instanceId, entitiesDatabase);
             PostInitialize();
         }
 
@@ -139,7 +139,7 @@ namespace Chocolate4.Dialogue.Edit
             GraphSaveData graphData = GraphView.Save();
             TreeSaveData treeData = DialogueTreeView.Save();
             EntitiesData entitiesData = EntitiesView.Save();
-            dialogueAssetManager.Save(graphData, treeData, entitiesData);
+            DialogueAssetManager.Save(graphData, treeData, entitiesData);
         }
 
         private void StoreData()
@@ -147,7 +147,7 @@ namespace Chocolate4.Dialogue.Edit
             TreeSaveData treeSaveData = DialogueTreeView.Save();
             GraphSaveData graphSaveData = GraphView.Save();
             EntitiesData entitiesData = EntitiesView.Save();
-            dialogueAssetManager.Store(graphSaveData, treeSaveData, entitiesData);
+            DialogueAssetManager.Store(graphSaveData, treeSaveData, entitiesData);
         }
 
         private void Initialize()
@@ -188,14 +188,14 @@ namespace Chocolate4.Dialogue.Edit
             DialogueTreeView.OnSituationSelected += GraphView.DialogueTreeView_OnSituationSelected;
             DialogueTreeView.OnTreeItemRemoved += GraphView.DialogueTreeView_OnTreeItemRemoved;
 
-            DialogueTreeView.Initialize(dialogueAssetManager.ImportedAsset.treeSaveData);
+            DialogueTreeView.Initialize(DialogueAssetManager.ImportedAsset.treeSaveData);
 
             GraphView.SituationCache.OnSituationCached += DialogueTreeView.GraphView_OnSituationCached;
         }
 
         private void Rebuild()
         {
-            dialogueAssetManager.Rebuild(DialogueTreeView, GraphView, EntitiesView);
+            DialogueAssetManager.Rebuild(DialogueTreeView, GraphView, EntitiesView);
         }
 
         private void CreatePanels()

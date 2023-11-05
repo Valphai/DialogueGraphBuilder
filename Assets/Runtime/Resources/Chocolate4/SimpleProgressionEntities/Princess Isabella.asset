@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91d70d89cfae1064e96d950b25b5faf0, type: 3}
-  m_Name: Adventurer
+  m_Name: Princess Isabella
   m_EditorClassIdentifier: 
-  entityImage: {fileID: 21300000, guid: 09bfadcf9b2bb5340a17d4ec11ec0499, type: 3}
-  entityName: Adventurer
+  entityImage: {fileID: 21300000, guid: d05810433bb92cc44a5071167856c7ed, type: 3}
+  entityName: Princess Isabella
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 9731942d-fae3-498d-ac3d-c046ec8f0ceb
   entityProcessors: []
   references:
     version: 2

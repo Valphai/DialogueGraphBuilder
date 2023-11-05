@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91d70d89cfae1064e96d950b25b5faf0, type: 3}
-  m_Name: Narrator
+  m_Name: Player
   m_EditorClassIdentifier: 
-  entityImage: {fileID: 21300000, guid: be19dc3d90cf9854da0da64d26b06168, type: 3}
-  entityName: Narrator
+  entityImage: {fileID: 21300000, guid: a938619121394004cbfda6c1d7e71b7e, type: 3}
+  entityName: Player
   extraImages: []
   extraText: []
+  <Identifier>k__BackingField: 47252157-8ee1-4b8c-b0bf-250bcd6bf66a
+  entityProcessors: []
+  references:
+    version: 2
+    RefIds: []

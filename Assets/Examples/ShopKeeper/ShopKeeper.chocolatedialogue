@@ -2,12 +2,12 @@
     "collectionName": "ShopKeeper",
     "graphSaveData": {
         "graphViewPosition": {
-            "x": 231.0,
-            "y": 194.0
+            "x": 352.0,
+            "y": 121.0
         },
         "graphViewZoom": {
-            "x": 0.25,
-            "y": 0.25
+            "x": 0.4323275685310364,
+            "y": 0.4323275685310364
         },
         "situationSaveData": [
             {
@@ -187,9 +187,7 @@
                 "dialogueNodeData": [
                     {
                         "text": "I am just looking around.",
-                        "speaker": {
-                            "instanceID": 34672
-                        },
+                        "speakerIdentifier": "7a7f1496-6ea2-4079-a047-964ea3e1aea3",
                         "nodeSaveData": {
                             "nodeId": "506d99fc-ee13-49ca-a7f8-1c07679cd826",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -218,9 +216,7 @@
                     },
                     {
                         "text": "You're in luck! We just got a fresh shipment.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "6866e108-d487-4400-b21f-3f438b9a916b",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -249,9 +245,7 @@
                     },
                     {
                         "text": "Sorry I think I lost my wallet.",
-                        "speaker": {
-                            "instanceID": 34672
-                        },
+                        "speakerIdentifier": "7a7f1496-6ea2-4079-a047-964ea3e1aea3",
                         "nodeSaveData": {
                             "nodeId": "e25fab9f-ec90-40ba-bc5d-e0b091d03a2f",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -280,9 +274,7 @@
                     },
                     {
                         "text": "Absolutely, that will be 300 golden pieces!",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "ce5d7345-4c6b-4c2b-bfa6-1950365f85a8",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -311,9 +303,7 @@
                     },
                     {
                         "text": "Thanks for your patronage, your room is on the third floor, first door to the right.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "00e1dc94-f38a-4fdc-aa1e-4b97490432e8",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -342,9 +332,7 @@
                     },
                     {
                         "text": "Farewell adventurer, until we meet again.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "25b9cbf7-2253-454d-9b28-782e405fc072",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -373,9 +361,7 @@
                     },
                     {
                         "text": "Welcome adventurer! You've come to the right place. We have a wide variety of supplies to suit your needs. What are you looking for?",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "360ae84c-1831-4057-add4-3ecac672437c",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -404,9 +390,7 @@
                     },
                     {
                         "text": "Who am I? I am Simon, the shopkeeper, at your service. Tell me, adventurer, what brings you to these parts and what sort of supplies do you seek? ",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "bb818e4d-e811-4117-aa2d-6e56308d3fbc",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -727,9 +711,7 @@
                 "dialogueNodeData": [
                     {
                         "text": "Ah its you again! Welcome, what stories do you bring?",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "f8395d64-7607-4a68-ab44-992032355603",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -758,9 +740,7 @@
                     },
                     {
                         "text": "Take a look.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "7b11a167-e6d3-493b-b059-1da90f427605",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -789,9 +769,7 @@
                     },
                     {
                         "text": "See you around adventurer.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "12f8d42e-cfa4-4624-a2f5-c5c39797ac36",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1028,9 +1006,7 @@
                 "dialogueNodeData": [
                     {
                         "text": "Sure thing, come back if you change your mind.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "2dbcb673-1082-4fcb-ba8f-85166f31a617",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1059,9 +1035,7 @@
                     },
                     {
                         "text": "Alright then, first and foremost, be wary of the forest's illusions. It is known to deceive even the bravest hearts. Trust your instincts, for they shall guide you through the labyrinth of enchantments.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "60f5a9b9-7a03-44a1-abeb-fc5b8cb470aa",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1090,9 +1064,7 @@
                     },
                     {
                         "text": "The creatures of the Enchanted Forest are a mix of friend and foe. Treat them with respect, and they may provide assistance. But be cautious, for some may test your mettle. Carry a charm of protection to ward off any malevolent spirits.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "6889ca1e-0b41-4a75-8ba0-ccce93916d30",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1121,9 +1093,7 @@
                     },
                     {
                         "text": "I shall remember your advice and come prepared. Is there anything else I should know?",
-                        "speaker": {
-                            "instanceID": 34672
-                        },
+                        "speakerIdentifier": "7a7f1496-6ea2-4079-a047-964ea3e1aea3",
                         "nodeSaveData": {
                             "nodeId": "2e8be443-aaa1-4e14-9b09-f1c9897ab5d8",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1152,9 +1122,7 @@
                     },
                     {
                         "text": "I will seek out the Whispering Oak and heed its wisdom. Thank you, shopkeeper, for entrusting me with this important mission.",
-                        "speaker": {
-                            "instanceID": 34672
-                        },
+                        "speakerIdentifier": "7a7f1496-6ea2-4079-a047-964ea3e1aea3",
                         "nodeSaveData": {
                             "nodeId": "98259696-a1b5-4563-9b6b-f992779936e1",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1183,9 +1151,7 @@
                     },
                     {
                         "text": "One final piece of counsel, adventurer. Seek the Whispering Oak, a sentient tree deep within the forest. It holds ancient wisdom and may offer guidance on your quest. Listen carefully to its words.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "a3e85a97-6301-4f9b-aa4d-6864b055f38d",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1214,9 +1180,7 @@
                     },
                     {
                         "text": "May your steps be guided, and your heart remain steadfast. Return safely, and with the Crystal, our world will be forever grateful.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "60a618c9-5bb1-419f-9c2d-bd63680612a9",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1362,9 +1326,7 @@
                 "dialogueNodeData": [
                     {
                         "text": "I have a personal quest, a task that requires a brave soul like yourself. Deep within the Mystic Forest lies an ancient relic, the Crystal of Fairies. Legends say it possesses incredible power to prevent adventurers from getting shot in the knee.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "dcf4e8f7-2547-4c5b-bc1a-ba88247b2061",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1392,10 +1354,8 @@
                         }
                     },
                     {
-                        "text": "he journey will not be an easy one, adventurer. The Mystic Forest is fraught with peril and enchantments. But should you be willing to face the challenges, retrieve the Crystal and return it to me, you shall be rewarded handsomely.",
-                        "speaker": {
-                            "instanceID": 34706
-                        },
+                        "text": "The journey will not be an easy one, adventurer. The Mystic Forest is fraught with peril and enchantments. But should you be willing to face the challenges, retrieve the Crystal and return it to me, you shall be rewarded handsomely.",
+                        "speakerIdentifier": "d3fb8c28-8100-48bf-be5d-95c404982010",
                         "nodeSaveData": {
                             "nodeId": "3de44e6d-d77d-4403-8651-3ab3366ebd79",
                             "nodeType": "Chocolate4.Dialogue.Edit.Graph.Nodes.DialogueNode",
@@ -1493,7 +1453,7 @@
         }
     },
     "treeSaveData": {
-        "selectedIndex": 0,
+        "selectedIndex": 3,
         "treeItemData": [
             {
                 "depth": 0,
